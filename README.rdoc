@@ -1,0 +1,50 @@
+= charging-client-ruby
+
+A Ruby client for the Charging REST API
+
+{<img src="https://badge.fury.io/rb/charging-client.png" alt="Gem Version" />}[https://rubygems.org/gems/charging-client]
+{<img src="https://travis-ci.org/myfreecomm/charging-client-ruby.png?branch=master" alt="Build Status" />}[https://travis-ci.org/myfreecomm/charging-client-ruby]
+{<img src="https://coveralls.io/repos/myfreecomm/charging-client-ruby/badge.png?branch=master" alt="Coverage Status" />}[https://coveralls.io/r/myfreecomm/charging-client-ruby]
+{<img src="https://codeclimate.com/github/myfreecomm/charging-client-ruby.png" alt="Code Climate Status" />}[https://codeclimate.com/github/myfreecomm/charging-client-ruby]
+
+Charging API docs: ???
+
+charging-client-ruby RDoc documentation: http://rubydoc.info/github/myfreecomm/charging-client-ruby/frames/
+
+The {RDoc}[http://rubydoc.info/github/myfreecomm/charging-client-ruby/frames/] is the best place to learn how to use this client. A few example uses are listed below. See the mapping of API endpoints to this client code below as well to find what you need.
+
+== Installation
+
+Add this line to your application's Gemfile:
+
+  gem 'charging-client', :require => 'charging'
+
+And then execute:
+
+  $ bundle
+
+Or install it yourself as:
+
+  $ gem install charging-client
+
+== Usage
+
+=== Mapping of API endpoints to this client
+
+TODO
+
+=== Configuration
+
+TODO
+
+=== Examples
+
+TODO
+
+== Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
