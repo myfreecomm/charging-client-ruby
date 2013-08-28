@@ -4,9 +4,14 @@ require 'rest_client'
 require 'multi_json'
 
 require "charging/version"
+require "charging/configuration"
 
 module Charging
+  def self.configuration
+    @configuration ||= Configuration.new
+  end
 
-  # TODO
-
+  def self.configure
+    yield(configuration) if block_given?
+  end
 end
