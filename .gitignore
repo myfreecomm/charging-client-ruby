@@ -3,6 +3,7 @@
 .bundle
 .config
 .DS_Store
+.ruby-*
 .rvmrc
 coverage
 InstalledFiles
