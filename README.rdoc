@@ -43,8 +43,8 @@ TODO
     c.application_token = 'some-app-token'
 
     # URL for request data.
-    # Default: 'charging.finnanceconnect.com.br'
-    c.charging_host = 'sandbox.charging.finnanceconnect.com.br'
+    # Default: 'https://charging.finnanceconnect.com.br'
+    c.url = 'http://sandbox.charging.financeconnect.com.br'
 
     # User agent to identify the http request on Charing.
     # Default: 'Charging Ruby Client v0.0.1'
