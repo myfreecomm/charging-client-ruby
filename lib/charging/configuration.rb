@@ -11,10 +11,10 @@ module Charging
     end
 
     def application_credentials
-      credentials_for(application_token, "application_token")
+      credentials_for(application_token, :application_token)
     end
 
-    def credentials_for(token, attribute_name = "token")
+    def credentials_for(token, attribute_name = :token)
       check_valid_token!(token, attribute_name)
       encrypted_token = ::Base64.strict_encode64(":#{token}")
       "Basic #{encrypted_token}"

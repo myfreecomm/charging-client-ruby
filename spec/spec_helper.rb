@@ -28,6 +28,10 @@ RSpec.configure do |c|
   c.treat_symbols_as_metadata_keys_with_true_values = true
 
   c.before(:vcr => true) do
-    # TODO configuration
+    Charging.configure do |config|
+      config.url               = 'http://sandbox.charging.financeconnect.com.br'
+      config.application_token = 'AwdhihciTgORGUjnkuk1vg=='
+      config.user_agent        = 'SuiteTest for Charging Ruby Client'
+    end
   end
 end
