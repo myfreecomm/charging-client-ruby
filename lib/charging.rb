@@ -5,6 +5,7 @@ require 'multi_json'
 
 require 'charging/version'
 require 'charging/configuration'
+require 'charging/null_object'
 require 'charging/http'
 
 module Charging
