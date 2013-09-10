@@ -1,0 +1,48 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://:invalid-token@sandbox.charging.financeconnect.com.br/account/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Tue, 10 Sep 2013 22:12:35 GMT
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '339'
+      X-Cache:
+      - MISS from firewall.corp.myfreecomm.com.br
+      X-Cache-Lookup:
+      - MISS from firewall.corp.myfreecomm.com.br:3128
+      Via:
+      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+        <title>401 Unauthorized</title>
+        <h1>Unauthorized</h1>
+        <p>The server could not verify that you are authorized to access the URL requested.  You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required.</p>
+    http_version: 
+  recorded_at: Tue, 10 Sep 2013 22:12:35 GMT
+recorded_with: VCR 2.5.0

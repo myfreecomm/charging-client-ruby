@@ -1,0 +1,8 @@
+{
+  "supplier_name"       : "Acme Elétrica Ltda",
+  "national_identifier" : "73.331.840/0001-00",
+  "address"             : "Av. Nelson Cardoso, 123 - Jacarepaguá",
+  "city_state"          : "Rio de Janeiro / RJ",
+  "zipcode"             : "20211-360",
+  "description"         : "Descrição incrível sobre a Acme Elétrica"
+}

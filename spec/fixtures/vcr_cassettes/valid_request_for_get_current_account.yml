@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br/account/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 10 Sep 2013 22:12:35 GMT
+      Expires:
+      - Tue, 10 Sep 2013 22:12:34 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '209'
+      X-Cache:
+      - MISS from firewall.corp.myfreecomm.com.br
+      X-Cache-Lookup:
+      - MISS from firewall.corp.myfreecomm.com.br:3128
+      Via:
+      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: '{"plan": "full", "uri": "http://sandbox.app.passaporteweb.com.br/organizations/api/accounts/3a0676fb-6639-466a-ac35-9ea7c5f67386/",
+        "uuid": "3a0676fb-6639-466a-ac35-9ea7c5f67386", "name": "Teste cliente Ruby"}'
+    http_version: 
+  recorded_at: Tue, 10 Sep 2013 22:12:35 GMT
+recorded_with: VCR 2.5.0

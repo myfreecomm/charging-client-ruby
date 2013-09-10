@@ -8,6 +8,8 @@ require 'charging/configuration'
 require 'charging/null_object'
 require 'charging/http'
 
+require 'charging/service_account'
+
 module Charging
   def self.configuration
     @configuration ||= Configuration.new
