@@ -19,13 +19,11 @@ describe Charging do
     before do
       Charging.configure do |c|
         c.url               = 'https://some.host'
-        c.application_token = 'some-app-token'
         c.user_agent        = 'Testing with RSpec'
       end
     end
 
     its(:url) { should eql 'https://some.host' }
-    its(:application_token) { should eql 'some-app-token'}
     its(:user_agent) { should eql 'Testing with RSpec'}
   end
 end

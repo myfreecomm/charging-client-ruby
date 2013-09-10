@@ -2,16 +2,8 @@
 require 'spec_helper'
 
 describe Charging::Http do
-
-  before do
-    Charging.configure do |config|
-      config.url               = 'http://better.place.in/the-world'
-      config.application_token = 'AwdhihciTgORGUjnkuk1vg=='
-      config.user_agent        = 'My Mocking App v1.1'
-    end
-  end
-
   let(:mock_response) { double('restclient http response') }
+  let(:configuration) { Charging.configuration }
 
   describe '.basic_credential_for' do
     it 'should accept only user' do
@@ -28,32 +20,32 @@ describe Charging::Http do
       context 'with body as json' do
         it "should use RestClient.#{method} with the supplied params and common options" do
           RestClient.should_receive(method).with(
-            'http://better.place.in/the-world/foo',
+            'https://charging.financeconnect.com.br/foo',
             '{"hello":"world"}',
             params: {},
-            authorization: 'Basic OkF3ZGhpaGNpVGdPUkdVam5rdWsxdmc9PQ==',
+            authorization: 'Basic OnNvbWUtYXBwLXRva2Vu',
             content_type: :json,
             accept: :json,
-            user_agent: 'My Mocking App v1.1'
+            user_agent: configuration.user_agent
           ).and_return(mock_response)
 
-          described_class.request_with_body(method, '/foo', {hello: 'world'}, {}, :use_application_token)
+          described_class.request_with_body(method, '/foo', {hello: 'world'}, {}, 'some-app-token')
         end
       end
 
       context 'with body as string' do
         it 'should use RestClient.post with the supplied params and common options' do
           RestClient.should_receive(method).with(
-            'http://better.place.in/the-world/foo',
+            'https://charging.financeconnect.com.br/foo',
             '{"hello":"world"}',
             params: {},
-            authorization: 'Basic OkF3ZGhpaGNpVGdPUkdVam5rdWsxdmc9PQ==',
+            authorization: 'Basic OnNvbWUtYXBwLXRva2Vu',
             content_type: :json,
             accept: :json,
-            user_agent: 'My Mocking App v1.1'
+            user_agent: configuration.user_agent
           ).and_return(mock_response)
 
-          described_class.request_with_body(method, '/foo', '{"hello":"world"}', {}, :use_application_token)
+          described_class.request_with_body(method, '/foo', '{"hello":"world"}', {}, 'some-app-token')
         end
       end
     end
@@ -63,15 +55,15 @@ describe Charging::Http do
     %w[].each do |method|
       it "should use RestClient.#{method} with the supplied params and common options" do
         RestClient.should_receive(method).with(
-          'http://better.place.in/the-world/foo',
+          'https://charging.financeconnect.com.br/foo',
           params: {spam: 'eggs'},
-          authorization: 'Basic OkF3ZGhpaGNpVGdPUkdVam5rdWsxdmc9PQ==',
+          authorization: 'Basic OnNvbWUtYXBwLXRva2Vu',
           content_type: :json,
           accept: :json,
-          user_agent: 'My Mocking App v1.1'
+          user_agent: configuration.user_agent
         ).and_return(mock_response)
 
-        described_class.request_without_body(method, '/foo', spam: 'eggs')
+        described_class.request_without_body(method, '/foo', {spam: 'eggs'}, 'some-app-token')
       end
     end
   end
@@ -83,10 +75,10 @@ describe Charging::Http do
           method.to_sym,
           '/foo',
           {},
-          :use_application_token
+          'some-app-token'
         )
 
-        described_class.send(method, '/foo')
+        described_class.send(method, '/foo', 'some-app-token')
       end
     end
   end
@@ -99,16 +91,16 @@ describe Charging::Http do
           '/foo',
           'body',
           {spam: 'eggs'},
-          :use_application_token
+          'some-app-token'
         )
 
-        described_class.send(method, '/foo', 'body', spam: 'eggs')
+        described_class.send(method, '/foo', 'some-app-token', 'body', spam: 'eggs')
       end
     end
   end
 
   specify('.charging_path') do
-    expect(described_class.charging_path('/path')).to eql 'http://better.place.in/the-world/path'
+    expect(described_class.charging_path('/path')).to eql 'https://charging.financeconnect.com.br/path'
   end
 
   specify('.common_params') do
@@ -116,7 +108,7 @@ describe Charging::Http do
       accept: :json,
       authorization: 'Basic OnRva2Vu',
       content_type: :json,
-      user_agent: 'My Mocking App v1.1'
+      user_agent: configuration.user_agent
     })
   end
 

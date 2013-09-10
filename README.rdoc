@@ -38,10 +38,6 @@ TODO
   require "charging"
 
   Charging.configure do |c|
-    # Your app token on Charging.
-    # It is required.
-    c.application_token = 'some-app-token'
-
     # URL for request data.
     # Default: 'https://charging.finnanceconnect.com.br'
     c.url = 'http://sandbox.charging.financeconnect.com.br'

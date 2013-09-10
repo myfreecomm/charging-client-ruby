@@ -5,23 +5,23 @@ module Charging
   module Http # :nodoc:
     module_function
 
-    def get(path, params = {}, token = :use_application_token)
+    def get(path, token, params = {})
       request_without_body(:get, path, params, token)
     end
 
-    def delete(path, params = {}, token = :use_application_token)
+    def delete(path, token, params = {})
       request_without_body(:delete, path, params, token)
     end
 
-    def post(path, body = {}, params = {}, token = :use_application_token)
+    def post(path, token, body = {}, params = {})
       request_with_body(:post, path, body, params, token)
     end
 
-    def put(path, body = {}, params = {}, token = :use_application_token)
+    def put(path, token, body = {}, params = {})
       request_with_body(:put, path, body, params, token)
     end
 
-    def patch(path, body = {}, params = {}, token = :use_application_token)
+    def patch(path, token, body = {}, params = {})
       request_with_body(:patch, path, body, params, token)
     end
 
