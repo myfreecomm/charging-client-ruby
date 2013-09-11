@@ -27,10 +27,11 @@ describe Charging::ServiceAccount, :vcr do
       context 'with current service account' do
         subject { @result }
 
-        its(:plan) { should eql 'full' }
-        its(:name) { should eql 'Teste cliente Ruby' }
-        its(:uri)  { should eql 'http://sandbox.app.passaporteweb.com.br/organizations/api/accounts/3a0676fb-6639-466a-ac35-9ea7c5f67386/' }
-        its(:uuid) { should eql '3a0676fb-6639-466a-ac35-9ea7c5f67386' }
+        its(:plan) { should eq 'full' }
+        its(:name) { should eq 'Teste cliente Ruby' }
+        its(:uri)  { should eq 'http://sandbox.app.passaporteweb.com.br/organizations/api/accounts/3a0676fb-6639-466a-ac35-9ea7c5f67386/' }
+        its(:uuid) { should eq '3a0676fb-6639-466a-ac35-9ea7c5f67386' }
+        its(:application_token) { should eq 'AwdhihciTgORGUjnkuk1vg==' }
       end
 
       it 'should return ok (200) response at last response' do
