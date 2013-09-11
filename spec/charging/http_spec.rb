@@ -68,18 +68,30 @@ describe Charging::Http do
     end
   end
 
-  %w[get delete].each do |method|
-    describe ".#{method}"  do
-      it 'should delegate to request_without_body' do
-        Charging::Http.should_receive(:request_without_body).with(
-          method.to_sym,
-          '/foo',
-          {},
-          'some-app-token'
-        )
+  describe ".delete"  do
+    it 'should delegate to request_without_body' do
+      Charging::Http.should_receive(:request_without_body).with(
+        :delete,
+        '/foo',
+        {},
+        'some-app-token',
+        :no_follow
+      )
 
-        described_class.send(method, '/foo', 'some-app-token')
-      end
+      described_class.delete('/foo', 'some-app-token')
+    end
+  end
+
+  describe ".get"  do
+    it 'should delegate to request_without_body' do
+      Charging::Http.should_receive(:request_without_body).with(
+        :get,
+        '/foo',
+        {},
+        'some-app-token'
+      )
+
+      described_class.get('/foo', 'some-app-token')
     end
   end
 
@@ -122,6 +134,36 @@ describe Charging::Http do
     context 'with string body' do
       it 'should repass the original body' do
         expect(described_class.encoded_body('some text')).to eql('some text')
+      end
+    end
+  end
+
+  describe '.should_follow_redirect' do
+    context 'on success response code (200)' do
+      it 'should call return on response' do
+        response = double(code: 200).tap do |mock|
+          mock.should_not_receive(:follow_redirection)
+          mock.should_receive(:return!)
+        end
+
+        described_class.should_follow_redirect.call(response, nil, nil)
+      end
+    end
+
+    {
+      301 => 'moved permanently',
+      302 => 'found',
+      307 => 'temporary redirect'
+    }.each do |status_code, status_message|
+      context "on #{status_message} response code (#{status_code})" do
+        it 'should call follow redirection on response' do
+          response = double(code: status_code).tap do |mock|
+            mock.should_receive(:follow_redirection)
+            mock.should_not_receive(:return!)
+          end
+
+          described_class.should_follow_redirect.call(response, nil, nil)
+        end
       end
     end
   end
