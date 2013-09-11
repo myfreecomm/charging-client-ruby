@@ -52,7 +52,7 @@ describe Charging::Http do
   end
 
   describe '.request_without_body' do
-    %w[].each do |method|
+    %w[get delete].each do |method|
       it "should use RestClient.#{method} with the supplied params and common options" do
         RestClient.should_receive(method).with(
           'https://charging.financeconnect.com.br/foo',

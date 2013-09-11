@@ -3,21 +3,13 @@ require 'spec_helper'
 
 describe Charging::ServiceAccount, :vcr do
   describe '.find' do
-    context 'with invalid application token' do
-      before do
+    context 'with an invalid application token' do
+      it 'should raise a last response error' do
         VCR.use_cassette('invalid request for get current account') do
-          @result = described_class.find('invalid-token')
+          error = [Charging::Http::LastResponseError, /401 Unauthorized/]
+
+          expect { described_class.find('invalid-token') }.to raise_error(*error)
         end
-      end
-
-      it 'should return a NullServiceAccount instance' do
-        expect(@result).to be_an_instance_of(Charging::NullServiceAccount)
-      end
-
-      it 'should return not authorized (401) response at last response' do
-        last_response = @result.last_response
-
-        expect(last_response.code).to eql 401
       end
     end
 

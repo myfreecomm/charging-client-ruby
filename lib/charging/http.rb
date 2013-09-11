@@ -3,6 +3,19 @@ require 'base64'
 
 module Charging
   module Http # :nodoc:
+    class LastResponseError < RuntimeError
+      attr_reader :last_response
+
+      def initialize(last_response)
+        super
+        @last_response = last_response
+      end
+
+      def message
+        last_response.to_s
+      end
+    end
+
     module_function
 
     def get(path, token, params = {})
