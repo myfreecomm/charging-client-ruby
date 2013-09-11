@@ -49,18 +49,18 @@ TODO
 
 === Examples
 
-account = Charging::Account.find('some-appplication-token')
-account.name # 'Your App Name on Charging'
+  account = Charging::Account.find('some-appplication-token')
+  account.name # 'Your App Name on Charging'
 
-account.last_response  # a success RestClient::Response instance
-account.last_response.code # 200
+  account.last_response  # a success RestClient::Response instance
+  account.last_response.code # 200
 
-begin
-  account = Charging::Account.find('invalid-appplication-token')
-rescue Charging::Http::LastResponseError => exception
-  exception.last_response # an unauthorized RestClient::Response instance
-  exception.last_response.code # 401
-end
+  begin
+    account = Charging::Account.find('invalid-appplication-token')
+  rescue Charging::Http::LastResponseError => exception
+    exception.last_response # an unauthorized RestClient::Response instance
+    exception.last_response.code # 401
+  end
 
 == Contributing
 
