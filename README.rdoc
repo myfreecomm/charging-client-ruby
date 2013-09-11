@@ -51,14 +51,16 @@ TODO
 
 account = Charging::Account.find('some-appplication-token')
 account.name # 'Your App Name on Charging'
-account.attributes #
 
-account.last_response.code # 200 # Ok
+account.last_response  # a success RestClient::Response instance
+account.last_response.code # 200
 
-account = Charging::Account.find('invalid-appplication-token')
-account.class # NullServiceAccount
-account.nil? # true
-account.last_response.code # 401 # Not Authorized
+begin
+  account = Charging::Account.find('invalid-appplication-token')
+rescue Charging::Http::LastResponseError => exception
+  exception.last_response # an unauthorized RestClient::Response instance
+  exception.last_response.code # 401
+end
 
 == Contributing
 
