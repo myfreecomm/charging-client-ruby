@@ -4,6 +4,7 @@ require 'rest_client'
 require 'multi_json'
 
 require 'charging/version'
+require 'charging/helpers'
 require 'charging/configuration'
 require 'charging/http'
 
