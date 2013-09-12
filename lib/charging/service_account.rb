@@ -16,19 +16,17 @@ module Charging
     #
     # API documentation: http://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#get-account-entry-point
     def self.find(token)
-      response = ::Charging::Http.get('/account/', token)
+      response = Http.get('/account/', token)
 
       raise Http::LastResponseError.new(response) if response.code != 200
 
       self.load_service_account_for response, token
-    rescue RestClient::Exception => exception
+    rescue ::RestClient::Exception => exception
       raise Http::LastResponseError.new(exception.response)
     end
 
     def initialize(attributes, response, token) # :nodoc:
-      attributes.each do |attr, value|
-        instance_variable_set("@#{attr}", value)
-      end
+      Helpers.load_variables(self, ATTRIBUTES, attributes)
 
       @last_response = response
       @application_token = token
@@ -39,13 +37,6 @@ module Charging
     def self.load_service_account_for(response, token)
       data = MultiJson.decode(response.body)
       self.new(data, response, token)
-    end
-
-    def attributes
-      ATTRIBUTES.inject({}) do |hash, attribute|
-        hash[attribute] = send(attribute)
-        hash
-      end
     end
   end
 end
