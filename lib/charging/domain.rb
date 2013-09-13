@@ -53,6 +53,8 @@ module Charging
     attr_reader :last_response, :account
 
     def initialize(account, response)
+      Helpers.required_arguments!('service account' => account)
+
       @account = account
       @last_response = response
       @data = load_data_with_response!
