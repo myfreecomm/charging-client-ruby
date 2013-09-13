@@ -10,6 +10,13 @@ module Charging
     # Responds the last http response of the API.
     attr_reader :last_response, :application_token
 
+    def initialize(attributes, response, token) # :nodoc:
+      Helpers.load_variables(self, ATTRIBUTES, attributes)
+
+      @last_response = response
+      @application_token = token
+    end
+
     # Finds a service account by it's access token. Returns the service account
     # instance with all fields set if successful. If something went wrong, it
     # raises Charging::Http::LastResponseError.
@@ -23,13 +30,6 @@ module Charging
       self.load_service_account_for response, token
     rescue ::RestClient::Exception => exception
       raise Http::LastResponseError.new(exception.response)
-    end
-
-    def initialize(attributes, response, token) # :nodoc:
-      Helpers.load_variables(self, ATTRIBUTES, attributes)
-
-      @last_response = response
-      @application_token = token
     end
 
     private

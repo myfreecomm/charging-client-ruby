@@ -17,5 +17,10 @@ module Charging
         object.instance_variable_set "@#{attribute}", value
       end
     end
+
+    def coalesce_int(value, default_value)
+      return default_value if value.to_i < 1
+      value
+    end
   end
 end
