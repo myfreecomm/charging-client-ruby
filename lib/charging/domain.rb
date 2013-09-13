@@ -22,7 +22,8 @@ module Charging
     end
 
     def self.find_all(account, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT)
-      check_for_valid_account!(account)
+      Helpers.required_arguments!('service account' => account)
+
       response = get_account_domains(account, page, limit)
       DomainCollection.new(account, response)
     end
@@ -41,10 +42,6 @@ module Charging
       data = response.code === 200 ? MultiJson.decode(response.body) : []
 
       DomainCollection.new(data, response)
-    end
-
-    def self.check_for_valid_account!(account)
-      raise ArgumentError, 'You should pass a valid service account' if account.nil?
     end
   end
 

@@ -22,5 +22,15 @@ module Charging
       return default_value if value.to_i < 1
       value
     end
+
+    def required_arguments!(arguments)
+      errors = []
+
+      arguments.each do |key, value|
+        errors << "#{key} required" if value.nil?
+      end
+
+      raise ArgumentError, errors.join(', ') if errors.any?
+    end
   end
 end

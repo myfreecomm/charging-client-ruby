@@ -5,7 +5,8 @@ require 'spec_helper'
 describe Charging::Domain, :vcr do
   context 'for new domain' do
     let(:response_mock) { double(:response) }
-    subject do
+
+      subject do
       described_class.new({
         supplier_name: 'ACME Inc',
         address: '123, Anonymous Stree',
@@ -31,7 +32,7 @@ describe Charging::Domain, :vcr do
 
   describe '.find_all' do
     it 'should require an account' do
-      expected_error = [ArgumentError, 'You should pass a valid service account']
+      expected_error = [ArgumentError, 'service account required']
 
       expect { described_class.find_all(nil) }.to raise_error(*expected_error)
     end
