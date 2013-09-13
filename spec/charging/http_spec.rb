@@ -20,7 +20,7 @@ describe Charging::Http do
       context 'with body as json' do
         it "should use RestClient.#{method} with the supplied params and common options" do
           RestClient.should_receive(method).with(
-            'https://charging.financeconnect.com.br/foo',
+            "#{configuration.url}/foo",
             '{"hello":"world"}',
             params: {},
             authorization: 'Basic OnNvbWUtYXBwLXRva2Vu',
@@ -36,7 +36,7 @@ describe Charging::Http do
       context 'with body as string' do
         it 'should use RestClient.post with the supplied params and common options' do
           RestClient.should_receive(method).with(
-            'https://charging.financeconnect.com.br/foo',
+            "#{configuration.url}/foo",
             '{"hello":"world"}',
             params: {},
             authorization: 'Basic OnNvbWUtYXBwLXRva2Vu',
@@ -55,7 +55,7 @@ describe Charging::Http do
     %w[get delete].each do |method|
       it "should use RestClient.#{method} with the supplied params and common options" do
         RestClient.should_receive(method).with(
-          'https://charging.financeconnect.com.br/foo',
+          "#{configuration.url}/foo",
           params: {spam: 'eggs'},
           authorization: 'Basic OnNvbWUtYXBwLXRva2Vu',
           content_type: :json,
@@ -112,7 +112,7 @@ describe Charging::Http do
   end
 
   specify('.charging_path') do
-    expect(described_class.charging_path('/path')).to eql 'https://charging.financeconnect.com.br/path'
+    expect(described_class.charging_path('/path')).to eql "#{configuration.url}/path"
   end
 
   specify('.common_params') do
