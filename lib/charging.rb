@@ -9,6 +9,7 @@ require 'charging/configuration'
 require 'charging/http'
 
 require 'charging/service_account'
+require 'charging/domain'
 
 module Charging
   def self.configuration
