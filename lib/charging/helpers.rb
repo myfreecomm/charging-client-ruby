@@ -32,5 +32,9 @@ module Charging
 
       raise ArgumentError, errors.join(', ') if errors.any?
     end
+
+    def filter_keys(hash, keys)
+      Hash[hash.find_all {|k,v| keys.include?(k) }]
+    end
   end
 end

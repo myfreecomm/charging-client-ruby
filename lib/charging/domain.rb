@@ -6,7 +6,7 @@ module Charging
     DEFAULT_LIMIT = 10
 
     ATTRIBUTES = [ :supplier_name, :address, :city_state, :zipcode,
-      :national_identifier, :description, :uuid, :etag ]
+      :national_identifier, :description, :uuid, :etag, :uri, :token ]
 
     attr_accessor *ATTRIBUTES, :account
     attr_reader :last_response
@@ -18,7 +18,7 @@ module Charging
     end
 
     def persisted?
-      !!(uuid && etag)
+      !!(uuid && etag && uri && token)
     end
 
     def self.find_all(account, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT)
@@ -29,10 +29,17 @@ module Charging
     end
 
     def self.load_persisted_domain(attributes, response)
+      validate_attributes!(attributes)
       Domain.new(attributes, response)
     end
 
     private
+
+    def self.validate_attributes!(attributes)
+      keys = attributes.keys.map(&:to_sym)
+      diff = keys - ATTRIBUTES
+      raise ArgumentError, "Invalid attributes for domain: #{attributes.inspect}" if diff.any?
+    end
 
     def self.get_account_domains(account, page, limit)
       Http.get("/account/domains/?page=#{page}&limit=#{limit}", account.application_token)
@@ -45,19 +52,15 @@ module Charging
     end
   end
 
-  class DomainCollection
-    extend Forwardable
-
-    def_delegators :@data, :size, :each, :first, :last, :each_with_index, :[]
-
+  class DomainCollection < SimpleDelegator
     attr_reader :last_response, :account
 
     def initialize(account, response)
-      Helpers.required_arguments!('service account' => account)
+      Helpers.required_arguments!('service account' => account, 'response' => response)
 
       @account = account
       @last_response = response
-      @data = load_data_with_response!
+      super(load_data_with_response!)
     end
 
     def load_data_with_response!

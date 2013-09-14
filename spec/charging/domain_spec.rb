@@ -6,28 +6,26 @@ describe Charging::Domain, :vcr do
   context 'for new domain' do
     let(:response_mock) { double(:response) }
 
-      subject do
+    subject do
       described_class.new({
-        supplier_name: 'ACME Inc',
-        address: '123, Anonymous Stree',
-        city_state: 'Neverland',
-        zipcode: '12345-678',
-        national_identifier: '76.169.284/0001-06',
-        description: 'Here is a description of ACME Inc'
+        supplier_name: 'supplier_name data',
+        address: 'address data',
+        city_state: 'city_state data',
+        zipcode: 'zipcode data',
+        national_identifier: 'national_identifier data',
+        description: 'description data',
       }, response_mock)
     end
 
-    its(:supplier_name) { should eq 'ACME Inc' }
-    its(:address) { should eq '123, Anonymous Stree' }
-    its(:city_state) { should eq  'Neverland' }
-    its(:zipcode) { should eq  '12345-678' }
-    its(:national_identifier) { should eq '76.169.284/0001-06' }
-    its(:description) { should eq  'Here is a description of ACME Inc' }
+    %w[supplier_name address city_state zipcode national_identifier description].each do |attr|
+      its(attr) { should eq "#{attr} data"}
+    end
 
-    its(:uuid) { should be_nil }
-    its(:etag) { should be_nil }
-    its(:persisted?) { should be_false }
+    %w[uri uuid etag token].each { |attr| its(attr) { should be_nil } }
+
     its(:last_response) { should eq response_mock }
+
+    its(:persisted?) { should be_false }
   end
 
   describe '.find_all' do
@@ -67,6 +65,10 @@ describe Charging::Domain, :vcr do
 
         it 'should contain uuid' do
           expect(domain.uuid).to eq '154932d8-66b8-4e6b-82f5-ebb1d32fe85d'
+        end
+
+        it 'should contain uri' do
+          expect(domain.uri).to eq 'http://sandbox.charging.financeconnect.com.br/account/domains/154932d8-66b8-4e6b-82f5-ebb1d32fe85d/'
         end
       end
     end
