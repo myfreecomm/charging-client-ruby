@@ -20,8 +20,14 @@ describe Charging::DomainCollection do
   context 'with not success response' do
     let(:response_not_found) { double(:response_not_found, code: 404) }
 
+    let!(:result) { described_class.new(account_mock, response_not_found) }
+
     it 'should have empty content' do
-      expect(described_class.new(account_mock, response_not_found)).to be_empty
+      expect(result).to be_empty
+    end
+
+    it 'should have last response' do
+      expect(result.last_response).to eq response_not_found
     end
   end
 
@@ -30,8 +36,14 @@ describe Charging::DomainCollection do
       double(code: 200, body: '[]')
     end
 
+    let!(:result) { described_class.new(account_mock, response_success) }
+
     it 'should have empty content' do
-      expect(described_class.new(account_mock, response_success)).to be_empty
+      expect(result).to be_empty
+    end
+
+    it 'should have last response' do
+      expect(result.last_response).to eq response_success
     end
   end
 
@@ -58,6 +70,10 @@ describe Charging::DomainCollection do
 
     it 'should convert into an array of domain' do
       expect(result.size).to eq 1
+    end
+
+    it 'should have last response' do
+      expect(result.last_response).to eq response_success
     end
 
     it 'should contain a domain' do
