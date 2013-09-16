@@ -44,6 +44,11 @@ describe Charging::Domain, :vcr do
         end
       end
 
+      it 'should result be a domain collection instance' do
+        expect(result).to be_an_instance_of(Charging::DomainCollection)
+
+      end
+
       it 'should contain only one domain' do
         expect(result.size).to eq 1
       end
