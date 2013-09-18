@@ -15,6 +15,7 @@ module Charging
       Helpers.load_variables(self, ATTRIBUTES, attributes)
 
       @last_response = response
+      @account = nil
     end
 
     def persisted?

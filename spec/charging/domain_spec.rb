@@ -169,7 +169,7 @@ describe Charging::Domain, :vcr do
       its(:uuid) { should eq uuid }
       its(:etag) { should eq 'e11877e49b4ac65b4b8d96c16012a20254312e74' }
       its(:token) { should eq '74QaWW3uSWKPPJVsBgBR6w==' }
-      its(:account) { pending; should eq account }
+      its(:account) { should be_nil }
     end
   end
 end
