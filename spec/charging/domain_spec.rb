@@ -6,7 +6,7 @@ describe Charging::Domain, :vcr do
   let(:account) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
   let(:uuid) { '154932d8-66b8-4e6b-82f5-ebb1d32fe85d' }
 
-  context 'for new domain' do
+  context 'for new domain instance' do
     let(:response_mock) { double(:response) }
 
     subject do
@@ -100,7 +100,20 @@ describe Charging::Domain, :vcr do
         end
       end
 
-      xit 'should instanciate a domain' do
+      it 'should raise if not response to success (200)' do
+        response_mock = double('AcceptedResponse', code: 202, to_s: 'AcceptedResponse')
+
+        described_class
+          .should_receive(:get_account_domain)
+          .with(account, uuid)
+          .and_return(response_mock)
+
+        expect {
+          described_class.find_by_uuid(account, uuid)
+        }.to raise_error Charging::Http::LastResponseError, 'AcceptedResponse'
+      end
+
+      it 'should instanciate a domain' do
         expect(result).to be_an_instance_of(Charging::Domain)
       end
     end

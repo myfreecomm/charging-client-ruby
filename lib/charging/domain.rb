@@ -33,7 +33,9 @@ module Charging
 
       response = get_account_domain(account, uuid)
 
+      raise Http::LastResponseError.new(response) if response.code != 200
 
+      load_persisted_domain(MultiJson.decode(response.body), response, account)
     rescue ::RestClient::Exception => exception
       raise Http::LastResponseError.new(exception.response)
     end
