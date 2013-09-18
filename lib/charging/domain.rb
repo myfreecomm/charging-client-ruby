@@ -41,6 +41,18 @@ module Charging
       raise Http::LastResponseError.new(exception.response)
     end
 
+    def self.find_by_token(token)
+      Helpers.required_arguments!('token' => token)
+
+      response = get_domain(token)
+
+      raise Http::LastResponseError.new(response) if response.code != 200
+
+      load_persisted_domain(MultiJson.decode(response.body), response)
+    rescue ::RestClient::Exception => exception
+      raise Http::LastResponseError.new(exception.response)
+    end
+
     def self.load_persisted_domain(attributes, response, account = nil)
       validate_attributes!(attributes)
       domain = Domain.new(attributes, response)
@@ -49,6 +61,10 @@ module Charging
     end
 
     private
+
+    def self.get_domain(token)
+      Http.get('/domain/', token)
+    end
 
     def self.get_account_domain(account, uuid)
       Http.get("/account/domains/#{uuid}/", account.application_token)

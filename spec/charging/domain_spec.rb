@@ -136,6 +136,40 @@ describe Charging::Domain, :vcr do
   end
 
   describe '.find_by_token' do
+    let(:domain_token) { '74QaWW3uSWKPPJVsBgBR6w==' }
 
+    it 'should require a token' do
+      expected_error = [ArgumentError, 'token required']
+
+      expect { described_class.find_by_token(nil) }.to raise_error(*expected_error)
+    end
+
+    it 'should raise for invalid uuid' do
+      VCR.use_cassette('domain by token unauthorized') do
+        expect { described_class.find_by_token('invalid-token') }.to raise_error Charging::Http::LastResponseError
+      end
+    end
+
+    context 'for a valid domain token' do
+      subject do
+        VCR.use_cassette('finding a domain by token') do
+          described_class.find_by_token(domain_token)
+        end
+      end
+
+      it 'should instanciate a domain' do
+        expect(subject).to be_an_instance_of(Charging::Domain)
+      end
+
+      it 'should be a persisted instance' do
+        expect(subject).to be_persisted
+      end
+
+      its(:uri) { should eq 'http://sandbox.charging.financeconnect.com.br/account/domains/154932d8-66b8-4e6b-82f5-ebb1d32fe85d/' }
+      its(:uuid) { should eq uuid }
+      its(:etag) { should eq 'e11877e49b4ac65b4b8d96c16012a20254312e74' }
+      its(:token) { should eq '74QaWW3uSWKPPJVsBgBR6w==' }
+      its(:account) { pending; should eq account }
+    end
   end
 end
