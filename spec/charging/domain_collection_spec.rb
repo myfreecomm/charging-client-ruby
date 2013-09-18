@@ -81,5 +81,9 @@ describe Charging::DomainCollection do
 
       expect(domain).to be_an_instance_of(Charging::Domain)
     end
+
+    it 'should load current account for domain instance' do
+      expect(result.first.account).to eq account_mock
+    end
   end
 end

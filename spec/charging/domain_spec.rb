@@ -3,6 +3,9 @@
 require 'spec_helper'
 
 describe Charging::Domain, :vcr do
+  let(:account) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
+  let(:uuid) { '154932d8-66b8-4e6b-82f5-ebb1d32fe85d' }
+
   context 'for new domain' do
     let(:response_mock) { double(:response) }
 
@@ -36,8 +39,6 @@ describe Charging::Domain, :vcr do
     end
 
     context 'for an account' do
-      let(:account) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
-
       let(:result) do
         VCR.use_cassette('list available domains') do
           described_class.find_all(account)
@@ -69,13 +70,40 @@ describe Charging::Domain, :vcr do
         end
 
         it 'should contain uuid' do
-          expect(domain.uuid).to eq '154932d8-66b8-4e6b-82f5-ebb1d32fe85d'
+          expect(domain.uuid).to eq uuid
         end
 
         it 'should contain uri' do
-          expect(domain.uri).to eq 'http://sandbox.charging.financeconnect.com.br/account/domains/154932d8-66b8-4e6b-82f5-ebb1d32fe85d/'
+          expect(domain.uri).to eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/"
         end
       end
     end
+  end
+
+  describe '.find_by_uuid' do
+    it 'should require an account' do
+      expected_error = [ArgumentError, 'service account required']
+
+      expect { described_class.find_by_uuid(nil, '') }.to raise_error(*expected_error)
+    end
+
+    it 'should raise for invalid uuid' do
+      VCR.use_cassette('domain not found') do
+        expect { described_class.find_by_uuid(account, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
+      end
+    end
+
+    context 'for a valid uuid' do
+      let(:result) do
+        VCR.use_cassette('finding a domain via account') do
+          described_class.find_by_uuid(account, uuid)
+        end
+      end
+
+      xit 'should instanciate a domain' do
+        expect(result).to be_an_instance_of(Charging::Domain)
+      end
+    end
+
   end
 end

@@ -62,6 +62,38 @@ TODO
     exception.last_response.code # 401
   end
 
+  # GET /account/
+  account = Charging::Account.find('some-appplication-token')
+  account.name # 'Your App Name on Charging'
+
+  # POST /account/domains/
+  new_domain = Charging::Domain.create!(account, attributes)
+
+  # GET /account/domains/:uuid/
+  domain = Charging::Domain.find_by_uuid(account, 'uuid')
+
+  # PATH /account/domains/:uuid/ {'address' : 'New Address'}
+  domain.update_attributes! address: 'New Address'
+
+  domain.city_state = 'City'
+
+  # PUT /account/domains/:uuid/ {address: 'New Address', city_state' : 'City', ...}
+  domain.save!
+
+  # DELETE /account/domains/:uuid/
+  domain.destroy!
+
+  # GET /domain/
+  domain = Charging::Domain.find_by_token('domain-token')
+
+  # PATCH /domain/ {'address' : 'Another New Address'}
+  domain.update_attributes! address: 'Another New Address'
+
+  domain.city_state = 'New City'
+
+  # PUT /domain/ {'address' : 'Another New Address', 'city_state' : 'New City', ...}
+  domain.save!
+
 == Contributing
 
 1. Fork it

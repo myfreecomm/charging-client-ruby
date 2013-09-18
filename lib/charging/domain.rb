@@ -28,12 +28,28 @@ module Charging
       DomainCollection.new(account, response)
     end
 
-    def self.load_persisted_domain(attributes, response)
+    def self.find_by_uuid(account, uuid)
+      Helpers.required_arguments!('service account' => account)
+
+      response = get_account_domain(account, uuid)
+
+
+    rescue ::RestClient::Exception => exception
+      raise Http::LastResponseError.new(exception.response)
+    end
+
+    def self.load_persisted_domain(attributes, response, account = nil)
       validate_attributes!(attributes)
-      Domain.new(attributes, response)
+      domain = Domain.new(attributes, response)
+      domain.account = account if account
+      domain
     end
 
     private
+
+    def self.get_account_domain(account, uuid)
+      Http.get("/account/domains/#{uuid}/", account.application_token)
+    end
 
     def self.validate_attributes!(attributes)
       keys = attributes.keys.map(&:to_sym)
@@ -45,7 +61,7 @@ module Charging
       Http.get("/account/domains/?page=#{page}&limit=#{limit}", account.application_token)
     end
 
-    def self.create_domiain_collection_for(response)
+    def self.create_domain_collection_for(response)
       data = response.code === 200 ? MultiJson.decode(response.body) : []
 
       DomainCollection.new(data, response)
@@ -71,7 +87,7 @@ module Charging
     end
 
     def load_domain(account, attributes)
-      Domain.load_persisted_domain(attributes, last_response)
+      Domain.load_persisted_domain(attributes, last_response, account)
     end
   end
 end
