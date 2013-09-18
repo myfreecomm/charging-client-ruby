@@ -15,7 +15,7 @@ module Charging
     attr_reader :last_response
 
     # Initializes a domain instance
-    def initialize(attributes, response)
+    def initialize(attributes, response = nil)
       Helpers.load_variables(self, ATTRIBUTES, attributes)
 
       @last_response = response

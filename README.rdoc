@@ -49,6 +49,8 @@ TODO
 
 === Examples
 
+  require 'charging'
+
   # GET /account/
   account = Charging::Account.find_by_token('some-appplication-token')
 
@@ -64,8 +66,15 @@ TODO
     exception.last_response.code # 401
   end
 
-  # POST /account/domains/
-  new_domain = Charging::Domain.create!(account, attributes)
+  # GET /account/domains/?page=1&limit=10
+  domains = Charging::Domain.find_all(account)
+
+  new_domain = Charging::Domain.new(attributes)
+
+  # POST /account/domains/ {attributes : here, ...}
+  # and GET /account/domains/:uuid if created
+  new_domain.create!
+
 
   # GET /account/domains/:uuid/
   domain = Charging::Domain.find_by_uuid(account, 'uuid')
@@ -76,10 +85,11 @@ TODO
   domain.city_state = 'City'
 
   # PUT /account/domains/:uuid/ {address: 'New Address', city_state' : 'City', ...}
-  domain.save!
+  domain.update!
 
   # DELETE /account/domains/:uuid/
   domain.destroy!
+
 
   # GET /domain/
   domain = Charging::Domain.find_by_token('domain-token')
@@ -90,7 +100,9 @@ TODO
   domain.city_state = 'New City'
 
   # PUT /domain/ {'address' : 'Another New Address', 'city_state' : 'New City', ...}
-  domain.save!
+  domain.update!
+
+  domain.destroy! # raise
 
 == Contributing
 
