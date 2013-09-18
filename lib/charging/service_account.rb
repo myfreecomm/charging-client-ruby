@@ -26,7 +26,7 @@ module Charging
     # raises Charging::Http::LastResponseError.
     #
     # API documentation: http://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#get-account-entry-point
-    def self.find(token)
+    def self.find_by_token(token)
       response = Http.get('/account/', token)
 
       raise Http::LastResponseError.new(response) if response.code != 200

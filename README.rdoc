@@ -49,22 +49,20 @@ TODO
 
 === Examples
 
-  account = Charging::Account.find('some-appplication-token')
+  # GET /account/
+  account = Charging::Account.find_by_token('some-appplication-token')
+
   account.name # 'Your App Name on Charging'
 
   account.last_response  # a success RestClient::Response instance
   account.last_response.code # 200
 
   begin
-    account = Charging::Account.find('invalid-appplication-token')
+    account = Charging::Account.find_by_token('invalid-appplication-token')
   rescue Charging::Http::LastResponseError => exception
     exception.last_response # an unauthorized RestClient::Response instance
     exception.last_response.code # 401
   end
-
-  # GET /account/
-  account = Charging::Account.find('some-appplication-token')
-  account.name # 'Your App Name on Charging'
 
   # POST /account/domains/
   new_domain = Charging::Domain.create!(account, attributes)
