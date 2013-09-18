@@ -88,7 +88,7 @@ describe Charging::Domain, :vcr do
     end
 
     it 'should raise for invalid uuid' do
-      VCR.use_cassette('domain not found') do
+      VCR.use_cassette('domain by uuid not found via account') do
         expect { described_class.find_by_uuid(account, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
       end
     end
@@ -108,7 +108,7 @@ describe Charging::Domain, :vcr do
 
     context 'for a valid uuid' do
       subject do
-        VCR.use_cassette('finding a domain via account') do
+        VCR.use_cassette('finding a domain by uuid via account') do
           described_class.find_by_uuid(account, uuid)
         end
       end
@@ -127,5 +127,9 @@ describe Charging::Domain, :vcr do
       its(:token) { should eq '74QaWW3uSWKPPJVsBgBR6w==' }
       its(:account) { should eq account }
     end
+  end
+
+  describe '.find_by_token' do
+
   end
 end

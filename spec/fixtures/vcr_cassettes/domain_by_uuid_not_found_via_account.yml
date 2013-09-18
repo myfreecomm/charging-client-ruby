@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br/account/
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br/account/domains/invalid-uuid/
     body:
       encoding: US-ASCII
       string: ''
@@ -17,23 +17,17 @@ http_interactions:
       - Charging Ruby Client v0.0.1
   response:
     status:
-      code: 200
-      message: OK
+      code: 404
+      message: Not Found
     headers:
-      Cache-Control:
-      - no-cache
       Content-Type:
-      - application/json
+      - text/html; charset=utf-8
       Date:
-      - Wed, 18 Sep 2013 18:00:15 GMT
-      Expires:
-      - Wed, 18 Sep 2013 18:00:14 GMT
-      Link:
-      - <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains
+      - Wed, 18 Sep 2013 18:00:13 GMT
       Server:
       - nginx/1.1.19
       Content-Length:
-      - '209'
+      - '233'
       X-Cache:
       - MISS from firewall.corp.myfreecomm.com.br
       X-Cache-Lookup:
@@ -44,8 +38,11 @@ http_interactions:
       - close
     body:
       encoding: UTF-8
-      string: '{"plan": "full", "uri": "http://sandbox.app.passaporteweb.com.br/organizations/api/accounts/3a0676fb-6639-466a-ac35-9ea7c5f67386/",
-        "uuid": "3a0676fb-6639-466a-ac35-9ea7c5f67386", "name": "Teste cliente Ruby"}'
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+        <title>404 Not Found</title>
+        <h1>Not Found</h1>
+        <p>The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again.</p>
     http_version: 
-  recorded_at: Wed, 18 Sep 2013 18:00:15 GMT
+  recorded_at: Wed, 18 Sep 2013 18:00:13 GMT
 recorded_with: VCR 2.5.0
