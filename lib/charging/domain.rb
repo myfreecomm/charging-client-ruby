@@ -25,11 +25,12 @@ module Charging
       Helpers.required_arguments!('service account' => account)
 
       response = get_account_domains(account, page, limit)
+
       DomainCollection.new(account, response)
     end
 
     def self.find_by_uuid(account, uuid)
-      Helpers.required_arguments!('service account' => account)
+      Helpers.required_arguments!('service account' => account, uuid: uuid)
 
       response = get_account_domain(account, uuid)
 

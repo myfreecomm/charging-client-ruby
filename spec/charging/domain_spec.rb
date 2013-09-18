@@ -87,6 +87,12 @@ describe Charging::Domain, :vcr do
       expect { described_class.find_by_uuid(nil, '') }.to raise_error(*expected_error)
     end
 
+    it 'should require an uuid' do
+      expected_error = [ArgumentError, 'uuid required']
+
+      expect { described_class.find_by_uuid(account, nil) }.to raise_error(*expected_error)
+    end
+
     it 'should raise for invalid uuid' do
       VCR.use_cassette('domain by uuid not found via account') do
         expect { described_class.find_by_uuid(account, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
