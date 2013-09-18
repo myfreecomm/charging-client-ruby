@@ -172,4 +172,5 @@ describe Charging::Domain, :vcr do
       its(:account) { should be_nil }
     end
   end
+
 end

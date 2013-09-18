@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 module Charging
+  # Represents a Charging domain.
   class Domain
     DEFAULT_PAGE = 1
     DEFAULT_LIMIT = 10
@@ -9,8 +10,11 @@ module Charging
       :national_identifier, :description, :uuid, :etag, :uri, :token ]
 
     attr_accessor *ATTRIBUTES, :account
+
+    # Responds the last http response from the API.
     attr_reader :last_response
 
+    # Initializes a domain instance
     def initialize(attributes, response)
       Helpers.load_variables(self, ATTRIBUTES, attributes)
 
@@ -18,10 +22,20 @@ module Charging
       @account = nil
     end
 
+    # Returns true if the Domain exists on Charging service.
     def persisted?
       !!(uuid && etag && uri && token)
     end
 
+    # Finds all domains for a specified account. It requites an ServiceAccount
+    # instance, and you should pass <tt>page</tt> and/or <tt>limit</tt> to
+    # apply on find.
+    #
+    # Returns a DomainCollection (Array-like) of Domain
+    #
+    # API method: <tt>GET /account/domains/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#get-account-domains-limit-limit-page-page
     def self.find_all(account, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT)
       Helpers.required_arguments!('service account' => account)
 
@@ -30,6 +44,15 @@ module Charging
       DomainCollection.new(account, response)
     end
 
+    # Finds a domain by your uuid. It requites an ServiceAccount instance and a
+    # String <tt>uuid</tt>.
+    #
+    # Returns a Domain instance or raises a Http::LastResponseError if something
+    # went wrong, like unauthorized request, not found.
+    #
+    # API method: <tt>GET /account/domains/:uuid</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#get-account-domains-uuid
     def self.find_by_uuid(account, uuid)
       Helpers.required_arguments!('service account' => account, uuid: uuid)
 
@@ -42,6 +65,14 @@ module Charging
       raise Http::LastResponseError.new(exception.response)
     end
 
+    # Finds a domain by its authentication token. It requites an <tt>token</tt>.
+    #
+    # Returns a Domain instance or raises a Http::LastResponseError if something
+    # went wrong, like unauthorized request, not found.
+    #
+    # API method: <tt>GET /domain/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#get-subuser-domain
     def self.find_by_token(token)
       Helpers.required_arguments!('token' => token)
 
@@ -54,7 +85,7 @@ module Charging
       raise Http::LastResponseError.new(exception.response)
     end
 
-    def self.load_persisted_domain(attributes, response, account = nil)
+    def self.load_persisted_domain(attributes, response, account = nil) # :nodoc:
       validate_attributes!(attributes)
       domain = Domain.new(attributes, response)
       domain.account = account if account
@@ -63,35 +94,42 @@ module Charging
 
     private
 
-    def self.get_domain(token)
+    def self.get_domain(token) # :nodoc:
       Http.get('/domain/', token)
     end
 
-    def self.get_account_domain(account, uuid)
+    def self.get_account_domain(account, uuid) # :nodoc:
       Http.get("/account/domains/#{uuid}/", account.application_token)
     end
 
-    def self.validate_attributes!(attributes)
+    def self.validate_attributes!(attributes) # :nodoc:
       keys = attributes.keys.map(&:to_sym)
       diff = keys - ATTRIBUTES
       raise ArgumentError, "Invalid attributes for domain: #{attributes.inspect}" if diff.any?
     end
 
-    def self.get_account_domains(account, page, limit)
+    def self.get_account_domains(account, page, limit) # :nodoc:
       Http.get("/account/domains/?page=#{page}&limit=#{limit}", account.application_token)
     end
 
-    def self.create_domain_collection_for(response)
+    def self.create_domain_collection_for(response) # :nodoc:
       data = response.code === 200 ? MultiJson.decode(response.body) : []
 
       DomainCollection.new(data, response)
     end
   end
 
+  # Represents a domain collection result for a <tt>Domain.find_all</tt>. It is
+  # a delegator for an array of Domain.
   class DomainCollection < SimpleDelegator
-    attr_reader :last_response, :account
 
-    def initialize(account, response)
+    # Responds the last http response from the API.
+    attr_reader :last_response
+
+    # Responds the current ServiceAccount instance.
+    attr_reader :account
+
+    def initialize(account, response) # :nodoc:
       Helpers.required_arguments!('service account' => account, 'response' => response)
 
       @account = account
@@ -99,14 +137,14 @@ module Charging
       super(load_data_with_response!)
     end
 
-    def load_data_with_response!
+    def load_data_with_response! # :nodoc:
       return [] if last_response.code != 200
 
       raw_domains = MultiJson.decode(last_response.body)
       raw_domains.map { |raw_domain| load_domain(account, raw_domain) }
     end
 
-    def load_domain(account, attributes)
+    def load_domain(account, attributes) # :nodoc:
       Domain.load_persisted_domain(attributes, last_response, account)
     end
   end

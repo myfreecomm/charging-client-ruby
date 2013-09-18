@@ -7,9 +7,13 @@ module Charging
 
     attr_accessor *ATTRIBUTES
 
-    # Responds the last http response of the API.
-    attr_reader :last_response, :application_token
+    # Responds the last http response from the API.
+    attr_reader :last_response
 
+    # Responds the current application token
+    attr_reader :application_token
+
+    # Initializes a service account instance, to represent a charging account
     def initialize(attributes, response, token) # :nodoc:
       Helpers.load_variables(self, ATTRIBUTES, attributes)
 
