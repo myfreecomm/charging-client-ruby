@@ -12,6 +12,11 @@ require 'charging'
 require 'vcr'
 require 'pry'
 
+# Load all support files
+Dir[File.join(File.dirname(__FILE__), 'support/*.rb')].each do |file|
+  require file
+end
+
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
   c.hook_into :webmock

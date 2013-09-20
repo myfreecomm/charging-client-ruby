@@ -38,6 +38,10 @@ module Charging
       request_with_body(:patch, path, body, params, token)
     end
 
+    def get_follow(uri, token)
+      RestClient.send(:get, uri, common_params(token))
+    end
+
     def basic_credential_for(user, password = nil)
       credential_for = user.to_s
       credential_for << ":#{password}" unless password.nil?

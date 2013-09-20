@@ -6,25 +6,66 @@ module Charging
     DEFAULT_PAGE = 1
     DEFAULT_LIMIT = 10
 
-    ATTRIBUTES = [ :supplier_name, :address, :city_state, :zipcode,
-      :national_identifier, :description, :uuid, :etag, :uri, :token ]
+    READ_ONLY_ATTRIBUTES = %i[uuid etag uri token]
+    ATTRIBUTES = %i[supplier_name address city_state zipcode national_identifier description]
 
-    attr_accessor *ATTRIBUTES, :account
+    attr_accessor *ATTRIBUTES
+    attr_reader *READ_ONLY_ATTRIBUTES
 
     # Responds the last http response from the API.
-    attr_reader :last_response
+    attr_reader :last_response, :account, :errors
 
     # Initializes a domain instance
-    def initialize(attributes, response = nil)
-      Helpers.load_variables(self, ATTRIBUTES, attributes)
+    def initialize(attributes, account, response = nil)
+      Helpers.load_variables(self, ATTRIBUTES + READ_ONLY_ATTRIBUTES, attributes)
 
       @last_response = response
-      @account = nil
+      @account = account
+      @errors = []
     end
 
     # Returns true if the Domain exists on Charging service.
     def persisted?
       !!(uuid && etag && uri && token)
+    end
+
+    # Returns a hash with attributes
+    def attributes
+      Helpers.hashify(self, ATTRIBUTES)
+    end
+
+    # Creates current domain at API. This method will POST to API
+    #
+    # API method: <tt>POST /account/domains</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#post-account-domains
+    def create!
+      @errors = []
+      raise 'can not create without a service account' if invalid_account?
+
+      @last_response = Domain.post_account_domains(account.application_token, attributes)
+
+      raise Http::LastResponseError.new(last_response) if last_response.code != 201
+
+      reload_attributes_after_create!
+    rescue ::RestClient::Exception => exception
+      @last_response = exception.response
+
+      raise Http::LastResponseError.new(last_response)
+    ensure
+      @errors = [$ERROR_INFO.message] if $ERROR_INFO
+    end
+
+    def reload_attributes_after_create!
+      response = Http.get_follow(last_response.headers[:location], account.application_token)
+
+      new_domain = Domain.load_persisted_domain(MultiJson.decode(response.body), response, account)
+
+      READ_ONLY_ATTRIBUTES.each do |attribute|
+        instance_variable_set "@#{attribute}", new_domain.send(attribute)
+      end
+
+      self
     end
 
     # Finds all domains for a specified account. It requites an ServiceAccount
@@ -87,12 +128,22 @@ module Charging
 
     def self.load_persisted_domain(attributes, response, account = nil) # :nodoc:
       validate_attributes!(attributes)
-      domain = Domain.new(attributes, response)
-      domain.account = account if account
-      domain
+      Domain.new(attributes, account, response)
     end
 
     private
+
+    def load_errors(*error_messages)
+      @errors = error_messages.flatten
+    end
+
+    def invalid_account?
+      account.nil?
+    end
+
+    def self.post_account_domains(token, attributes)
+      Http.post('/account/domains/', token, MultiJson.encode(attributes))
+    end
 
     def self.get_domain(token) # :nodoc:
       Http.get('/domain/', token)
@@ -104,7 +155,7 @@ module Charging
 
     def self.validate_attributes!(attributes) # :nodoc:
       keys = attributes.keys.map(&:to_sym)
-      diff = keys - ATTRIBUTES
+      diff = keys - (ATTRIBUTES + READ_ONLY_ATTRIBUTES)
       raise ArgumentError, "Invalid attributes for domain: #{attributes.inspect}" if diff.any?
     end
 

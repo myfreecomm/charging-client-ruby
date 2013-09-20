@@ -18,5 +18,9 @@ module Charging
 
       raise ArgumentError, errors.join(', ') if errors.any?
     end
+
+    def hashify(object, attributes)
+      Hash[*attributes.map {|attribute| [attribute, object.send(attribute)] }.flatten]
+    end
   end
 end

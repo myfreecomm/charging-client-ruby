@@ -23,7 +23,7 @@ http_interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 18 Sep 2013 18:00:13 GMT
+      - Fri, 20 Sep 2013 20:25:51 GMT
       Server:
       - nginx/1.1.19
       Content-Length:
@@ -44,5 +44,5 @@ http_interactions:
         <h1>Not Found</h1>
         <p>The requested URL was not found on the server.  If you entered the URL manually please check your spelling and try again.</p>
     http_version: 
-  recorded_at: Wed, 18 Sep 2013 18:00:13 GMT
+  recorded_at: Fri, 20 Sep 2013 20:25:50 GMT
 recorded_with: VCR 2.5.0

@@ -1,5 +1,8 @@
 # encoding: utf-8
 
+# http://www.ruby-doc.org/stdlib-2.0.0/libdoc/English/rdoc/English.html
+require 'English'
+
 require 'rest_client'
 require 'multi_json'
 

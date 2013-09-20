@@ -1,11 +1,14 @@
 ---
 http_interactions:
 - request:
-    method: get
-    uri: http://:invalid-token@sandbox.charging.financeconnect.com.br/account/
+    method: post
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br/account/domains/
     body:
-      encoding: US-ASCII
-      string: ''
+      encoding: UTF-8
+      string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"73.331.840/0001-00","description":"The
+        mission of Greenwood School District 50 is to educate all students to become
+        responsible and productive citizens."}'
     headers:
       Accept:
       - application/json
@@ -15,19 +18,21 @@ http_interactions:
       - application/json
       User-Agent:
       - Charging Ruby Client v0.0.1
+      Content-Length:
+      - '303'
   response:
     status:
-      code: 401
-      message: Unauthorized
+      code: 409
+      message: Conflict
     headers:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Fri, 20 Sep 2013 20:25:54 GMT
+      - Fri, 20 Sep 2013 20:25:53 GMT
       Server:
       - nginx/1.1.19
       Content-Length:
-      - '339'
+      - '144'
       X-Cache:
       - MISS from firewall.corp.myfreecomm.com.br
       X-Cache-Lookup:
@@ -40,9 +45,9 @@ http_interactions:
       encoding: UTF-8
       string: |
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-        <title>401 Unauthorized</title>
-        <h1>Unauthorized</h1>
-        <p>The server could not verify that you are authorized to access the URL requested.  You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required.</p>
+        <title>409 Conflict</title>
+        <h1>Conflict</h1>
+        <p>national_identifier already in use</p>
     http_version: 
-  recorded_at: Fri, 20 Sep 2013 20:25:53 GMT
+  recorded_at: Fri, 20 Sep 2013 20:25:52 GMT
 recorded_with: VCR 2.5.0

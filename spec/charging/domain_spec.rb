@@ -4,7 +4,8 @@ require 'spec_helper'
 
 describe Charging::Domain, :vcr do
   let(:account) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
-  let(:uuid) { '154932d8-66b8-4e6b-82f5-ebb1d32fe85d' }
+  let(:uuid) { '335ca81f-626f-44e2-9b72-da98333166b3' }
+  let!(:national_identifier) { Faker.cnpj_generator }
 
   context 'for new domain instance' do
     let(:response_mock) { double(:response) }
@@ -17,7 +18,7 @@ describe Charging::Domain, :vcr do
         zipcode: 'zipcode data',
         national_identifier: 'national_identifier data',
         description: 'description data',
-      }, response_mock)
+      }, account, response_mock)
     end
 
     %w[supplier_name address city_state zipcode national_identifier description].each do |attr|
@@ -29,6 +30,17 @@ describe Charging::Domain, :vcr do
     its(:last_response) { should eq response_mock }
 
     its(:persisted?) { should be_false }
+
+    its(:account) { should eq account }
+
+    its(:attributes) { should eq({
+      address: 'address data',
+      city_state: 'city_state data',
+      description: 'description data',
+      national_identifier: 'national_identifier data',
+      supplier_name: 'supplier_name data',
+      zipcode: 'zipcode data'
+    }) }
   end
 
   describe '.find_all' do
@@ -66,7 +78,7 @@ describe Charging::Domain, :vcr do
         end
 
         it 'should contain etag' do
-          expect(domain.etag).to eq 'e11877e49b4ac65b4b8d96c16012a20254312e74'
+          expect(domain.etag).to eq '7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee'
         end
 
         it 'should contain uuid' do
@@ -127,16 +139,16 @@ describe Charging::Domain, :vcr do
         expect(subject).to be_persisted
       end
 
-      its(:uri) { should eq 'http://sandbox.charging.financeconnect.com.br/account/domains/154932d8-66b8-4e6b-82f5-ebb1d32fe85d/' }
+      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq 'e11877e49b4ac65b4b8d96c16012a20254312e74' }
-      its(:token) { should eq '74QaWW3uSWKPPJVsBgBR6w==' }
+      its(:etag) { should eq '7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee' }
+      its(:token) { should eq '/VWsCyHHRrOF+pKv0Pbyfg==' }
       its(:account) { should eq account }
     end
   end
 
   describe '.find_by_token' do
-    let(:domain_token) { '74QaWW3uSWKPPJVsBgBR6w==' }
+    let(:domain_token) { '/VWsCyHHRrOF+pKv0Pbyfg==' }
 
     it 'should require a token' do
       expected_error = [ArgumentError, 'token required']
@@ -165,12 +177,72 @@ describe Charging::Domain, :vcr do
         expect(subject).to be_persisted
       end
 
-      its(:uri) { should eq 'http://sandbox.charging.financeconnect.com.br/account/domains/154932d8-66b8-4e6b-82f5-ebb1d32fe85d/' }
+      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq 'e11877e49b4ac65b4b8d96c16012a20254312e74' }
-      its(:token) { should eq '74QaWW3uSWKPPJVsBgBR6w==' }
+      its(:etag) { should eq '7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee' }
+      its(:token) { should eq '/VWsCyHHRrOF+pKv0Pbyfg==' }
       its(:account) { should be_nil }
     end
   end
 
+  describe '#create!' do
+    let(:attributes) do
+      {
+        supplier_name: 'Springfield Elemenary School',
+        address: '1608 Florida Avenue',
+        city_state: 'Greenwood/SC',
+        zipcode: '29646',
+        national_identifier: national_identifier,
+        description: 'The mission of Greenwood School District 50 is to educate all students to become responsible and productive citizens.',
+      }
+    end
+
+    it 'should require an account and load errors' do
+      invalid_domain = described_class.new(attributes, nil)
+
+      expect(invalid_domain.errors).to be_empty
+
+      expected_error = [StandardError, 'can not create without a service account']
+      expect { invalid_domain.create! }.to raise_error *expected_error
+
+      expect(invalid_domain.errors).to_not be_empty
+    end
+
+    context 'when API responds with 409 Conflict' do
+      it 'should raise Http::LastResponseError, and load errors and last response' do
+        attributes[:national_identifier] = '73.331.840/0001-00'
+        domain = described_class.new(attributes, account)
+
+        VCR.use_cassette('conflict to create a domain') do
+          expect(domain.errors).to be_empty
+          expect(domain.last_response).to be_nil
+
+          expect {
+            domain.create!
+          }.to raise_error Charging::Http::LastResponseError
+
+          expect(domain.errors).to_not be_empty
+          expect(domain.last_response.code).to eq 409
+        end
+      end
+    end
+
+    context 'when everything is OK' do
+      subject { described_class.new(attributes, account) }
+
+      before do
+        VCR.use_cassette('creating a domain') do
+          subject.create!
+        end
+      end
+
+      %i[uuid uri etag token].each do |attribute|
+        its(attribute) { should_not be_nil }
+      end
+
+      it 'should be persisted' do
+        expect(subject).to be_persisted
+      end
+    end
+  end
 end

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://:74QaWW3uSWKPPJVsBgBR6w%3D%3D@sandbox.charging.financeconnect.com.br/domain/
+    uri: http://:%2FVWsCyHHRrOF%2BpKv0Pbyfg%3D%3D@sandbox.charging.financeconnect.com.br/domain/
     body:
       encoding: US-ASCII
       string: ''
@@ -25,17 +25,17 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 18 Sep 2013 18:32:20 GMT
+      - Fri, 20 Sep 2013 20:25:52 GMT
       Etag:
-      - '"e11877e49b4ac65b4b8d96c16012a20254312e74"'
+      - '"7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee"'
       Expires:
-      - Wed, 18 Sep 2013 18:32:19 GMT
+      - Fri, 20 Sep 2013 20:25:51 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts
       Server:
       - nginx/1.1.19
       Content-Length:
-      - '528'
+      - '532'
       X-Cache:
       - MISS from firewall.corp.myfreecomm.com.br
       X-Cache-Lookup:
@@ -46,12 +46,12 @@ http_interactions:
       - close
     body:
       encoding: UTF-8
-      string: '{"uuid": "154932d8-66b8-4e6b-82f5-ebb1d32fe85d", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/154932d8-66b8-4e6b-82f5-ebb1d32fe85d/",
+      string: '{"uuid": "335ca81f-626f-44e2-9b72-da98333166b3", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/335ca81f-626f-44e2-9b72-da98333166b3/",
         "supplier_name": "Acme El\u00e9trica Ltda", "zipcode": "20211360", "city_state":
-        "Rio de Janeiro / RJ", "token": "74QaWW3uSWKPPJVsBgBR6w==", "etag": "e11877e49b4ac65b4b8d96c16012a20254312e74",
-        "national_identifier": "73331840000100", "address": "Av. Nelson Cardoso, 123
-        - Jacarepagu\u00e1", "description": "Descri\u00e7\u00e3o incr\u00edvel sobre
-        a Acme El\u00e9trica"}'
+        "Rio de Janeiro / RJ", "token": "/VWsCyHHRrOF+pKv0Pbyfg==", "etag": "7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee",
+        "national_identifier": "73.331.840/0001-00", "address": "Av. Nelson Cardoso,
+        123 - Jacarepagu\u00e1", "description": "Descri\u00e7\u00e3o incr\u00edvel
+        sobre a Acme El\u00e9trica"}'
     http_version: 
-  recorded_at: Wed, 18 Sep 2013 18:32:20 GMT
+  recorded_at: Fri, 20 Sep 2013 20:25:51 GMT
 recorded_with: VCR 2.5.0

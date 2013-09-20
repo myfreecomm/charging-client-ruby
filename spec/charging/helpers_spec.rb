@@ -31,4 +31,15 @@ describe Charging::Helpers do
       }.to_not raise_error
     end
   end
+
+  describe '.hashify' do
+    it 'should results a hash for attributes from a object' do
+      attributes = %i[name address phone email]
+      object = Struct.new(*attributes).new(*attributes)
+
+      result = described_class.hashify(object, attributes)
+
+      expect(result).to eq(name: :name, address: :address, phone: :phone, email: :email)
+    end
+  end
 end
