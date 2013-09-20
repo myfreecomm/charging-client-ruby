@@ -38,10 +38,6 @@ module Charging
       request_with_body(:patch, path, body, params, token)
     end
 
-    def get_follow(uri, token)
-      RestClient.send(:get, uri, common_params(token))
-    end
-
     def basic_credential_for(user, password = nil)
       credential_for = user.to_s
       credential_for << ":#{password}" unless password.nil?
@@ -61,17 +57,19 @@ module Charging
     end
 
     def request_with_body(method, path, body, params, token, follow = true)
+      path = charging_path(path) unless path.start_with?('http')
+
       if follow === :no_follow
         RestClient.send(
           method,
-          charging_path(path),
+          path,
           encoded_body(body),
           {params: params}.merge(common_params(token))
         )
       else
         RestClient.send(
           method,
-          charging_path(path),
+          path,
           encoded_body(body),
           {params: params}.merge(common_params(token)),
           &should_follow_redirect
@@ -80,16 +78,18 @@ module Charging
     end
 
     def request_without_body(method, path, params, token, follow = true)
+      path = charging_path(path) unless path.start_with?('http')
+
       if follow === :no_follow
         RestClient.send(
           method,
-          charging_path(path),
+          path,
           {params: params}.merge(common_params(token))
         )
       else
         RestClient.send(
           method,
-          charging_path(path),
+          path,
           {params: params}.merge(common_params(token)),
           &should_follow_redirect
         )

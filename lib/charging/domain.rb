@@ -57,7 +57,7 @@ module Charging
     end
 
     def reload_attributes_after_create!
-      response = Http.get_follow(last_response.headers[:location], account.application_token)
+      response = Http.get(last_response.headers[:location], account.application_token)
 
       new_domain = Domain.load_persisted_domain(MultiJson.decode(response.body), response, account)
 
