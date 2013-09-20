@@ -6,6 +6,17 @@ describe Charging::Domain, :vcr do
   let(:account) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
   let(:uuid) { '335ca81f-626f-44e2-9b72-da98333166b3' }
   let!(:national_identifier) { Faker.cnpj_generator }
+  let(:attributes) do
+    {
+      supplier_name: 'Springfield Elemenary School',
+      address: '1608 Florida Avenue',
+      city_state: 'Greenwood/SC',
+      zipcode: '29646',
+      national_identifier: national_identifier,
+      description: 'The mission of Greenwood School District 50 is to educate all students to become responsible and productive citizens.',
+    }
+  end
+
 
   context 'for new domain instance' do
     let(:response_mock) { double(:response) }
@@ -186,17 +197,6 @@ describe Charging::Domain, :vcr do
   end
 
   describe '#create!' do
-    let(:attributes) do
-      {
-        supplier_name: 'Springfield Elemenary School',
-        address: '1608 Florida Avenue',
-        city_state: 'Greenwood/SC',
-        zipcode: '29646',
-        national_identifier: national_identifier,
-        description: 'The mission of Greenwood School District 50 is to educate all students to become responsible and productive citizens.',
-      }
-    end
-
     it 'should require an account and load errors' do
       invalid_domain = described_class.new(attributes, nil)
 
@@ -205,7 +205,7 @@ describe Charging::Domain, :vcr do
       expected_error = [StandardError, 'can not create without a service account']
       expect { invalid_domain.create! }.to raise_error *expected_error
 
-      expect(invalid_domain.errors).to_not be_empty
+      expect(invalid_domain.errors).to eq ['can not create without a service account']
     end
 
     context 'when API responds with 409 Conflict' do
@@ -243,6 +243,49 @@ describe Charging::Domain, :vcr do
       it 'should be persisted' do
         expect(subject).to be_persisted
       end
+    end
+  end
+
+  describe '#destroy!' do
+    it 'should require an account and load errors' do
+      invalid_domain = described_class.new(attributes, nil)
+
+      expect(invalid_domain.errors).to be_empty
+
+      expected_error = [StandardError, 'can not destroy without a service account']
+      expect { invalid_domain.destroy! }.to raise_error *expected_error
+
+      expect(invalid_domain.errors).to eq ['can not destroy without a service account']
+    end
+
+    it 'should require a persisted domain' do
+      not_persisted_domain = described_class.new(attributes, account)
+
+      expect(not_persisted_domain).to_not be_persisted
+
+      expected_error = [StandardError, 'can not destroy a not persisted domain']
+
+      expect {
+        not_persisted_domain.destroy!
+      }.to raise_error *expected_error
+
+      expect(not_persisted_domain.errors).to eq ['can not destroy a not persisted domain']
+    end
+
+    xit 'should raise Http::LastResponseError for invalid request' do
+      domain = described_class.new(attributes, account).tap do |domain|
+        [:uuid, :uri, :etag, :token].each do |attribute|
+          domain.instance_variable_set "@#{attribute}", "invalid-#{attribute}"
+        end
+      end
+
+      expect(domain).to be_persisted
+
+      expect {
+        VCR.use_cassette('try delete invalid domain') do
+          domain.destroy!
+        end
+      }.to raise_error Http::LastResponseError
     end
   end
 end

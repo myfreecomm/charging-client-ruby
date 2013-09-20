@@ -41,9 +41,9 @@ module Charging
       Helpers.hashify(self, ATTRIBUTES)
     end
 
-    # Creates current domain at API. This method will POST to API
+    # Creates current domain at API.
     #
-    # API method: <tt>POST /account/domains</tt>
+    # API method: <tt>POST /account/domains/</tt>
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#post-account-domains
     def create!
@@ -59,6 +59,21 @@ module Charging
       @last_response = exception.response
 
       raise Http::LastResponseError.new(last_response)
+    ensure
+      @errors = [$ERROR_INFO.message] if $ERROR_INFO
+    end
+
+    # Destroys current domain at API.
+    #
+    # API method: <tt>DELETE /account/domains/:uuid</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#delete-account-domains-uuid
+    def destroy!
+      @errors = []
+      raise 'can not destroy without a service account' if invalid_account?
+      raise 'can not destroy a not persisted domain' unless persisted?
+
+      Domain.delete_account_domains(self)
     ensure
       @errors = [$ERROR_INFO.message] if $ERROR_INFO
     end
