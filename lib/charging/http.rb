@@ -46,9 +46,9 @@ module Charging
       "Basic #{credential}"
     end
 
-    def should_follow_redirect
+    def should_follow_redirect(follow = true)
       proc { |response, request, result, &block|
-        if [301, 302, 307].include? response.code
+        if follow && [301, 302, 307].include?(response.code)
           response.follow_redirection(request, result, &block)
         else
           response.return!(request, result, &block)
@@ -59,41 +59,24 @@ module Charging
     def request_with_body(method, path, body, params, token, follow = true)
       path = charging_path(path) unless path.start_with?('http')
 
-      if follow === :no_follow
-        RestClient.send(
-          method,
-          path,
-          encoded_body(body),
-          {params: params}.merge(common_params(token))
-        )
-      else
-        RestClient.send(
-          method,
-          path,
-          encoded_body(body),
-          {params: params}.merge(common_params(token)),
-          &should_follow_redirect
-        )
-      end
+      RestClient.send(
+        method,
+        path,
+        encoded_body(body),
+        {params: params}.merge(common_params(token)),
+        &should_follow_redirect(follow != :no_follow)
+      )
     end
 
     def request_without_body(method, path, params, token, follow = true)
       path = charging_path(path) unless path.start_with?('http')
 
-      if follow === :no_follow
-        RestClient.send(
-          method,
-          path,
-          {params: params}.merge(common_params(token))
-        )
-      else
-        RestClient.send(
-          method,
-          path,
-          {params: params}.merge(common_params(token)),
-          &should_follow_redirect
-        )
-      end
+      RestClient.send(
+        method,
+        path,
+        {params: params}.merge(common_params(token)),
+        &should_follow_redirect(follow != :no_follow)
+      )
     end
 
     def charging_path(path)
