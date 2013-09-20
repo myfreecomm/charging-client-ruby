@@ -6,8 +6,15 @@ module Charging
     DEFAULT_PAGE = 1
     DEFAULT_LIMIT = 10
 
-    READ_ONLY_ATTRIBUTES = %i[uuid etag uri token]
-    ATTRIBUTES = %i[supplier_name address city_state zipcode national_identifier description]
+    READ_ONLY_ATTRIBUTES = [:uuid, :etag, :uri, :token]
+    ATTRIBUTES = [
+      :supplier_name,
+      :address,
+      :city_state,
+      :zipcode,
+      :national_identifier,
+      :description
+    ]
 
     attr_accessor *ATTRIBUTES
     attr_reader *READ_ONLY_ATTRIBUTES
