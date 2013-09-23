@@ -29,11 +29,17 @@ module Charging
       @last_response = response
       @account = account
       @errors = []
+      @deleted = false
     end
 
     # Returns true if the Domain exists on Charging service.
     def persisted?
-      !!(uuid && etag && uri && token)
+      !!(uuid && etag && uri && token && !deleted?)
+    end
+
+    # Returns true if domains already deleted on API
+    def deleted?
+      !!@deleted
     end
 
     # Returns a hash with attributes
@@ -73,21 +79,17 @@ module Charging
       raise 'can not destroy without a service account' if invalid_account?
       raise 'can not destroy a not persisted domain' unless persisted?
 
-      Domain.delete_account_domains(self)
+      @last_response = Domain.delete_account_domains(self)
+
+      raise Http::LastResponseError.new(last_response) if last_response.code != 204
+
+      reload_attributes_after_delete!
+    rescue ::RestClient::Exception => exception
+      @last_response = exception.response
+
+      raise Http::LastResponseError.new(last_response)
     ensure
       @errors = [$ERROR_INFO.message] if $ERROR_INFO
-    end
-
-    def reload_attributes_after_create!
-      response = Http.get(last_response.headers[:location], account.application_token)
-
-      new_domain = Domain.load_persisted_domain(MultiJson.decode(response.body), response, account)
-
-      READ_ONLY_ATTRIBUTES.each do |attribute|
-        instance_variable_set "@#{attribute}", new_domain.send(attribute)
-      end
-
-      self
     end
 
     # Finds all domains for a specified account. It requites an ServiceAccount
@@ -155,12 +157,36 @@ module Charging
 
     private
 
+    def reload_attributes_after_delete!
+      @deleted = true
+      @persisted = false
+
+      self
+    end
+
+    def reload_attributes_after_create!
+      response = Http.get(last_response.headers[:location], account.application_token)
+
+      new_domain = Domain.load_persisted_domain(MultiJson.decode(response.body), response, account)
+
+      READ_ONLY_ATTRIBUTES.each do |attribute|
+        instance_variable_set "@#{attribute}", new_domain.send(attribute)
+      end
+
+      self
+    end
+
     def load_errors(*error_messages)
       @errors = error_messages.flatten
     end
 
     def invalid_account?
       account.nil?
+    end
+
+    def self.delete_account_domains(domain)
+      token = domain.account.application_token
+      Http.delete("/account/domains/#{domain.uuid}/", token, domain.etag)
     end
 
     def self.post_account_domains(token, attributes)

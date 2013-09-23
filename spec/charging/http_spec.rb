@@ -73,12 +73,12 @@ describe Charging::Http do
       Charging::Http.should_receive(:request_without_body).with(
         :delete,
         '/foo',
-        {},
+        {etag: 'etag'},
         'some-app-token',
         :no_follow
       )
 
-      described_class.delete('/foo', 'some-app-token')
+      described_class.delete('/foo', 'some-app-token', 'etag')
     end
   end
 
@@ -115,13 +115,29 @@ describe Charging::Http do
     expect(described_class.charging_path('/path')).to eql "#{configuration.url}/path"
   end
 
-  specify('.common_params') do
-    expect(described_class.common_params('token')).to eql({
-      accept: :json,
-      authorization: 'Basic OnRva2Vu',
-      content_type: :json,
-      user_agent: configuration.user_agent
-    })
+  describe '.common_params' do
+    context 'without etag' do
+      it 'should to return a hash with request headers' do
+        expect(described_class.common_params('token', nil)).to eql({
+          accept: :json,
+          authorization: 'Basic OnRva2Vu',
+          content_type: :json,
+          user_agent: configuration.user_agent
+        })
+      end
+    end
+
+    context 'with etag' do
+      it 'should to return a hash with request headers' do
+        expect(described_class.common_params('token', 'etag')).to eql({
+          accept: :json,
+          authorization: 'Basic OnRva2Vu',
+          content_type: :json,
+          user_agent: configuration.user_agent,
+          'If-Match' => 'etag'
+        })
+      end
+    end
   end
 
   describe '.encoded_body' do

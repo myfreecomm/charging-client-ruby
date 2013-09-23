@@ -22,8 +22,8 @@ module Charging
       request_without_body(:get, path, params, token)
     end
 
-    def delete(path, token, params = {})
-      request_without_body(:delete, path, params, token, :no_follow)
+    def delete(path, token, etag)
+      request_without_body(:delete, path, {etag: etag}, token, :no_follow)
     end
 
     def post(path, token, body = {}, params = {})
@@ -58,23 +58,25 @@ module Charging
 
     def request_with_body(method, path, body, params, token, follow = true)
       path = charging_path(path) unless path.start_with?('http')
+      etag = params.delete(:etag)
 
       RestClient.send(
         method,
         path,
         encoded_body(body),
-        {params: params}.merge(common_params(token)),
+        {params: params}.merge(common_params(token, etag)),
         &should_follow_redirect(follow != :no_follow)
       )
     end
 
     def request_without_body(method, path, params, token, follow = true)
       path = charging_path(path) unless path.start_with?('http')
+      etag = params.delete(:etag)
 
       RestClient.send(
         method,
         path,
-        {params: params}.merge(common_params(token)),
+        {params: params}.merge(common_params(token, etag)),
         &should_follow_redirect(follow != :no_follow)
       )
     end
@@ -83,14 +85,18 @@ module Charging
       "#{Charging.configuration.url}#{path}"
     end
 
-    def common_params(token)
+    def common_params(token, etag)
       token = Charging.configuration.application_token if token === :use_application_token
-      {
+      request_headers = {
         authorization: basic_credential_for('', token),
         content_type: :json,
         accept: :json,
         user_agent: Charging.configuration.user_agent
       }
+
+      request_headers['If-Match'] = etag if etag
+
+      request_headers
     end
 
     def encoded_body(body)

@@ -41,6 +41,7 @@ describe Charging::Domain, :vcr do
     its(:last_response) { should eq response_mock }
 
     its(:persisted?) { should be_false }
+    its(:deleted?) { should be_false }
 
     its(:account) { should eq account }
 
@@ -272,7 +273,7 @@ describe Charging::Domain, :vcr do
       expect(not_persisted_domain.errors).to eq ['can not destroy a not persisted domain']
     end
 
-    xit 'should raise Http::LastResponseError for invalid request' do
+    it 'should raise Http::LastResponseError for invalid request' do
       domain = described_class.new(attributes, account).tap do |domain|
         [:uuid, :uri, :etag, :token].each do |attribute|
           domain.instance_variable_set "@#{attribute}", "invalid-#{attribute}"
@@ -281,11 +282,27 @@ describe Charging::Domain, :vcr do
 
       expect(domain).to be_persisted
 
-      expect {
-        VCR.use_cassette('try delete invalid domain') do
+      VCR.use_cassette('try delete invalid domain') do
+        expect {
           domain.destroy!
-        end
-      }.to raise_error Http::LastResponseError
+        }.to raise_error Charging::Http::LastResponseError
+      end
+
+      expect(domain.last_response.code).to eq 404
+    end
+
+    it 'should delete an exist domain' do
+      VCR.use_cassette('deleting a domain') do
+        domain = described_class.new(attributes, account).create!
+
+        expect(domain).to be_persisted
+        expect(domain).to_not be_deleted
+
+        expect(domain.destroy!).to_not raise_error
+
+        expect(domain).to_not be_persisted
+        expect(domain).to be_deleted
+      end
     end
   end
 end
