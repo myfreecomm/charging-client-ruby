@@ -236,7 +236,7 @@ describe Charging::Domain, :vcr do
         end
       end
 
-      %i[uuid uri etag token].each do |attribute|
+      [:uuid, :uri, :etag, :token].each do |attribute|
         its(attribute) { should_not be_nil }
       end
 

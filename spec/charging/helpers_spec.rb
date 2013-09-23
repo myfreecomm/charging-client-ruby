@@ -34,7 +34,7 @@ describe Charging::Helpers do
 
   describe '.hashify' do
     it 'should results a hash for attributes from a object' do
-      attributes = %i[name address phone email]
+      attributes = [:name, :address, :phone, :email]
       object = Struct.new(*attributes).new(*attributes)
 
       result = described_class.hashify(object, attributes)
