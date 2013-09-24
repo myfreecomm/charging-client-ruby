@@ -13,6 +13,7 @@ require 'charging/http'
 
 require 'charging/service_account'
 require 'charging/domain'
+require 'charging/charge_account'
 
 module Charging
   def self.configuration
