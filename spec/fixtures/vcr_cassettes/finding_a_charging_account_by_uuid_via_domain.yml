@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 24 Sep 2013 22:02:13 GMT
+      Etag:
+      - '"9c8d4ad41a67770c79ace62b9515adf8b5b0a589"'
+      Expires:
+      - Tue, 24 Sep 2013 22:02:12 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/>;
+        rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/return/>;
+        rel=return_files, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/return/>;
+        rel=return_cnab, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/invoices/>;
+        rel=invoices
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '593'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"account": {"digit": "8", "number": 1234}, "agency": {"digit": "",
+        "number": 354}, "name": "Conta de Cobran\u00e7a no Bradesco", "etag": "9c8d4ad41a67770c79ace62b9515adf8b5b0a589",
+        "portfolio_code": "25", "address": "new address", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
+        "sequence_numbers": [1, 9999999], "currency": 9, "national_identifier": "03.448.307/9170-25",
+        "agreement_code": "1234", "supplier_name": "Springfield Elemenary School",
+        "advance_days": 10, "bank": "237", "uuid": "29e77bc5-0e70-444c-a922-3149e78d905b"}'
+    http_version: 
+  recorded_at: Tue, 24 Sep 2013 22:02:13 GMT
+recorded_with: VCR 2.5.0

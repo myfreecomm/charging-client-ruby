@@ -16,8 +16,8 @@ module Charging
       :description
     ]
 
-    attr_accessor *ATTRIBUTES
-    attr_reader *READ_ONLY_ATTRIBUTES
+    attr_accessor(*ATTRIBUTES)
+    attr_reader(*READ_ONLY_ATTRIBUTES)
 
     # Responds the last http response from the API.
     attr_reader :last_response, :account, :errors
@@ -71,7 +71,7 @@ module Charging
 
     # Destroys current domain at API.
     #
-    # API method: <tt>DELETE /account/domains/:uuid</tt>
+    # API method: <tt>DELETE /account/domains/:uuid/</tt>
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#delete-account-domains-uuid
     def destroy!
@@ -115,7 +115,7 @@ module Charging
     # Returns a Domain instance or raises a Http::LastResponseError if something
     # went wrong, like unauthorized request, not found.
     #
-    # API method: <tt>GET /account/domains/:uuid</tt>
+    # API method: <tt>GET /account/domains/:uuid/</tt>
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#get-account-domains-uuid
     def self.find_by_uuid(account, uuid)
