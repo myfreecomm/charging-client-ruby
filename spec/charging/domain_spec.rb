@@ -70,8 +70,7 @@ describe Charging::Domain, :vcr do
       end
 
       it 'should result be a domain collection instance' do
-        expect(result).to be_an_instance_of(Charging::DomainCollection)
-
+        expect(result).to be_an_instance_of(Charging::Domain::Collection)
       end
 
       it 'should contain only one domain' do
@@ -204,7 +203,7 @@ describe Charging::Domain, :vcr do
       expect(invalid_domain.errors).to be_empty
 
       expected_error = [StandardError, 'can not create without a service account']
-      expect { invalid_domain.create! }.to raise_error *expected_error
+      expect { invalid_domain.create! }.to raise_error(*expected_error)
 
       expect(invalid_domain.errors).to eq ['can not create without a service account']
     end
@@ -254,7 +253,7 @@ describe Charging::Domain, :vcr do
       expect(invalid_domain.errors).to be_empty
 
       expected_error = [StandardError, 'can not destroy without a service account']
-      expect { invalid_domain.destroy! }.to raise_error *expected_error
+      expect { invalid_domain.destroy! }.to raise_error(*expected_error)
 
       expect(invalid_domain.errors).to eq ['can not destroy without a service account']
     end
@@ -268,15 +267,15 @@ describe Charging::Domain, :vcr do
 
       expect {
         not_persisted_domain.destroy!
-      }.to raise_error *expected_error
+      }.to raise_error(*expected_error)
 
       expect(not_persisted_domain.errors).to eq ['can not destroy a not persisted domain']
     end
 
     it 'should raise Http::LastResponseError for invalid request' do
-      domain = described_class.new(attributes, account).tap do |domain|
+      domain = described_class.new(attributes, account).tap do |current_domain|
         [:uuid, :uri, :etag, :token].each do |attribute|
-          domain.instance_variable_set "@#{attribute}", "invalid-#{attribute}"
+          current_domain.instance_variable_set "@#{attribute}", "invalid-#{attribute}"
         end
       end
 

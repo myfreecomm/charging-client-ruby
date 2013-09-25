@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Charging::DomainCollection do
+describe Charging::Domain::Collection do
   let(:account_mock) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
 
   it 'should raise for invalid account' do

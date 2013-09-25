@@ -76,7 +76,7 @@ module Charging
     # instance, and you should pass <tt>page</tt> and/or <tt>limit</tt> to
     # apply on find.
     #
-    # Returns a DomainCollection (Array-like) of Domain
+    # Returns a Collection (Array-like) of Domain
     #
     # API method: <tt>GET /account/domains/</tt>
     #
@@ -86,7 +86,7 @@ module Charging
 
       response = get_account_domains(account, page, limit)
 
-      DomainCollection.new(account, response)
+      Collection.new(account, response)
     end
 
     # Finds a domain by your uuid. It requites an ServiceAccount instance and a
@@ -188,37 +188,37 @@ module Charging
     def self.create_domain_collection_for(response) # :nodoc:
       data = response.code === 200 ? MultiJson.decode(response.body) : []
 
-      DomainCollection.new(data, response)
-    end
-  end
-
-  # Represents a domain collection result for a <tt>Domain.find_all</tt>. It is
-  # a delegator for an array of Domain.
-  class DomainCollection < SimpleDelegator
-
-    # Responds the last http response from the API.
-    attr_reader :last_response
-
-    # Responds the current ServiceAccount instance.
-    attr_reader :account
-
-    def initialize(account, response) # :nodoc:
-      Helpers.required_arguments!('service account' => account, 'response' => response)
-
-      @account = account
-      @last_response = response
-      super(load_data_with_response!)
+      Collection.new(data, response)
     end
 
-    def load_data_with_response! # :nodoc:
-      return [] if last_response.code != 200
+    # Represents a domain collection result for a <tt>Domain.find_all</tt>. It is
+    # a delegator for an array of Domain.
+    class Collection < SimpleDelegator
 
-      raw_domains = MultiJson.decode(last_response.body)
-      raw_domains.map { |raw_domain| load_domain(account, raw_domain) }
-    end
+      # Responds the last http response from the API.
+      attr_reader :last_response
 
-    def load_domain(account, attributes) # :nodoc:
-      Domain.load_persisted_domain(attributes, last_response, account)
+      # Responds the current ServiceAccount instance.
+      attr_reader :account
+
+      def initialize(account, response) # :nodoc:
+        Helpers.required_arguments!('service account' => account, 'response' => response)
+
+        @account = account
+        @last_response = response
+        super(load_data_with_response!)
+      end
+
+      def load_data_with_response! # :nodoc:
+        return [] if last_response.code != 200
+
+        raw_domains = MultiJson.decode(last_response.body)
+        raw_domains.map { |raw_domain| load_domain(account, raw_domain) }
+      end
+
+      def load_domain(account, attributes) # :nodoc:
+        Domain.load_persisted_domain(attributes, last_response, account)
+      end
     end
   end
 end
