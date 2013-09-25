@@ -30,7 +30,7 @@ module Charging
       Helpers.hashify(self, self.class::ATTRIBUTES)
     end
     
-    def self.validate_attributes!(attributes)
+    def self.validate_attributes!(attributes) # :nodoc:
       keys = attributes.keys.map(&:to_sym)
       diff = keys - (const_get(:ATTRIBUTES) + const_get(:READ_ONLY_ATTRIBUTES) + COMMON_ATTRIBUTES)
       raise ArgumentError, "Invalid attributes for domain: #{attributes.inspect}" if diff.any?

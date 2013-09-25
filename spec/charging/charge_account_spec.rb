@@ -97,11 +97,11 @@ describe Charging::ChargeAccount, :vcr do
         expect(subject).to be_persisted
       end
 
-      # its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/" }
-      # its(:uuid) { should eq uuid }
-      # its(:etag) { should eq '7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee' }
-      # its(:national_identify) { should eq '/VWsCyHHRrOF+pKv0Pbyfg==' }
-      # its(:domain) { should eq domain }
+      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/charge-accounts/#{uuid}/" }
+      its(:uuid) { should eq uuid }
+      its(:etag) { should eq '9c8d4ad41a67770c79ace62b9515adf8b5b0a589' }
+      its(:national_identifier) { should eq '03.448.307/9170-25' }
+      its(:domain) { should eq domain }
     end
   end
 end
