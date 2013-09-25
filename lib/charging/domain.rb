@@ -2,11 +2,12 @@
 
 module Charging
   # Represents a Charging domain.
-  class Domain
+  class Domain < Base
     DEFAULT_PAGE = 1
     DEFAULT_LIMIT = 10
 
-    READ_ONLY_ATTRIBUTES = [:uuid, :etag, :uri, :token]
+    READ_ONLY_ATTRIBUTES = [:token]
+
     ATTRIBUTES = [
       :supplier_name,
       :address,
@@ -18,33 +19,12 @@ module Charging
 
     attr_accessor(*ATTRIBUTES)
     attr_reader(*READ_ONLY_ATTRIBUTES)
-
-    # Responds the last http response from the API.
-    attr_reader :last_response, :account, :errors
+    attr_reader :account
 
     # Initializes a domain instance
     def initialize(attributes, account, response = nil)
-      Helpers.load_variables(self, ATTRIBUTES + READ_ONLY_ATTRIBUTES, attributes)
-
-      @last_response = response
+      super(attributes, response)
       @account = account
-      @errors = []
-      @deleted = false
-    end
-
-    # Returns true if the Domain exists on Charging service.
-    def persisted?
-      !!(uuid && etag && uri && token && !deleted?)
-    end
-
-    # Returns true if domains already deleted on API
-    def deleted?
-      !!@deleted
-    end
-
-    # Returns a hash with attributes
-    def attributes
-      Helpers.hashify(self, ATTRIBUTES)
     end
 
     # Creates current domain at API.
@@ -169,7 +149,7 @@ module Charging
 
       new_domain = Domain.load_persisted_domain(MultiJson.decode(response.body), response, account)
 
-      READ_ONLY_ATTRIBUTES.each do |attribute|
+      (COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
         instance_variable_set "@#{attribute}", new_domain.send(attribute)
       end
 
@@ -199,12 +179,6 @@ module Charging
 
     def self.get_account_domain(account, uuid) # :nodoc:
       Http.get("/account/domains/#{uuid}/", account.application_token)
-    end
-
-    def self.validate_attributes!(attributes) # :nodoc:
-      keys = attributes.keys.map(&:to_sym)
-      diff = keys - (ATTRIBUTES + READ_ONLY_ATTRIBUTES)
-      raise ArgumentError, "Invalid attributes for domain: #{attributes.inspect}" if diff.any?
     end
 
     def self.get_account_domains(account, page, limit) # :nodoc:

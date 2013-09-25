@@ -2,6 +2,7 @@
 module Charging
   module Helpers
     module_function
+
     def load_variables(object, attributes, hash)
       attributes.each do |attribute|
         value = hash.fetch(attribute, hash.fetch(attribute.to_s, nil))

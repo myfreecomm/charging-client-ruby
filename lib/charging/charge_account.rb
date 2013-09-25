@@ -1,49 +1,24 @@
 # encoding: UTF-8
 
 module Charging
-  class ChargeAccount
-    READ_ONLY_ATTRIBUTES = [:etag, :uri, :national_identifier, :uuid]
+  class ChargeAccount < Base
+
+    READ_ONLY_ATTRIBUTES = [:national_identifier]
+    
     ATTRIBUTES = [
       :account, :agency, :name, :portfolio_code, :address, :sequence_numbers,
       :currency, :agreement_code, :supplier_name, :advance_days, :bank
     ]
-    [:default_charging_features, :zipcode, :our_number_range]
-    # READ_ONLY_ATTRIBUTES = [:uuid, :uri, :etag, :national_identify]
-    # ATTRIBUTES = [
-    #   :bank, :name, :agreement_code, :portfolio_code, :account, :agency, 
-    #   :default_charging_features, :currency, :supplier_name, :address, 
-    #   :zipcode, :sequence_number, :our_number_range, :advance_days
-    # ]
-    
+
     attr_accessor(*ATTRIBUTES)
     attr_reader(*READ_ONLY_ATTRIBUTES)
-    attr_reader :last_response, :errors
     attr_reader :domain
     
     def initialize(attributes, domain, response = nil)
-      Helpers.load_variables(self, ATTRIBUTES + READ_ONLY_ATTRIBUTES, attributes)
-
-      @last_response = response
+      super(attributes, response)
       @domain = domain
-      @errors = []
-      @deleted = false
     end
 
-    # Returns true if the Charge Account exists on Charging service.
-    def persisted?
-      !!(uuid && etag && uri && national_identify && !deleted?)
-    end
-
-    # Returns true if domains already deleted on API
-    def deleted?
-      !!@deleted
-    end
-
-    # Returns a hash with attributes
-    def attributes
-      Helpers.hashify(self, ATTRIBUTES)
-    end
-    
     # Finds a charge account by uuid. It requites an <tt>domain</tt> and a
     # <tt>uuid</tt>.
     #
@@ -76,10 +51,10 @@ module Charging
       Http.get("/charge-accounts/#{uuid}/", domain.token)
     end
     
-    def self.validate_attributes!(attributes)
-      keys = attributes.keys.map(&:to_sym)
-      diff = keys - (ATTRIBUTES + READ_ONLY_ATTRIBUTES)
-      raise ArgumentError, "Invalid attributes for domain: #{attributes.inspect}" if diff.any?
-    end
+    # def self.validate_attributes!(attributes)
+    #   keys = attributes.keys.map(&:to_sym)
+    #   diff = keys - (ATTRIBUTES + READ_ONLY_ATTRIBUTES + COMMON_ATTRIBUTES)
+    #   raise ArgumentError, "Invalid attributes for domain: #{attributes.inspect}" if diff.any?
+    # end
   end
 end
