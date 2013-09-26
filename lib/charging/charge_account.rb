@@ -21,6 +21,28 @@ module Charging
       @domain = domain
     end
 
+    # Creates current domain at API.
+    #
+    # API method: <tt>POST /account/domains/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#post-account-domains
+    def create!
+      @errors = []
+      raise 'can not create without a domain' if invalid_domain?
+
+      @last_response = ChargeAccount.post_charge_accounts(domain, attributes)
+
+      raise Http::LastResponseError.new(last_response) if last_response.code != 201
+
+      reload_attributes_after_create!
+    rescue ::RestClient::Exception => exception
+      @last_response = exception.response
+
+      raise Http::LastResponseError.new(last_response)
+    ensure
+      @errors = [$ERROR_INFO.message] if $ERROR_INFO
+    end
+
     # Finds a charge account by uuid. It requites an <tt>domain</tt> and a
     # <tt>uuid</tt>.
     #
@@ -65,12 +87,32 @@ module Charging
     
     private
     
+    def invalid_domain?
+      domain.nil?
+    end
+    
+    def reload_attributes_after_create!
+      response = Http.get(last_response.headers[:location], domain.token)
+
+      new_charge_account = ChargeAccount.load_persisted_charge_account(MultiJson.decode(response.body), response, domain)
+
+      (COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
+        instance_variable_set "@#{attribute}", new_charge_account.send(attribute)
+      end
+
+      self
+    end
+    
     def self.get_charge_accounts(domain, page, limit)
       Http.get("/charge-accounts/?page=#{page}&limit=#{limit}", domain.token)
     end
     
     def self.get_charge_account(domain, uuid)
       Http.get("/charge-accounts/#{uuid}/", domain.token)
+    end
+    
+    def self.post_charge_accounts(domain, attributes)
+      Http.post('/charge-accounts/', domain.token, MultiJson.encode(attributes))
     end
     
     class Collection < Charging::Collection

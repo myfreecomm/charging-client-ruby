@@ -3,11 +3,22 @@ require 'spec_helper'
 describe Charging::ChargeAccount, :vcr do
   let(:domain) { double(:domain, token: 'QNTGvpnYRVC4HbHibDBUIQ==') }
   let(:uuid) { '29e77bc5-0e70-444c-a922-3149e78d905b' }
+  let(:attributes) do
+    {
+      bank: '237',
+      name: 'Conta de cobrança',
+      agreement_code: '12345',
+      portfolio_code: '25',
+      account: {number: '12345', digit: '6'},
+      agency: {number: '12345', digit: '6'},
+      currency: 9
+    }
+  end
 
   context 'for new instance' do
     ATTRIBUTES = [
-      :bank, :name, :agreement_code, :portfolio_code, :account, :agency, 
-      :currency, :supplier_name, :address,:sequence_numbers, :advance_days
+      :bank, :name, :agreement_code, :portfolio_code, :account, :agency,
+      :currency, :supplier_name, :address, :sequence_numbers, :advance_days
     ]
     
     let(:response) { double(:response) }
@@ -50,6 +61,37 @@ describe Charging::ChargeAccount, :vcr do
     end
   end
   
+  describe '#create!' do
+    it 'should require a domain and load errors' do
+      charge_account = described_class.new(attributes, nil)
+
+      expect(charge_account.errors).to be_empty
+
+      expected_error = [StandardError, 'can not create without a domain']
+      expect { charge_account.create! }.to raise_error(*expected_error)
+
+      expect(charge_account.errors).to eq ['can not create without a domain']
+    end
+
+    context 'when everything is OK' do
+      subject { described_class.new(attributes, domain) }
+
+      before do
+        VCR.use_cassette('creating a charge account') do
+          subject.create!
+        end
+      end
+
+      [:uuid, :uri, :etag].each do |attribute|
+        its(attribute) { should_not be_nil }
+      end
+
+      it 'should be persisted' do
+        expect(subject).to be_persisted
+      end
+    end
+  end
+
   describe '.find_all' do
     it 'should require an account' do
       expected_error = [ArgumentError, 'domain required']
