@@ -6,15 +6,15 @@ describe Charging::Domain::Collection do
   let(:account_mock) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
 
   it 'should raise for invalid account' do
-    expected_error = [ArgumentError, 'service account required']
+    expected_error = [ArgumentError, 'account required']
 
-    expect { described_class.new(nil, double(:response, code: 401)) }.to raise_error *expected_error
+    expect { described_class.new(nil, double(:response, code: 401)) }.to raise_error(*expected_error)
   end
 
   it 'should raise for invalid response' do
     expected_error = [ArgumentError, 'response required']
 
-    expect { described_class.new(account_mock, nil) }.to raise_error *expected_error
+    expect { described_class.new(account_mock, nil) }.to raise_error(*expected_error)
   end
 
   context 'with not success response' do

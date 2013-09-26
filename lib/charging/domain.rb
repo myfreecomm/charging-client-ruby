@@ -190,34 +190,14 @@ module Charging
 
       Collection.new(data, response)
     end
-
-    # Represents a domain collection result for a <tt>Domain.find_all</tt>. It is
-    # a delegator for an array of Domain.
-    class Collection < SimpleDelegator
-
-      # Responds the last http response from the API.
-      attr_reader :last_response
-
-      # Responds the current ServiceAccount instance.
-      attr_reader :account
-
-      def initialize(account, response) # :nodoc:
-        Helpers.required_arguments!('service account' => account, 'response' => response)
-
-        @account = account
-        @last_response = response
-        super(load_data_with_response!)
+    
+    class Collection < Charging::Collection
+      def initialize(account, response)
+        super(response, account: account)
       end
-
-      def load_data_with_response! # :nodoc:
-        return [] if last_response.code != 200
-
-        raw_domains = MultiJson.decode(last_response.body)
-        raw_domains.map { |raw_domain| load_domain(account, raw_domain) }
-      end
-
-      def load_domain(account, attributes) # :nodoc:
-        Domain.load_persisted_domain(attributes, last_response, account)
+      
+      def load_object_with(attributes)
+        Domain.load_persisted_domain(attributes, last_response, @account)
       end
     end
   end

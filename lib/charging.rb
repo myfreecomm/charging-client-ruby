@@ -11,6 +11,7 @@ require 'charging/helpers'
 require 'charging/configuration'
 require 'charging/http'
 
+require 'charging/collection'
 require 'charging/base'
 require 'charging/service_account'
 require 'charging/domain'

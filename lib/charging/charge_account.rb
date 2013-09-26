@@ -51,33 +51,13 @@ module Charging
       Http.get("/charge-accounts/#{uuid}/", domain.token)
     end
     
-    # Represents a charge account collection result for <tt>ChargeAccount.find_all</tt>. It is
-    # a delegator for an array of Domain.
-    class Collection < SimpleDelegator
-
-      # Responds the last http response from the API.
-      attr_reader :last_response
-
-      # Responds the current Domain instance.
-      attr_reader :domain
-
-      def initialize(domain, response) # :nodoc:
-        Helpers.required_arguments!(domain: domain, response: response)
-
-        @domain = domain
-        @last_response = response
-        super(load_data_with_response!)
+    class Collection < Charging::Collection
+      def initialize(domain, response)
+        super(response, domain: domain)
       end
-
-      def load_data_with_response! # :nodoc:
-        return [] if last_response.code != 200
-
-        raw_domains = MultiJson.decode(last_response.body)
-        raw_domains.map { |raw_domain| load_charge_account(domain, raw_domain) }
-      end
-
-      def load_charge_account(domain, attributes) # :nodoc:
-        ChargeAccount.load_persisted_charge_account(attributes, last_response, domain)
+      
+      def load_object_with(attributes)
+        ChargeAccount.load_persisted_charge_account(attributes, last_response, @domain)
       end
     end
   end
