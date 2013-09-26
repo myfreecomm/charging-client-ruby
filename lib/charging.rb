@@ -16,6 +16,7 @@ require 'charging/base'
 require 'charging/service_account'
 require 'charging/domain'
 require 'charging/charge_account'
+require 'charging/invoice'
 
 module Charging
   def self.configuration
