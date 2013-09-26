@@ -18,7 +18,7 @@ describe Charging::ChargeAccount, :vcr do
   end
 
   context 'for new instance' do
-    ATTRIBUTES = [
+    CA_ATTRIBUTES = [
       :bank, :name, :agreement_code, :portfolio_code, :account, :agency,
       :currency, :supplier_name, :address, :sequence_numbers, :advance_days
     ]
@@ -26,12 +26,12 @@ describe Charging::ChargeAccount, :vcr do
     let(:response) { double(:response) }
     
     subject do
-      attributes = Hash[*ATTRIBUTES.map {|attr| [attr, "#{attr} value"] }.flatten]
+      attributes = Hash[*CA_ATTRIBUTES.map {|attr| [attr, "#{attr} value"] }.flatten]
       
       described_class.new(attributes, domain, response)
     end
     
-    ATTRIBUTES.each do |attribute|
+    CA_ATTRIBUTES.each do |attribute|
       its(attribute) { should eq "#{attribute} value"}
     end
     
@@ -185,7 +185,7 @@ describe Charging::ChargeAccount, :vcr do
         expect(subject).to be_an_instance_of(Charging::ChargeAccount)
       end
 
-      xit 'should be a persisted instance' do
+      it 'should be a persisted instance' do
         expect(subject).to be_persisted
       end
 

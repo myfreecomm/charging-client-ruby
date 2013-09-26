@@ -13,8 +13,7 @@ module Charging
     ]
 
     attr_accessor(*ATTRIBUTES)
-    attr_reader(*READ_ONLY_ATTRIBUTES)
-    attr_reader :domain
+    attr_reader(*READ_ONLY_ATTRIBUTES, :domain)
     
     def initialize(attributes, domain, response = nil)
       super(attributes, response)

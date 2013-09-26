@@ -8,18 +8,10 @@ module Charging
 
     READ_ONLY_ATTRIBUTES = [:token]
 
-    ATTRIBUTES = [
-      :supplier_name,
-      :address,
-      :city_state,
-      :zipcode,
-      :national_identifier,
-      :description
-    ]
+    ATTRIBUTES = [ :supplier_name, :address, :city_state, :zipcode, :national_identifier, :description ]
 
     attr_accessor(*ATTRIBUTES)
-    attr_reader(*READ_ONLY_ATTRIBUTES)
-    attr_reader :account
+    attr_reader(*READ_ONLY_ATTRIBUTES, :account)
 
     # Initializes a domain instance
     def initialize(attributes, account, response = nil)

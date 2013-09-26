@@ -39,7 +39,7 @@ module Charging
     private
     
     def get_attributes
-      result = ((self.class::ATTRIBUTES || []) + (self.class::READ_ONLY_ATTRIBUTES || []) + COMMON_ATTRIBUTES).flatten.uniq
+      ((self.class::ATTRIBUTES || []) + (self.class::READ_ONLY_ATTRIBUTES || []) + COMMON_ATTRIBUTES).flatten.uniq
     end
   end
 end
