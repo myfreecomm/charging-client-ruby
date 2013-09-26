@@ -2,6 +2,8 @@
 
 module Charging
   class ChargeAccount < Base
+    DEFAULT_PAGE = 1
+    DEFAULT_LIMIT = 10
 
     READ_ONLY_ATTRIBUTES = [:national_identifier]
     
@@ -40,12 +42,32 @@ module Charging
       raise Http::LastResponseError.new(excetion.response)
     end
     
+    # Finds all charge accounts for a domain. It requites an <tt>domain</tt>,
+    # and you should pass <tt>page</tt> and/or <tt>limit</tt> to apply on find.
+    #
+    # Returns a Collection (Array-like) of ChargeAccount
+    #
+    # API method: <tt>GET /charge-accounts/?page=:page&limit=:limit</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-charge-accounts-limit-limit-page-page
+    def self.find_all(domain, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT)
+      Helpers.required_arguments!(domain: domain)
+
+      response = get_charge_accounts(domain, page, limit)
+
+      Collection.new(domain, response)
+    end
+    
     def self.load_persisted_charge_account(attributes, response, domain)
       validate_attributes!(attributes)
       ChargeAccount.new(attributes, domain, response)
     end
     
     private
+    
+    def self.get_charge_accounts(domain, page, limit)
+      Http.get("/charge-accounts/?page=#{page}&limit=#{limit}", domain.token)
+    end
     
     def self.get_charge_account(domain, uuid)
       Http.get("/charge-accounts/#{uuid}/", domain.token)

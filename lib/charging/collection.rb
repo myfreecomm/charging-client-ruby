@@ -1,8 +1,7 @@
 # encoding: utf-8
 
 module Charging
-  # Represents a domain collection result for a <tt>Domain.find_all</tt>. It is
-  # a delegator for an array of Domain.
+  # Represents a object collection result. It is a delegator for an array of object.
   class Collection < SimpleDelegator
 
     # Responds the last http response from the API.

@@ -50,6 +50,54 @@ describe Charging::ChargeAccount, :vcr do
     end
   end
   
+  describe '.find_all' do
+    it 'should require an account' do
+      expected_error = [ArgumentError, 'domain required']
+
+      expect { described_class.find_all(nil) }.to raise_error(*expected_error)
+    end
+
+    context 'for an account' do
+      let(:result) do
+        VCR.use_cassette('list available charge-accounts') do
+          described_class.find_all(domain)
+        end
+      end
+
+      it 'should result be a domain collection instance' do
+        expect(result).to be_an_instance_of(Charging::ChargeAccount::Collection)
+      end
+
+      it 'should contain only one domain' do
+        expect(result.size).to eq 1
+      end
+
+      it 'should contain last response information' do
+        expect(result.last_response.code).to eq 200
+      end
+
+      context 'on first element result' do
+        let(:charge_account) { result.first }
+
+        it 'should be a persisted domain' do
+          expect(charge_account).to be_persisted
+        end
+
+        it 'should contain etag' do
+          expect(charge_account.etag).to eq '9c8d4ad41a67770c79ace62b9515adf8b5b0a589'
+        end
+
+        it 'should contain uuid' do
+          expect(charge_account.uuid).to eq uuid
+        end
+
+        it 'should contain uri' do
+          expect(charge_account.uri).to eq "http://sandbox.charging.financeconnect.com.br/charge-accounts/#{uuid}/"
+        end
+      end
+    end
+  end
+  
   describe '.find_by_uuid' do
     it 'should require an account' do
       expected_error = [ArgumentError, 'domain required']
