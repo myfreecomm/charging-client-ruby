@@ -11,8 +11,10 @@ module Charging
       Helpers.load_variables(self, get_attributes, attributes)
 
       @last_response = response
+      @etag = response.headers[:etag] if etag.nil? && response
       @errors = []
       @deleted = false
+      
     end
     
     # Returns true if the Charge Account exists on Charging service.

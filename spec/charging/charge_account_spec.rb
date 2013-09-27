@@ -23,7 +23,7 @@ describe Charging::ChargeAccount, :vcr do
       :currency, :supplier_name, :address, :sequence_numbers, :advance_days
     ]
     
-    let(:response) { double(:response) }
+    let(:response) { double(:response, headers: {}) }
     
     subject do
       attributes = Hash[*CA_ATTRIBUTES.map {|attr| [attr, "#{attr} value"] }.flatten]

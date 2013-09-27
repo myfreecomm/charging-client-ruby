@@ -19,7 +19,7 @@ describe Charging::Domain, :vcr do
 
 
   context 'for new domain instance' do
-    let(:response_mock) { double(:response) }
+    let(:response_mock) { double(:response, headers: {}) }
 
     subject do
       described_class.new({
