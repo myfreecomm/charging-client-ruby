@@ -19,7 +19,7 @@ describe Charging::Domain, :vcr do
 
 
   context 'for new domain instance' do
-    let(:response_mock) { double(:response, headers: {}) }
+    let(:response_mock) { double(:response, code: 500) }
 
     subject do
       described_class.new({
@@ -89,7 +89,7 @@ describe Charging::Domain, :vcr do
         end
 
         it 'should contain etag' do
-          expect(domain.etag).to eq '7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee'
+          expect(domain.etag).to eq '"7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee"'
         end
 
         it 'should contain uuid' do
@@ -152,7 +152,7 @@ describe Charging::Domain, :vcr do
 
       its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq '7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee' }
+      its(:etag) { should eq '"7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee"' }
       its(:token) { should eq '/VWsCyHHRrOF+pKv0Pbyfg==' }
       its(:account) { should eq account }
     end
@@ -190,7 +190,7 @@ describe Charging::Domain, :vcr do
 
       its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq '7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee' }
+      its(:etag) { should eq '"7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee"' }
       its(:token) { should eq '/VWsCyHHRrOF+pKv0Pbyfg==' }
       its(:account) { should be_nil }
     end

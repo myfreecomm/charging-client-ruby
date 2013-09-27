@@ -33,7 +33,7 @@ describe Charging::ChargeAccount::Collection do
 
   context 'with success response without data' do
     let(:response_success) do
-      double(code: 200, body: '[]')
+      double(code: 200, headers: {}, body: '[]')
     end
 
     let!(:result) { described_class.new(domain_mock, response_success) }
@@ -69,7 +69,7 @@ describe Charging::ChargeAccount::Collection do
     end
 
     let(:response_success) do
-      double(code: 200, body: body)
+      double(:response, code: 200, headers: {}, body: body)
     end
 
     let(:result) { described_class.new(domain_mock, response_success) }

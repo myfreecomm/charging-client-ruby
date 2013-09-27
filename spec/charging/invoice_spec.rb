@@ -29,7 +29,7 @@ describe Charging::Invoice, :vcr do
       :our_number
     ]
 
-    let(:response) { double(:response, headers: {}) }
+    let(:response) { double(:response, code: 500) }
 
     subject do
       attributes = Hash[*INVOICE_ATTRIBUTES.map {|attr| [attr, "#{attr} value"] }.flatten]

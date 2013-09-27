@@ -9,12 +9,20 @@ module Charging
 
     def initialize(attributes, response)
       Helpers.load_variables(self, get_attributes, attributes)
-
+      
       @last_response = response
-      @etag = response.headers[:etag] if etag.nil? && response
       @errors = []
       @deleted = false
       
+      normalize_etag!
+    end
+    
+    def normalize_etag!
+      if @etag.nil?
+        @etag = last_response.headers[:etag] if last_response && last_response.code === 200
+      else
+        @etag = @etag.inspect
+      end
     end
     
     # Returns true if the Charge Account exists on Charging service.

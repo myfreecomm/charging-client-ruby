@@ -23,7 +23,7 @@ describe Charging::ChargeAccount, :vcr do
       :currency, :supplier_name, :address, :sequence_numbers, :advance_days
     ]
     
-    let(:response) { double(:response, headers: {}) }
+    let(:response) { double(:response, code: 500) }
     
     subject do
       attributes = Hash[*CA_ATTRIBUTES.map {|attr| [attr, "#{attr} value"] }.flatten]
@@ -128,7 +128,7 @@ describe Charging::ChargeAccount, :vcr do
         end
 
         it 'should contain etag' do
-          expect(charge_account.etag).to eq '9c8d4ad41a67770c79ace62b9515adf8b5b0a589'
+          expect(charge_account.etag).to eq '"9c8d4ad41a67770c79ace62b9515adf8b5b0a589"'
         end
 
         it 'should contain uuid' do
@@ -191,7 +191,7 @@ describe Charging::ChargeAccount, :vcr do
 
       its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/charge-accounts/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq '9c8d4ad41a67770c79ace62b9515adf8b5b0a589' }
+      its(:etag) { should eq '"9c8d4ad41a67770c79ace62b9515adf8b5b0a589"' }
       its(:national_identifier) { should eq '03.448.307/9170-25' }
       its(:domain) { should eq domain }
     end
