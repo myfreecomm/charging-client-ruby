@@ -1,0 +1,170 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Fri, 27 Sep 2013 19:23:19 GMT
+      Expires:
+      - Fri, 27 Sep 2013 19:23:18 GMT
+      Location:
+      - http://sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '391'
+      X-Cache:
+      - MISS from firewall.corp.myfreecomm.com.br
+      X-Cache-Lookup:
+      - MISS from firewall.corp.myfreecomm.com.br:3128
+      Via:
+      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: |-
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+        <title>Redirecting...</title>
+        <h1>Redirecting...</h1>
+        <p>You should be redirected automatically to target URL: <a href="http://sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/">http://sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/</a>.  If not click the link.
+    http_version: 
+  recorded_at: Fri, 27 Sep 2013 19:23:20 GMT
+- request:
+    method: get
+    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 27 Sep 2013 19:23:21 GMT
+      Etag:
+      - '"75de28a49a515edef88b3285921808a3d86ea5bf"'
+      Expires:
+      - Fri, 27 Sep 2013 19:23:20 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/billet/>;
+        rel=billet
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '798'
+      X-Cache:
+      - MISS from firewall.corp.myfreecomm.com.br
+      X-Cache-Lookup:
+      - MISS from firewall.corp.myfreecomm.com.br:3128
+      Via:
+      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: '{"due_date": "2020-12-31", "kind": 2, "uuid": "6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f",
+        "drawee": {"name": "Nome do Sacado", "city_state": "Rio de Janeiro / RJ",
+        "zipcode": "21345999", "national_identifier": "37.818.380/0001-86", "address":
+        "Rua do Carmo, 43", "quarter": ""}, "document_number": "000000000000001",
+        "demonstrative": [], "uri": "http://sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/",
+        "paid": 0, "charge_account": "http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
+        "discount": null, "amount": "123.45", "interest": {"date": 0, "amount": "0.00",
+        "type": 0}, "supplier_name": "Springfield Elemenary School", "document_date":
+        "2013-09-27", "charging_features": [1, 2, 1, 2, 2], "instructions": []}'
+    http_version: 
+  recorded_at: Fri, 27 Sep 2013 19:23:21 GMT
+- request:
+    method: get
+    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 27 Sep 2013 19:23:21 GMT
+      Etag:
+      - '"9c8d4ad41a67770c79ace62b9515adf8b5b0a589"'
+      Expires:
+      - Fri, 27 Sep 2013 19:23:20 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/>;
+        rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/return/>;
+        rel=return_files, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/return/>;
+        rel=return_cnab, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/invoices/>;
+        rel=invoices
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '593'
+      X-Cache:
+      - MISS from firewall.corp.myfreecomm.com.br
+      X-Cache-Lookup:
+      - MISS from firewall.corp.myfreecomm.com.br:3128
+      Via:
+      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: '{"account": {"digit": "8", "number": 1234}, "agency": {"digit": "",
+        "number": 354}, "name": "Conta de Cobran\u00e7a no Bradesco", "etag": "9c8d4ad41a67770c79ace62b9515adf8b5b0a589",
+        "portfolio_code": "25", "address": "new address", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
+        "sequence_numbers": [1, 9999999], "currency": 9, "national_identifier": "03.448.307/9170-25",
+        "agreement_code": "1234", "supplier_name": "Springfield Elemenary School",
+        "advance_days": 10, "bank": "237", "uuid": "29e77bc5-0e70-444c-a922-3149e78d905b"}'
+    http_version: 
+  recorded_at: Fri, 27 Sep 2013 19:23:22 GMT
+recorded_with: VCR 2.5.0

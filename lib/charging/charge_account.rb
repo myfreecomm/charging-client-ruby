@@ -79,6 +79,23 @@ module Charging
       Collection.new(domain, response)
     end
     
+    # Finds a charge account by uri. It requites an <tt>domain</tt> and a
+    # <tt>String</tt>.
+    #
+    # Returns a ChargeAccount instance or raises a Http::LastResponseError if something
+    # went wrong, like unauthorized request, not found.
+    def self.find_by_uri(domain, uri)
+      Helpers.required_arguments!(domain: domain, uri: uri)
+      
+      response = Http.get(uri, domain.token)
+      
+      raise Http::LastResponseError.new(response) if response.code != 200
+      
+      ChargeAccount.load_persisted_charge_account(MultiJson.decode(response.body), response, domain)
+    rescue ::RestClient::Exception => excetion
+      raise Http::LastResponseError.new(excetion.response)
+    end
+    
     def self.load_persisted_charge_account(attributes, response, domain)
       validate_attributes!(attributes)
       ChargeAccount.new(attributes, domain, response)
@@ -91,9 +108,7 @@ module Charging
     end
     
     def reload_attributes_after_create!
-      response = Http.get(last_response.headers[:location], domain.token)
-
-      new_charge_account = ChargeAccount.load_persisted_charge_account(MultiJson.decode(response.body), response, domain)
+      new_charge_account = ChargeAccount.find_by_uri(domain, last_response.headers[:location])
 
       (COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
         instance_variable_set "@#{attribute}", new_charge_account.send(attribute)

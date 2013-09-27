@@ -43,8 +43,37 @@ module Charging
       @errors = [$ERROR_INFO.message] if $ERROR_INFO
     end
     
-    def self.load_persisted_invoice(attributes, response, domain, charge_account)
-      attributes.delete("charge_account")
+    # Finds an invoice by uuid. It requites an <tt>domain</tt> and a
+    # <tt>uuid</tt>.
+    #
+    # Returns an Invoice instance or raises a Http::LastResponseError if something
+    # went wrong, like unauthorized request, not found.
+    #
+    # API method: <tt>GET /invoices/:uuid/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-uuid
+    def self.find_by_uuid(domain, uuid)
+      Helpers.required_arguments!(domain: domain, uuid: uuid)
+      
+      response = Invoice.get_invoice(domain, uuid)
+      
+      raise Http::LastResponseError.new(response) if response.code != 200
+      
+      load_persisted_invoice(MultiJson.decode(response.body), response, domain)
+    rescue ::RestClient::Exception => excetion
+      raise Http::LastResponseError.new(excetion.response)
+    end
+
+    def self.load_persisted_invoice(attributes, response, domain, charge_account = nil)
+      charge_account_uri = attributes.delete("charge_account").to_s
+      
+      if charge_account.nil? && charge_account_uri.start_with?('http')
+        begin
+          charge_account = ChargeAccount.find_by_uri(domain, charge_account_uri)
+        rescue Http::LastResponseError
+        end
+      end
+      
       validate_attributes!(attributes)
       
       Invoice.new(attributes, domain, charge_account, response)
@@ -62,6 +91,10 @@ module Charging
       end
 
       self
+    end
+    
+    def self.get_invoice(domain, uuid)
+      Http.get("/invoices/#{uuid}", domain.token)
     end
     
     def self.post_charge_accounts_invoices(domain, charge_account, attributes)

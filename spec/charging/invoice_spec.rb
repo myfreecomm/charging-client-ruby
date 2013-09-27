@@ -20,6 +20,7 @@ describe Charging::Invoice, :vcr do
       due_date: '2020-12-31'
     }
   end
+  let(:uuid) { '6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f' }
 
   context 'for new instance' do
     INVOICE_ATTRIBUTES = [ 
@@ -114,6 +115,60 @@ describe Charging::Invoice, :vcr do
       it 'should be persisted' do
         expect(subject).to be_persisted
       end
+    end
+  end
+
+  describe '.find_by_uuid' do
+    it 'should require an account' do
+      expected_error = [ArgumentError, 'domain required']
+
+      expect { described_class.find_by_uuid(nil, '') }.to raise_error(*expected_error)
+    end
+
+    it 'should require an uuid' do
+      expected_error = [ArgumentError, 'uuid required']
+
+      expect { described_class.find_by_uuid(domain, nil) }.to raise_error(*expected_error)
+    end
+
+    it 'should raise for invalid uuid' do
+      VCR.use_cassette('finding invoice with invalid uuid') do
+        expect { described_class.find_by_uuid(domain, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
+      end
+    end
+
+    it 'should raise if not response to success (200)' do
+      response_mock = double('AcceptedResponse', code: 202, to_s: 'AcceptedResponse')
+
+      described_class
+        .should_receive(:get_invoice)
+        .with(domain, uuid)
+        .and_return(response_mock)
+
+      expect {
+        described_class.find_by_uuid(domain, uuid)
+      }.to raise_error Charging::Http::LastResponseError, 'AcceptedResponse'
+    end
+
+    context 'for a valid uuid' do
+      subject do
+        VCR.use_cassette('finding an invoice by uuid') do
+          described_class.find_by_uuid(domain, uuid)
+        end
+      end
+
+      it 'should instantiate a charge account' do
+        expect(subject).to be_an_instance_of(Charging::Invoice)
+      end
+
+      it 'should be a persisted instance' do
+        expect(subject).to be_persisted
+      end
+
+      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/invoices/#{uuid}/" }
+      its(:uuid) { should eq uuid }
+      its(:etag) { should eq '"75de28a49a515edef88b3285921808a3d86ea5bf"' }
+      its(:domain) { should eq domain }
     end
   end
 end
