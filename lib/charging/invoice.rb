@@ -70,7 +70,7 @@ module Charging
     # 
     # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-uuid-billet
     def billet_url
-      return if not_persisted?
+      return if unpersisted?
       
       response = Http.get("/invoices/#{uuid}/billet", domain.token)
       
