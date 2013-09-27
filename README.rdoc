@@ -178,7 +178,7 @@ Pending
 
 ==== Get URL to print invoice
 
-  invoice.billet_url
+  invoice.billet_url # => 'https://charging.financeconnect.com.br/billets/6a60.../ff01.../'
 
 ==== Delete an invoice (Not working yet)
 
