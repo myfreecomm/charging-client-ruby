@@ -25,12 +25,17 @@ module Charging
       end
     end
     
-    # Returns true if the Charge Account exists on Charging service.
+    # Returns true if the object exists on Charging service.
     def persisted?
       (uuid && etag && uri && !deleted?) || false
     end
+    
+    # Returns true if the object exists on Charging service.
+    def unpersisted?
+      !persisted?
+    end
 
-    # Returns true if domains already deleted on API
+    # Returns true if object already deleted on API
     def deleted?
       @deleted || false
     end

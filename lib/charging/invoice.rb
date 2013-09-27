@@ -63,6 +63,23 @@ module Charging
     rescue ::RestClient::Exception => excetion
       raise Http::LastResponseError.new(excetion.response)
     end
+    
+    # Returns a String with the temporary URL for print current invoice.
+    # 
+    # API method: <tt>GET /invoices/:uuid/billet/
+    # 
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-uuid-billet
+    def billet_url
+      return if not_persisted?
+      
+      response = Http.get("/invoices/#{uuid}/billet", domain.token)
+      
+      return if response.code != 200
+      
+      MultiJson.decode(response.body)["billet"]
+    rescue
+      nil
+    end
 
     def self.load_persisted_invoice(attributes, response, domain, charge_account = nil)
       charge_account_uri = attributes.delete("charge_account").to_s

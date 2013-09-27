@@ -171,4 +171,36 @@ describe Charging::Invoice, :vcr do
       its(:domain) { should eq domain }
     end
   end
+  
+  describe '#billet_url' do
+    context 'for not persisted invoice' do
+      subject {
+        described_class.new({}, domain, charge_account, nil)
+      }
+      
+      its(:billet_url) { should be_nil }
+    end
+    
+    context 'for a persisted invoice' do
+      let!(:invoice) {
+        VCR.use_cassette('finding an invoice by uuid') do
+          described_class.find_by_uuid(domain, uuid)
+        end
+      }
+
+      it 'should be nil if something wrong' do
+        Charging::Http
+          .should_receive(:get).with("/invoices/#{uuid}/billet", domain.token)
+          .and_return(double(:server_error, code: 500, body: 'generic error message'))
+
+        expect(invoice.billet_url).to be_nil
+      end
+      
+      it 'should get current billet url' do
+        VCR.use_cassette('finding current billet url for invoice') do
+          expect(invoice.billet_url).to eq 'http://sandbox.charging.financeconnect.com.br/billets/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/ff010b11609c4ac2b78062f2cd51f22f/'
+        end
+      end
+    end
+  end
 end
