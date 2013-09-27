@@ -17,15 +17,15 @@ The {RDoc}[http://rubydoc.info/github/myfreecomm/charging-client-ruby/frames/] i
 
 Add this line to your application's Gemfile:
 
-  gem 'charging-client', :require => 'charging'
+	gem 'charging-client', :require => 'charging'
 
 And then execute:
 
-  $ bundle
+	$ bundle
 
 Or install it yourself as:
 
-  $ gem install charging-client
+	$ gem install charging-client
 
 == Usage
 
@@ -35,74 +35,166 @@ TODO
 
 === Configuration
 
-  require "charging"
-
-  Charging.configure do |c|
-    # URL for request data.
-    # Default: 'https://charging.finnanceconnect.com.br'
-    c.url = 'http://sandbox.charging.financeconnect.com.br'
-
-    # User agent to identify the http request on Charing.
-    # Default: 'Charging Ruby Client v0.0.1'
-    c.user_agent = 'My App v1.0'
-  end
+	require "charging"
+	
+	Charging.configure do |c|
+		# URL for request data.
+		# Default: 'https://charging.finnanceconnect.com.br'
+		c.url = 'http://sandbox.charging.financeconnect.com.br'
+		
+		# User agent to identify the http request on Charing.
+		# Default: 'Charging Ruby Client v0.0.1'
+		c.user_agent = 'My App v1.0'
+	end
 
 === Examples
 
-  require 'charging'
+==== Getting info about your service account
 
-  # GET /account/
-  account = Charging::Account.find_by_token('some-appplication-token')
-
-  account.name # 'Your App Name on Charging'
-
-  account.last_response  # a success RestClient::Response instance
-  account.last_response.code # 200
-
-  begin
-    account = Charging::Account.find_by_token('invalid-appplication-token')
-  rescue Charging::Http::LastResponseError => exception
-    exception.last_response # an unauthorized RestClient::Response instance
-    exception.last_response.code # 401
-  end
-
-  # GET /account/domains/?page=1&limit=10
-  domains = Charging::Domain.find_all(account)
-
-  new_domain = Charging::Domain.new(attributes)
-
-  # POST /account/domains/ {attributes : here, ...}
-  # and GET /account/domains/:uuid if created
-  new_domain.create!
+	account = Charging::Account.find_by_token('some-appplication-token')
+	
+	account.name # => 'Your App Name on Charging'
+	
+	account.last_response  # a success RestClient::Response instance
+	account.last_response.code # => 200
+	
+	begin
+		account = Charging::Account.find_by_token('invalid-appplication-token')
+	rescue Charging::Http::LastResponseError => exception
+		exception.last_response # an unauthorized RestClient::Response instance
+		exception.last_response.code # 401
+	end
 
 
-  # GET /account/domains/:uuid/
-  domain = Charging::Domain.find_by_uuid(account, 'uuid')
+==== List domains for an account
 
-  # PATH /account/domains/:uuid/ {'address' : 'New Address'}
-  domain.update_attributes! address: 'New Address'
+	domains = Charging::Domain.find_all(account)
 
-  domain.city_state = 'City'
+==== Create a new domain
 
-  # PUT /account/domains/:uuid/ {address: 'New Address', city_state' : 'City', ...}
-  domain.update!
+	attributes = {
+		:supplier_name      => 'Myfreecomm',
+		:address            => 'Rua do Carmo, 43',
+		:city_state         => 'Rio de Janeiro/RJ',
+		:zipcode            => '20011-020',
+		national_identifier => '37.818.380/0001-86',
+		description         => 'A Myfreecomm é uma empresa moderna...'
+	}
+	
+	new_domain = Charging::Domain.new(attributes)
+	
+	new_domain.persisted? # => false
+	new_domain.create!
+	new_domain.persisted? # => true
 
-  # DELETE /account/domains/:uuid/
-  domain.destroy!
+==== Find a domain by uuid
 
+	domain = Charging::Domain.find_by_uuid(account, 'supposed-uuid-for-domain')
+	domain.persisted? # => true
 
-  # GET /domain/
-  domain = Charging::Domain.find_by_token('domain-token')
+==== Update an attribute of a domain (Not working yet)
 
-  # PATCH /domain/ {'address' : 'Another New Address'}
-  domain.update_attributes! address: 'Another New Address'
+Pending
 
-  domain.city_state = 'New City'
+=== Update all attributes for a domain (Not working yet)
 
-  # PUT /domain/ {'address' : 'Another New Address', 'city_state' : 'New City', ...}
-  domain.update!
+Pending
 
-  domain.destroy! # raise
+==== Delete a domain
+
+	domain.destroy!
+	domain.deleted? # => true
+	domain.persisted? # => false
+
+==== Find a domain by token
+
+	domain = Charging::Domain.find_by_token('domain-token')
+
+==== Create a charge account for a domain
+
+	attributes = {
+		:bank => '237',
+		:name => 'Conta de Cobrança no Bradesco',
+		:agreement_code => '1234',
+		:portifolio_code => '25'
+		:agency => {:number => '1234'},
+		:account => {:number => '12345', :digit => '6'}
+	}
+	new_charge_account = Charging::ChargeAccount.new(attributes)
+	new_charge_account.persisted? # => false
+	new_charge_account.create!
+	new_charge_account.persisted? # => true
+
+==== List charge accounts for current domain
+
+	charge_accountes = ChargeAccount::ChargeAccount.find_all(domain)
+
+==== Find a charge account by uuid
+
+	charge_account = ChargeAccount::ChargeAccount.find_by_uuid(domain, 'supposed-uuid-for-charge-account')
+	charge_account.persisted? # => true
+
+==== List available banks for a charge account (Not working yet)
+
+Pending
+
+==== List currencies for a charge account (Not working yet)
+
+Pending
+
+==== Update an attribute of a charge account (Not working yet)
+
+Pending
+
+==== Delete a charge account (Not working yet)
+
+Pending
+
+==== Create an invoice
+
+	attributes = {
+		:kind => 1,
+		:amount => 123.45,
+		:document_number => '123456789012345',
+		:due_date => '2015-12-31'
+		:drawee => {
+			:name => 'Fulano de Tal',
+			:address => 'Rua do Carmo, 43',
+			:city_state => 'Rio de Janeiro/RJ',
+			:zipcode => '20011-020',
+			:national_identifier => '43.055.679/0001-29'
+		}
+	}
+	
+	new_invoice = Charging::Invoice.new(attributes, domain, charge_account)
+	new_invoice.persisted? # => false
+	new_invoice.create!
+	new_invoice.persisted? # => true
+
+==== Find an invoice by uuid
+
+	invoice = Charging::Invoice.find_by_uuid(domain, 'supposed-uuid-for-invoice')
+	invoice.persisted? # => true
+
+==== Get URL to print invoice
+
+	invoice.billet_url
+
+==== Delete an invoice (Not working yet)
+
+Pending
+
+==== Mark an invoice as paid (Not working yet)
+
+Pending
+
+==== List of paid invoices (Not working yet)
+
+Pending
+
+==== Batches (Not working yet)
+
+Pending
 
 == Contributing
 

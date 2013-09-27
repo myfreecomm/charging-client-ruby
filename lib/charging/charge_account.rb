@@ -20,7 +20,7 @@ module Charging
       @domain = domain
     end
 
-    # Creates current domain at API.
+    # Creates current charge account at API.
     #
     # API method: <tt>POST /account/domains/</tt>
     #
