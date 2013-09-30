@@ -48,12 +48,11 @@ module Charging
     # Default values:
     # - <tt>amount</tt>: amount
     # - <tt>date</tt>:  Time.now.strftime('%Y-%m-%d')
-    def pay!(paid_amount = amount, payment_date = Time.now, note = false)
+    def pay!(payment_data = {})
       attributes = {
-        amount: paid_amount,
-        date: payment_date.strftime('%Y-%m-%d')
-      }
-      attributes[:note] = note if note
+        amount: self.amount,
+        date: Time.now.strftime('%Y-%m-%d')
+      }.merge(payment_data)
       
       response = Http.post("/invoices/#{uuid}/pay/", domain.token, MultiJson.encode(attributes), etag: self.etag)
       

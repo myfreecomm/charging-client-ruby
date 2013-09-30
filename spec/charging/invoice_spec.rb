@@ -211,12 +211,79 @@ describe Charging::Invoice, :vcr do
       end
     }
     
-    it 'should update paid value' do
-      VCR.use_cassette('paying_an_invoice') do
-        invoice.pay!
+    context 'when something went wrong' do
+      it 'should update paid value' do
+        body = MultiJson.encode({
+          amount: invoice.amount.to_s,
+          date: Time.now.strftime('%Y-%m-%d')
+        })
+        
+        Charging::Http
+          .should_receive(:post).with("/invoices/#{uuid}/pay/", domain.token, body, etag: invoice.etag)
+          .and_return(double(:response, code: 500))
+
+        expected_error = [StandardError, 'can not create without a domain']
+        
+        expect { invoice.pay! }.to_not raise_error(*expected_error)
       end
+    end
+    
+    context 'when success payment' do
+      it 'should update paid value' do
+        VCR.use_cassette('paying_an_invoice') do
+          invoice.pay!
+        end
       
-      expect(invoice.paid).to eq(invoice.amount)
+        expect(invoice.paid).to eq(invoice.amount)
+      end
+    end
+    
+    it 'should pass a new amount' do
+      body = MultiJson.encode({
+        amount: 100,
+        date: Time.now.strftime('%Y-%m-%d')
+      })
+      
+      Charging::Http
+        .should_receive(:post).with("/invoices/#{uuid}/pay/", domain.token, body, etag: invoice.etag)
+        .and_return(double(:response, code: 201))
+      
+      invoice.should_receive(:reload_attributes!)
+      
+      invoice.pay!(amount: 100)
+    end
+    
+    it 'should pass a payment date' do
+      today = Time.now.strftime('%Y-%m-%d')
+      
+      body = MultiJson.encode({
+        amount: invoice.amount,
+        date: today
+      })
+      
+      Charging::Http
+        .should_receive(:post).with("/invoices/#{uuid}/pay/", domain.token, body, etag: invoice.etag)
+        .and_return(double(:response, code: 201))
+      
+      invoice.should_receive(:reload_attributes!)
+      
+      invoice.pay!(date: today)
+    end
+    
+    it 'should pass a note' do
+      body = MultiJson.encode({
+        amount: invoice.amount,
+        date: Time.now.strftime('%Y-%m-%d'),
+        note: 'some note for payment'
+      })
+      
+      Charging::Http
+        .should_receive(:post).with("/invoices/#{uuid}/pay/", domain.token, body, etag: invoice.etag)
+        .and_return(double(:response, code: 201))
+      
+      invoice.should_receive(:reload_attributes!)
+      
+      invoice.pay!(note: "some note for payment")
     end
   end
 end
