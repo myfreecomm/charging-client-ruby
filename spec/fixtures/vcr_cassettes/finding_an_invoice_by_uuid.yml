@@ -2,57 +2,6 @@
 http_interactions:
 - request:
     method: get
-    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Content-Type:
-      - application/json
-      User-Agent:
-      - Charging Ruby Client v0.0.1
-  response:
-    status:
-      code: 301
-      message: Moved Permanently
-    headers:
-      Cache-Control:
-      - no-cache
-      Content-Type:
-      - text/html; charset=utf-8
-      Date:
-      - Fri, 27 Sep 2013 19:23:19 GMT
-      Expires:
-      - Fri, 27 Sep 2013 19:23:18 GMT
-      Location:
-      - http://sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/
-      Server:
-      - nginx/1.1.19
-      Content-Length:
-      - '391'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
-      Connection:
-      - close
-    body:
-      encoding: UTF-8
-      string: |-
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-        <title>Redirecting...</title>
-        <h1>Redirecting...</h1>
-        <p>You should be redirected automatically to target URL: <a href="http://sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/">http://sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/</a>.  If not click the link.
-    http_version: 
-  recorded_at: Fri, 27 Sep 2013 19:23:20 GMT
-- request:
-    method: get
     uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/invoices/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/
     body:
       encoding: US-ASCII

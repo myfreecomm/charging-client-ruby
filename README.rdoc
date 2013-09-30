@@ -190,7 +190,7 @@ Pending
 
 ==== List of paid invoices (Not working yet)
 
-Pending
+  invoice.payments # => [{:amount => "123.45", :date => "2013-12-12"}]
 
 ==== Batches (Not working yet)
 

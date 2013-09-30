@@ -190,7 +190,7 @@ describe Charging::Invoice, :vcr do
 
       it 'should be nil if something wrong' do
         Charging::Http
-          .should_receive(:get).with("/invoices/#{uuid}/billet", domain.token)
+          .should_receive(:get).with("/invoices/#{uuid}/billet/", domain.token)
           .and_return(double(:server_error, code: 500, body: 'generic error message'))
 
         expect(invoice.billet_url).to be_nil
@@ -230,7 +230,7 @@ describe Charging::Invoice, :vcr do
     
     context 'when success payment' do
       it 'should update paid value' do
-        VCR.use_cassette('paying_an_invoice') do
+        VCR.use_cassette('paying an invoice') do
           invoice.pay!
         end
       
@@ -284,6 +284,30 @@ describe Charging::Invoice, :vcr do
       invoice.should_receive(:reload_attributes!)
       
       invoice.pay!(note: "some note for payment")
+    end
+  end
+  
+  describe '#payments' do
+    let!(:invoice) {
+      VCR.use_cassette('finding an invoice by uuid') do
+        described_class.find_by_uuid(domain, uuid)
+      end
+    }
+    
+    context 'invoice without payments' do
+      it 'should return an empty array' do
+        VCR.use_cassette('invoice without payments') do
+          expect(invoice.payments).to eq []
+        end
+      end
+    end
+    
+    context 'invoice with payments' do
+      it 'should return an empty array' do
+        VCR.use_cassette('invoice with payments') do
+          expect(invoice.payments).to_not be_empty
+        end
+      end
     end
   end
 end

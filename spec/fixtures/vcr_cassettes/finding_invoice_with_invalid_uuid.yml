@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/invoices/invalid-uuid
+    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/invoices/invalid-uuid/
     body:
       encoding: US-ASCII
       string: ''

@@ -63,6 +63,14 @@ module Charging
       raise Http::LastResponseError.new(excetion.response)
     end
     
+    def payments
+      response = Http.get("/invoices/#{uuid}/payments/", domain.token)
+      
+      return [] if response.code != 200
+      
+      MultiJson.decode(response.body)
+    end
+    
     # Finds an invoice by uuid. It requites an <tt>domain</tt> and a
     # <tt>uuid</tt>.
     #
@@ -92,7 +100,7 @@ module Charging
     def billet_url
       return if unpersisted?
       
-      response = Http.get("/invoices/#{uuid}/billet", domain.token)
+      response = Http.get("/invoices/#{uuid}/billet/", domain.token)
       
       return if response.code != 200
       
@@ -131,7 +139,7 @@ module Charging
     end
     
     def self.get_invoice(domain, uuid)
-      Http.get("/invoices/#{uuid}", domain.token)
+      Http.get("/invoices/#{uuid}/", domain.token)
     end
     
     def self.post_charge_accounts_invoices(domain, charge_account, attributes)
