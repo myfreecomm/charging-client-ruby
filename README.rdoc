@@ -184,9 +184,9 @@ Pending
 
 Pending
 
-==== Mark an invoice as paid (Not working yet)
+==== Mark an invoice as paid
 
-Pending
+  invoice.pay!
 
 ==== List of paid invoices (Not working yet)
 
