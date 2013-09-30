@@ -167,7 +167,7 @@ describe Charging::Invoice, :vcr do
 
       its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/invoices/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq '"75de28a49a515edef88b3285921808a3d86ea5bf"' }
+      its(:etag) { should eq '"32a54d2e9e108dc5bb172eec680dfd7fdb0f57a8"' }
       its(:domain) { should eq domain }
     end
   end
@@ -201,6 +201,22 @@ describe Charging::Invoice, :vcr do
           expect(invoice.billet_url).to eq 'http://sandbox.charging.financeconnect.com.br/billets/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/ff010b11609c4ac2b78062f2cd51f22f/'
         end
       end
+    end
+  end
+  
+  describe '#pay!' do
+    let!(:invoice) {
+      VCR.use_cassette('finding an invoice by uuid') do
+        described_class.find_by_uuid(domain, uuid)
+      end
+    }
+    
+    it 'should update paid value' do
+      VCR.use_cassette('paying_an_invoice') do
+        invoice.pay!
+      end
+      
+      expect(invoice.paid).to eq(invoice.amount)
     end
   end
 end

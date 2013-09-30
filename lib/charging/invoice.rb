@@ -34,13 +34,34 @@ module Charging
 
       raise Http::LastResponseError.new(last_response) if last_response.code != 201
 
-      reload_attributes_after_create!
+      reload_attributes!(last_response.headers[:location])
     rescue ::RestClient::Exception => exception
       @last_response = exception.response
 
       raise Http::LastResponseError.new(last_response)
     ensure
       @errors = [$ERROR_INFO.message] if $ERROR_INFO
+    end
+    
+    # Pays current invoice at API. You can pass <tt>paid_amount</tt>, 
+    # <tt>payment_date</tt> and <tt>note</tt> about payment. 
+    # Default values:
+    # - <tt>amount</tt>: amount
+    # - <tt>date</tt>:  Time.now.strftime('%Y-%m-%d')
+    def pay!(paid_amount = amount, payment_date = Time.now, note = false)
+      attributes = {
+        amount: paid_amount,
+        date: payment_date.strftime('%Y-%m-%d')
+      }
+      attributes[:note] = note if note
+      
+      response = Http.post("/invoices/#{uuid}/pay/", domain.token, MultiJson.encode(attributes), etag: self.etag)
+      
+      raise Http::LastResponseError.new(response) if response.code != 201
+      
+      reload_attributes!(self.uri)
+    rescue ::RestClient::Exception => excetion
+      raise Http::LastResponseError.new(excetion.response)
     end
     
     # Finds an invoice by uuid. It requites an <tt>domain</tt> and a
@@ -98,8 +119,8 @@ module Charging
 
     private
 
-    def reload_attributes_after_create!
-      response = Http.get(last_response.headers[:location], domain.token)
+    def reload_attributes!(uri)
+      response = Http.get(uri, domain.token)
 
       new_invoice = Invoice.load_persisted_invoice(MultiJson.decode(response.body), response, domain, charge_account)
 
