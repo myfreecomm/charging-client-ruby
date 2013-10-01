@@ -26,20 +26,13 @@ module Charging
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#post-account-domains
     def create!
-      @errors = []
-      raise 'can not create without a domain' if invalid_domain?
+      super do
+        raise 'can not create without a domain' if invalid_domain?
 
-      @last_response = ChargeAccount.post_charge_accounts(domain, attributes)
-
-      raise Http::LastResponseError.new(last_response) if last_response.code != 201
+        ChargeAccount.post_charge_accounts(domain, attributes)
+      end
 
       reload_attributes_after_create!
-    rescue ::RestClient::Exception => exception
-      @last_response = exception.response
-
-      raise Http::LastResponseError.new(last_response)
-    ensure
-      @errors = [$ERROR_INFO.message] if $ERROR_INFO
     end
 
     # Deletes the charge account at API
@@ -48,14 +41,9 @@ module Charging
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#delete-charge-accounts-uuid
     def destroy!
-      response = Http.delete("/charge-accounts/#{uuid}/", domain.token, etag)
-      
-      raise Http::LastResponseError.new(response) if response.code != 204
-      
-      @deleted = true
-      @persisted = false
-    rescue RestClient::Exception => excetion
-      raise Http::LastResponseError.new(excetion.response)
+      super do
+        Http.delete("/charge-accounts/#{uuid}/", domain.token, etag)
+      end
     end
     
     # Finds a charge account by uuid. It requites an <tt>domain</tt> and a
@@ -72,11 +60,9 @@ module Charging
       
       response = ChargeAccount.get_charge_account(domain, uuid)
       
-      raise Http::LastResponseError.new(response) if response.code != 200
+      raise_last_response_unless 200, response
       
       load_persisted_charge_account(MultiJson.decode(response.body), response, domain)
-    rescue ::RestClient::Exception => excetion
-      raise Http::LastResponseError.new(excetion.response)
     end
     
     # Finds all charge accounts for a domain. It requites an <tt>domain</tt>,
@@ -105,11 +91,9 @@ module Charging
       
       response = Http.get(uri, domain.token)
       
-      raise Http::LastResponseError.new(response) if response.code != 200
+      raise_last_response_unless 200, response
       
       ChargeAccount.load_persisted_charge_account(MultiJson.decode(response.body), response, domain)
-    rescue ::RestClient::Exception => excetion
-      raise Http::LastResponseError.new(excetion.response)
     end
     
     def self.load_persisted_charge_account(attributes, response, domain)

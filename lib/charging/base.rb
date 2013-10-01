@@ -17,6 +17,25 @@ module Charging
       normalize_etag!
     end
     
+    def create!(&block)
+      execute_and_capture_raises_at_errors do
+        @last_response = block.call
+        
+        raise_last_response_unless 201
+      end
+    end
+    
+    def destroy!(&block)
+      execute_and_capture_raises_at_errors do
+        @last_response = block.call
+
+        raise_last_response_unless 204
+      
+        @deleted = true
+        @persisted = false
+      end
+    end
+    
     def normalize_etag!
       if @etag.nil?
         @etag = last_response.headers[:etag] if last_response && last_response.code === 200
@@ -53,6 +72,29 @@ module Charging
     
     private
     
+    def self.raise_last_response_unless(status_code, response)
+      raise Http::LastResponseError.new(response) if response.code != status_code
+    end
+    
+    def raise_last_response_unless(status_code)
+      self.class.raise_last_response_unless(status_code, last_response)
+    end
+    
+    def execute_and_capture_raises_at_errors(&block)
+      reset_errors!
+      
+      block.call
+    ensure
+      if $ERROR_INFO
+        @last_response = $ERROR_INFO.last_response if $ERROR_INFO.kind_of?(Http::LastResponseError)
+        @errors = [$ERROR_INFO.message]
+      end
+    end
+    
+    def reset_errors!
+      @errors = []
+    end
+
     def get_attributes
       ((self.class::ATTRIBUTES || []) + (self.class::READ_ONLY_ATTRIBUTES || []) + COMMON_ATTRIBUTES).flatten.uniq
     end

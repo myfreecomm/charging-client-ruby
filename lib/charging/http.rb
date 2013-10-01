@@ -67,6 +67,8 @@ module Charging
         {params: params}.merge(common_params(token, etag)),
         &should_follow_redirect(follow != :no_follow)
       )
+    rescue ::RestClient::Exception => exception
+      raise LastResponseError.new(exception.response)
     end
 
     def request_without_body(method, path, params, token, follow = true)
@@ -79,6 +81,8 @@ module Charging
         {params: params}.merge(common_params(token, etag)),
         &should_follow_redirect(follow != :no_follow)
       )
+    rescue ::RestClient::Exception => exception
+      raise LastResponseError.new(exception.response)
     end
 
     def charging_path(path)

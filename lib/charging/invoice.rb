@@ -26,21 +26,25 @@ module Charging
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#post-charge-accounts-uuid-invoices
     def create!
-      @errors = []
-      raise 'can not create without a domain' if invalid_domain?
-      raise 'can not create wihtout a charge account' if invalid_charge_account?
-
-      @last_response = Invoice.post_charge_accounts_invoices(domain, charge_account, attributes)
-
-      raise Http::LastResponseError.new(last_response) if last_response.code != 201
-
+      super do
+        raise 'can not create without a domain' if invalid_domain?
+        raise 'can not create wihtout a charge account' if invalid_charge_account?
+        
+        Invoice.post_charge_accounts_invoices(domain, charge_account, attributes)
+      end
+      
       reload_attributes!(last_response.headers[:location])
-    rescue ::RestClient::Exception => exception
-      @last_response = exception.response
-
-      raise Http::LastResponseError.new(last_response)
-    ensure
-      @errors = [$ERROR_INFO.message] if $ERROR_INFO
+    end
+    
+    # Deletes the invoice at API
+    # 
+    # API method: <tt>DELETE /invoices/:uuid/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#delete-invoices-uuid
+    def destroy!
+      super do
+        Http.delete("/invoices/#{uuid}/", domain.token, etag)
+      end
     end
     
     # Pays current invoice at API. You can pass <tt>paid_amount</tt>, 
@@ -53,34 +57,23 @@ module Charging
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#post-invoices-uuid-pay
     def pay!(payment_data = {})
+      reset_errors!
+      
       attributes = {
         amount: self.amount,
         date: Time.now.strftime('%Y-%m-%d')
       }.merge(payment_data)
       
-      response = Http.post("/invoices/#{uuid}/pay/", domain.token, MultiJson.encode(attributes), etag: self.etag)
+      @last_response = Http.post("/invoices/#{uuid}/pay/", domain.token, MultiJson.encode(attributes), etag: self.etag)
       
-      raise Http::LastResponseError.new(response) if response.code != 201
+      raise_last_response_unless 201
       
       reload_attributes!(self.uri)
-    rescue ::RestClient::Exception => excetion
-      raise Http::LastResponseError.new(excetion.response)
-    end
-    
-    # Deletes the invoice at API
-    # 
-    # API method: <tt>DELETE /invoices/:uuid/</tt>
-    #
-    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#delete-invoices-uuid
-    def destroy!
-      response = Http.delete("/invoices/#{uuid}/", domain.token, etag)
-      
-      raise Http::LastResponseError.new(response) if response.code != 204
-      
-      @deleted = true
-      @persisted = false
-    rescue RestClient::Exception => excetion
-      raise Http::LastResponseError.new(excetion.response)
+    ensure
+      if $ERROR_INFO
+        @last_response = $ERROR_INFO.response if $ERROR_INFO.kind_of?(Http::LastResponseError)
+        @errors = [$ERROR_INFO.message]
+      end
     end
     
     # List all payments for an invoice
@@ -89,6 +82,8 @@ module Charging
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-uuid-payments
     def payments
+      reset_errors!
+      
       response = Http.get("/invoices/#{uuid}/payments/", domain.token)
       
       return [] if response.code != 200
@@ -110,11 +105,9 @@ module Charging
       
       response = Invoice.get_invoice(domain, uuid)
       
-      raise Http::LastResponseError.new(response) if response.code != 200
+      raise_last_response_unless 200, response
       
       load_persisted_invoice(MultiJson.decode(response.body), response, domain)
-    rescue ::RestClient::Exception => excetion
-      raise Http::LastResponseError.new(excetion.response)
     end
     
     # Returns a String with the temporary URL for print current invoice.
@@ -150,7 +143,7 @@ module Charging
     end
 
     private
-
+    
     def reload_attributes!(uri)
       response = Http.get(uri, domain.token)
 

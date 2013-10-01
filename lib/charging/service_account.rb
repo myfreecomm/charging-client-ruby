@@ -5,7 +5,7 @@ module Charging
   class ServiceAccount
     ATTRIBUTES = [:plan, :name, :uri, :uuid]
 
-    attr_accessor *ATTRIBUTES
+    attr_accessor(*ATTRIBUTES)
 
     # Responds the last http response from the API.
     attr_reader :last_response

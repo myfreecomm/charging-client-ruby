@@ -25,20 +25,13 @@ module Charging
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#post-account-domains
     def create!
-      @errors = []
-      raise 'can not create without a service account' if invalid_account?
+      super do
+        raise 'can not create without a service account' if invalid_account?
 
-      @last_response = Domain.post_account_domains(account.application_token, attributes)
-
-      raise Http::LastResponseError.new(last_response) if last_response.code != 201
+        Domain.post_account_domains(account.application_token, attributes)
+      end
 
       reload_attributes_after_create!
-    rescue ::RestClient::Exception => exception
-      @last_response = exception.response
-
-      raise Http::LastResponseError.new(last_response)
-    ensure
-      @errors = [$ERROR_INFO.message] if $ERROR_INFO
     end
 
     # Destroys current domain at API.
@@ -47,21 +40,12 @@ module Charging
     #
     # API documentation: https://charging.financeconnect.com.br/static/docs/accounts_and_domains.html#delete-account-domains-uuid
     def destroy!
-      @errors = []
-      raise 'can not destroy without a service account' if invalid_account?
-      raise 'can not destroy a not persisted domain' unless persisted?
-
-      @last_response = Domain.delete_account_domains(self)
-
-      raise Http::LastResponseError.new(last_response) if last_response.code != 204
-
-      reload_attributes_after_delete!
-    rescue ::RestClient::Exception => exception
-      @last_response = exception.response
-
-      raise Http::LastResponseError.new(last_response)
-    ensure
-      @errors = [$ERROR_INFO.message] if $ERROR_INFO
+      super do
+        raise 'can not destroy without a service account' if invalid_account?
+        raise 'can not destroy a not persisted domain' unless persisted?
+        
+        Domain.delete_account_domains(self)
+      end
     end
 
     # Finds all domains for a specified account. It requites an ServiceAccount
@@ -95,11 +79,9 @@ module Charging
 
       response = get_account_domain(account, uuid)
 
-      raise Http::LastResponseError.new(response) if response.code != 200
+      raise_last_response_unless 200, response
 
       load_persisted_domain(MultiJson.decode(response.body), response, account)
-    rescue ::RestClient::Exception => exception
-      raise Http::LastResponseError.new(exception.response)
     end
 
     # Finds a domain by its authentication token. It requites an <tt>token</tt>.
@@ -115,11 +97,9 @@ module Charging
 
       response = get_domain(token)
 
-      raise Http::LastResponseError.new(response) if response.code != 200
+      raise_last_response_unless 200, response
 
       load_persisted_domain(MultiJson.decode(response.body), response)
-    rescue ::RestClient::Exception => exception
-      raise Http::LastResponseError.new(exception.response)
     end
 
     def self.load_persisted_domain(attributes, response, account = nil) # :nodoc:
@@ -128,13 +108,6 @@ module Charging
     end
 
     private
-
-    def reload_attributes_after_delete!
-      @deleted = true
-      @persisted = false
-
-      self
-    end
 
     def reload_attributes_after_create!
       response = Http.get(last_response.headers[:location], account.application_token)
