@@ -19,23 +19,23 @@ module Charging
     module_function
 
     def get(path, token, params = {})
-      request_with_body(:get, path, params, token)
+      request_to_api(:get, path, params, token)
     end
 
     def delete(path, token, etag)
-      request_with_body(:delete, path, {etag: etag}, token)
+      request_to_api(:delete, path, {etag: etag}, token)
     end
 
     def post(path, token, body = {}, params = {})
-      request_with_body(:post, path, params, token, body)
+      request_to_api(:post, path, params, token, body)
     end
 
     def put(path, token, body = {}, params = {})
-      request_with_body(:put, path, params, token, body)
+      request_to_api(:put, path, params, token, body)
     end
 
     def patch(path, token, body = {}, params = {})
-      request_with_body(:patch, path, params, token, body)
+      request_to_api(:patch, path, params, token, body)
     end
 
     def basic_credential_for(user, password = nil)
@@ -56,7 +56,7 @@ module Charging
       }
     end
     
-    def request_with_body(method, path, params, token, body = nil)
+    def request_to_api(method, path, params, token, body = nil)
       path = charging_path(path) unless path.start_with?('http')
       etag = params.delete(:etag)
       

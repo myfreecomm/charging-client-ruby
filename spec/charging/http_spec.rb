@@ -15,7 +15,7 @@ describe Charging::Http do
     end
   end
 
-  describe '.request_with_body' do
+  describe '.request_to_api' do
     %w[post put patch].each do |method|
       context 'with body as json' do
         it "should use RestClient.#{method} with the supplied params and common options" do
@@ -29,7 +29,7 @@ describe Charging::Http do
             user_agent: configuration.user_agent
           ).and_return(mock_response)
 
-          described_class.request_with_body(method, '/foo', {}, 'some-app-token', {hello: 'world'})
+          described_class.request_to_api(method, '/foo', {}, 'some-app-token', {hello: 'world'})
         end
       end
 
@@ -45,15 +45,15 @@ describe Charging::Http do
             user_agent: configuration.user_agent
           ).and_return(mock_response)
 
-          described_class.request_with_body(method, '/foo', {}, 'some-app-token', '{"hello":"world"}')
+          described_class.request_to_api(method, '/foo', {}, 'some-app-token', '{"hello":"world"}')
         end
       end
     end
   end
 
   describe ".delete"  do
-    it 'should delegate to request_with_body' do
-      Charging::Http.should_receive(:request_with_body).with(
+    it 'should delegate to request_to_api' do
+      Charging::Http.should_receive(:request_to_api).with(
         :delete,
         '/foo',
         {etag: 'etag'},
@@ -65,8 +65,8 @@ describe Charging::Http do
   end
 
   describe ".get"  do
-    it 'should delegate to request_with_body' do
-      Charging::Http.should_receive(:request_with_body).with(
+    it 'should delegate to request_to_api' do
+      Charging::Http.should_receive(:request_to_api).with(
         :get,
         '/foo',
         {},
@@ -79,8 +79,8 @@ describe Charging::Http do
 
   %w[post put patch].each do |method|
     describe ".#{method}"  do
-      it 'should delegate to request_with_body' do
-        Charging::Http.should_receive(:request_with_body).with(
+      it 'should delegate to request_to_api' do
+        Charging::Http.should_receive(:request_to_api).with(
           method.to_sym,
           '/foo',
           {spam: 'eggs'},
