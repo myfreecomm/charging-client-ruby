@@ -93,6 +93,33 @@ describe Charging::ChargeAccount, :vcr do
       end
     end
   end
+  
+  describe '#destroy!' do
+    context 'try delete a charge account with invoices' do
+      it 'should raise' do
+        VCR.use_cassette('try delete a charge account') do
+          charge_account = described_class.find_by_uuid(domain, uuid)
+          
+          expect { charge_account.destroy! }.to raise_error Charging::Http::LastResponseError
+          
+          expect(charge_account).to_not be_deleted
+          expect(charge_account).to be_persisted
+        end
+      end
+    end
+
+    it 'should delete charge account at API' do
+      VCR.use_cassette('deleting a charge account') do
+        charge_account = described_class.new(attributes, domain)
+        expect { charge_account.create! }.to_not raise_error
+        expect(charge_account).to be_persisted
+        
+        expect { charge_account.destroy! }.to_not raise_error
+        expect(charge_account).to be_deleted
+        expect(charge_account).to_not be_persisted
+      end
+    end
+  end
 
   describe '.find_all' do
     it 'should require an account' do

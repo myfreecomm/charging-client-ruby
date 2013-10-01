@@ -42,6 +42,22 @@ module Charging
       @errors = [$ERROR_INFO.message] if $ERROR_INFO
     end
 
+    # Deletes the charge account at API
+    # 
+    # API method: <tt>DELETE /charge-accounts/:uuid/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#delete-charge-accounts-uuid
+    def destroy!
+      response = Http.delete("/charge-accounts/#{uuid}/", domain.token, etag)
+      
+      raise Http::LastResponseError.new(response) if response.code != 204
+      
+      @deleted = true
+      @persisted = false
+    rescue RestClient::Exception => excetion
+      raise Http::LastResponseError.new(excetion.response)
+    end
+    
     # Finds a charge account by uuid. It requites an <tt>domain</tt> and a
     # <tt>uuid</tt>.
     #
