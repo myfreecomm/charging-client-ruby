@@ -148,7 +148,7 @@ Pending
 
 ==== Delete a charge account (Not working yet)
 
-Pending
+  charge_account.destroy!
 
 ==== Create an invoice
 
