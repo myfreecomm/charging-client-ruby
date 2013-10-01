@@ -29,7 +29,7 @@ describe Charging::Http do
             user_agent: configuration.user_agent
           ).and_return(mock_response)
 
-          described_class.request_with_body(method, '/foo', {hello: 'world'}, {}, 'some-app-token')
+          described_class.request_with_body(method, '/foo', {}, 'some-app-token', {hello: 'world'})
         end
       end
 
@@ -45,37 +45,19 @@ describe Charging::Http do
             user_agent: configuration.user_agent
           ).and_return(mock_response)
 
-          described_class.request_with_body(method, '/foo', '{"hello":"world"}', {}, 'some-app-token')
+          described_class.request_with_body(method, '/foo', {}, 'some-app-token', '{"hello":"world"}')
         end
       end
     end
   end
 
-  describe '.request_without_body' do
-    %w[get delete].each do |method|
-      it "should use RestClient.#{method} with the supplied params and common options" do
-        RestClient.should_receive(method).with(
-          "#{configuration.url}/foo",
-          params: {spam: 'eggs'},
-          authorization: 'Basic OnNvbWUtYXBwLXRva2Vu',
-          content_type: :json,
-          accept: :json,
-          user_agent: configuration.user_agent
-        ).and_return(mock_response)
-
-        described_class.request_without_body(method, '/foo', {spam: 'eggs'}, 'some-app-token')
-      end
-    end
-  end
-
   describe ".delete"  do
-    it 'should delegate to request_without_body' do
-      Charging::Http.should_receive(:request_without_body).with(
+    it 'should delegate to request_with_body' do
+      Charging::Http.should_receive(:request_with_body).with(
         :delete,
         '/foo',
         {etag: 'etag'},
-        'some-app-token',
-        :no_follow
+        'some-app-token'
       )
 
       described_class.delete('/foo', 'some-app-token', 'etag')
@@ -83,8 +65,8 @@ describe Charging::Http do
   end
 
   describe ".get"  do
-    it 'should delegate to request_without_body' do
-      Charging::Http.should_receive(:request_without_body).with(
+    it 'should delegate to request_with_body' do
+      Charging::Http.should_receive(:request_with_body).with(
         :get,
         '/foo',
         {},
@@ -101,9 +83,9 @@ describe Charging::Http do
         Charging::Http.should_receive(:request_with_body).with(
           method.to_sym,
           '/foo',
-          'body',
           {spam: 'eggs'},
-          'some-app-token'
+          'some-app-token',
+          'body'
         )
 
         described_class.send(method, '/foo', 'some-app-token', 'body', spam: 'eggs')

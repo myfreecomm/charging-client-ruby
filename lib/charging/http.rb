@@ -19,23 +19,23 @@ module Charging
     module_function
 
     def get(path, token, params = {})
-      request_without_body(:get, path, params, token)
+      request_with_body(:get, path, params, token)
     end
 
     def delete(path, token, etag)
-      request_without_body(:delete, path, {etag: etag}, token, :no_follow)
+      request_with_body(:delete, path, {etag: etag}, token)
     end
 
     def post(path, token, body = {}, params = {})
-      request_with_body(:post, path, body, params, token)
+      request_with_body(:post, path, params, token, body)
     end
 
     def put(path, token, body = {}, params = {})
-      request_with_body(:put, path, body, params, token)
+      request_with_body(:put, path, params, token, body)
     end
 
     def patch(path, token, body = {}, params = {})
-      request_with_body(:patch, path, body, params, token)
+      request_with_body(:patch, path, params, token, body)
     end
 
     def basic_credential_for(user, password = nil)
@@ -55,31 +55,17 @@ module Charging
         end
       }
     end
-
-    def request_with_body(method, path, body, params, token, follow = true)
+    
+    def request_with_body(method, path, params, token, body = nil)
       path = charging_path(path) unless path.start_with?('http')
       etag = params.delete(:etag)
+      
+      args = [method, path]
+      args << encoded_body(body) if body
 
-      RestClient.send(
-        method,
-        path,
-        encoded_body(body),
+      RestClient.send(*args,
         {params: params}.merge(common_params(token, etag)),
-        &should_follow_redirect(follow != :no_follow)
-      )
-    rescue ::RestClient::Exception => exception
-      raise LastResponseError.new(exception.response)
-    end
-
-    def request_without_body(method, path, params, token, follow = true)
-      path = charging_path(path) unless path.start_with?('http')
-      etag = params.delete(:etag)
-
-      RestClient.send(
-        method,
-        path,
-        {params: params}.merge(common_params(token, etag)),
-        &should_follow_redirect(follow != :no_follow)
+        &should_follow_redirect
       )
     rescue ::RestClient::Exception => exception
       raise LastResponseError.new(exception.response)
