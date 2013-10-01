@@ -167,7 +167,7 @@ describe Charging::Invoice, :vcr do
 
       its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/invoices/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq '"32a54d2e9e108dc5bb172eec680dfd7fdb0f57a8"' }
+      its(:etag) { should eq '"ce7b6d5a436b975345129e1838ba1f4600f7bb2d"' }
       its(:domain) { should eq domain }
     end
   end
@@ -307,6 +307,32 @@ describe Charging::Invoice, :vcr do
         VCR.use_cassette('invoice with payments') do
           expect(invoice.payments).to_not be_empty
         end
+      end
+    end
+  end
+  
+  describe '#destroy!' do
+    it 'should raise delete an invoice at API' do
+      VCR.use_cassette('try delete an invoice with payments') do
+        invoice = described_class.find_by_uuid(domain, uuid)
+        
+        expect { invoice.destroy! }.to raise_error Charging::Http::LastResponseError
+        
+        expect(invoice).to_not be_deleted
+        expect(invoice).to be_persisted
+      end
+    end
+
+    it 'should delete an invoice at API' do
+      VCR.use_cassette('deleting an invoice') do
+        invoice = described_class.new(attributes, domain, charge_account)
+        expect { invoice.create! }.to_not raise_error
+        expect(invoice).to be_persisted
+        
+        expect { invoice.destroy! }.to_not raise_error
+        
+        expect(invoice).to be_deleted
+        expect(invoice).to_not be_persisted
       end
     end
   end

@@ -16,7 +16,7 @@ http_interactions:
       User-Agent:
       - Charging Ruby Client v0.0.1
       If-Match:
-      - '"32a54d2e9e108dc5bb172eec680dfd7fdb0f57a8"'
+      - '"ce7b6d5a436b975345129e1838ba1f4600f7bb2d"'
       Content-Length:
       - '39'
   response:

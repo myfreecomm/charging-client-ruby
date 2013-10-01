@@ -48,6 +48,10 @@ module Charging
     # Default values:
     # - <tt>amount</tt>: amount
     # - <tt>date</tt>:  Time.now.strftime('%Y-%m-%d')
+    #
+    # API method: <tt>POST /invoices/:uuid/pay/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#post-invoices-uuid-pay
     def pay!(payment_data = {})
       attributes = {
         amount: self.amount,
@@ -63,6 +67,27 @@ module Charging
       raise Http::LastResponseError.new(excetion.response)
     end
     
+    # Deletes the invoice at API
+    # 
+    # API method: <tt>DELETE /invoices/:uuid/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#delete-invoices-uuid
+    def destroy!
+      response = Http.delete("/invoices/#{uuid}/", domain.token, etag)
+      
+      raise Http::LastResponseError.new(response) if response.code != 204
+      
+      @deleted = true
+      @persisted = false
+    rescue RestClient::Exception => excetion
+      raise Http::LastResponseError.new(excetion.response)
+    end
+    
+    # List all payments for an invoice
+    #
+    # API method: <tt>GET /invoices/:uuid/payments/</tt>
+    #
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-uuid-payments
     def payments
       response = Http.get("/invoices/#{uuid}/payments/", domain.token)
       

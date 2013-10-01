@@ -180,9 +180,11 @@ Pending
 
   invoice.billet_url # => 'https://charging.financeconnect.com.br/billets/6a60.../ff01.../'
 
-==== Delete an invoice (Not working yet)
+==== Delete an invoice
 
-Pending
+  invoice.destroy!
+  invoice.deleted? # => true
+  invoice.persisted? # => false
 
 ==== Mark an invoice as paid
 
@@ -190,7 +192,7 @@ Pending
 
 ==== List of paid invoices (Not working yet)
 
-  invoice.payments # => [{:amount => "123.45", :date => "2013-12-12"}]
+  invoice.payments
 
 ==== Batches (Not working yet)
 
