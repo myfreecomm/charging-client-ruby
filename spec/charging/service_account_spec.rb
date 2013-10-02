@@ -2,6 +2,14 @@
 require 'spec_helper'
 
 describe Charging::ServiceAccount, :vcr do
+  describe '.current' do
+    it 'should return current service account' do
+      VCR.use_cassette('valid request for get current account') do
+        expect { described_class.current }.to_not raise_error
+      end
+    end
+  end
+
   describe '.find_by_token' do
     context 'with an invalid application token' do
       it 'should raise a last response error' do

@@ -12,6 +12,10 @@ module Charging
 
     # Responds the current application token
     attr_reader :application_token
+    
+    def self.current
+      @current ||= find_by_token(Charging.configuration.application_token)
+    end
 
     # Initializes a service account instance, to represent a charging account
     def initialize(attributes, response, token) # :nodoc:

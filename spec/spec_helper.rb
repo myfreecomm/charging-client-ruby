@@ -35,6 +35,7 @@ RSpec.configure do |c|
   c.before(:vcr => true) do
     Charging.configure do |config|
       config.url = 'http://sandbox.charging.financeconnect.com.br'
+      config.application_token = 'AwdhihciTgORGUjnkuk1vg=='
     end
   end
 end

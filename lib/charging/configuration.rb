@@ -3,14 +3,15 @@ require 'base64'
 
 module Charging
   class Configuration
-    attr_accessor :url, :user_agent
+    attr_accessor :application_token, :url, :user_agent
 
-    def initialize
+    def initialize(application_token = nil)
+      @application_token = application_token
       @url = 'https://charging.financeconnect.com.br'
       @user_agent = "Charging Ruby Client v#{Charging::VERSION}"
     end
 
-    def credentials_for(token)
+    def credentials_for(token = application_token)
       check_valid_token!(token)
       encrypted_token = ::Base64.strict_encode64(":#{token}")
       "Basic #{encrypted_token}"
@@ -18,7 +19,7 @@ module Charging
 
     private
 
-    def check_valid_token!(token)
+    def check_valid_token!(token = application_token)
       invalid = token.nil? || token.to_s.strip.empty?
       raise(ArgumentError, "#{token.inspect} is not a valid token") if invalid
       true

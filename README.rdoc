@@ -38,6 +38,10 @@ TODO
   require "charging"
   
   Charging.configure do |c|
+    # You application token at Charging Service
+    # Required
+    c.application_token = 'YourApptoken=='
+    
     # URL for request data.
     # Default: 'https://charging.finnanceconnect.com.br'
     c.url = 'http://sandbox.charging.financeconnect.com.br'
@@ -51,7 +55,7 @@ TODO
 
 ==== Getting info about your service account
 
-  account = Charging::Account.find_by_token('some-appplication-token')
+  account = Charging::ServiceAccount.current
   
   account.name # => 'Your App Name on Charging'
   
@@ -59,7 +63,7 @@ TODO
   account.last_response.code # => 200
   
   begin
-    account = Charging::Account.find_by_token('invalid-appplication-token')
+    account = Charging::ServiceAccount.current
   rescue Charging::Http::LastResponseError => exception
     exception.last_response # an unauthorized RestClient::Response instance
     exception.last_response.code # 401
