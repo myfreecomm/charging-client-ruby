@@ -85,7 +85,7 @@ TODO
     description         => 'A Myfreecomm é uma empresa moderna...'
   }
   
-  new_domain = Charging::Domain.new(attributes)
+  new_domain = Charging::Domain.new(attributes, account)
   
   new_domain.persisted? # => false
   new_domain.create!
@@ -124,7 +124,7 @@ Pending
     :agency => {:number => '1234'},
     :account => {:number => '12345', :digit => '6'}
   }
-  new_charge_account = Charging::ChargeAccount.new(attributes)
+  new_charge_account = Charging::ChargeAccount.new(attributes, domain)
   new_charge_account.persisted? # => false
   new_charge_account.create!
   new_charge_account.persisted? # => true
