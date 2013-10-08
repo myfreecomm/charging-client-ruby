@@ -30,12 +30,12 @@ module Charging
       request_to_api(:post, path, params, token, body)
     end
 
-    def put(path, token, body = {}, params = {})
-      request_to_api(:put, path, params, token, body)
+    def put(path, token, etag, body = {})
+      request_to_api(:put, path, {etag: etag}, token, body)
     end
 
-    def patch(path, token, body = {}, params = {})
-      request_to_api(:patch, path, params, token, body)
+    def patch(path, token, etag, body = {})
+      request_to_api(:patch, path, {etag: etag}, token, body)
     end
 
     def basic_credential_for(user, password = nil)

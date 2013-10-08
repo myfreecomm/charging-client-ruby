@@ -77,7 +77,7 @@ describe Charging::Http do
     end
   end
 
-  %w[post put patch].each do |method|
+  %w[post].each do |method|
     describe ".#{method}"  do
       it 'should delegate to request_to_api' do
         Charging::Http.should_receive(:request_to_api).with(
@@ -89,6 +89,22 @@ describe Charging::Http do
         )
 
         described_class.send(method, '/foo', 'some-app-token', 'body', spam: 'eggs')
+      end
+    end
+  end
+  
+  %w[put patch].each do |method|
+    describe ".#{method}"  do
+      it 'should delegate to request_to_api' do
+        Charging::Http.should_receive(:request_to_api).with(
+          method.to_sym,
+          '/foo',
+          {etag: 'etag'},
+          'some-app-token',
+          'body'
+        )
+
+        described_class.send(method, '/foo', 'some-app-token', 'etag', 'body')
       end
     end
   end
