@@ -120,6 +120,32 @@ describe Charging::ChargeAccount, :vcr do
       end
     end
   end
+  
+  describe '#update_attribute!' do
+    context 'try update a readonly attribute on charge account' do
+      xit 'should raise' do
+        VCR.use_cassette('try update bank attribute on charge account') do
+          charge_account = described_class.find_by_uuid(domain, uuid)
+          
+          expect(charge_account.bank).to eq '237'
+          expect { charge_account.update_attribute! :bank, '341' }.to raise_error Charging::Http::LastResponseError
+          expect(charge_account.bank).to eq '237'
+        end
+      end
+    end
+
+    xit 'should delete charge account at API' do
+      VCR.use_cassette('deleting a charge account') do
+        charge_account = described_class.new(attributes, domain)
+        expect { charge_account.create! }.to_not raise_error
+        expect(charge_account).to be_persisted
+        
+        expect { charge_account.destroy! }.to_not raise_error
+        expect(charge_account).to be_deleted
+        expect(charge_account).to_not be_persisted
+      end
+    end
+  end
 
   describe '.find_all' do
     it 'should require an account' do

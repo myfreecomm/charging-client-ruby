@@ -47,6 +47,15 @@ module Charging
       end
     end
     
+    # Update an attribute on charge account at API
+    # 
+    # API method: <tt>PATCH /charge-accounts/:uuid/</tt>
+    # 
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#patch-charge-accounts-uuid
+    def update_attribute!(attribute, value)
+      # Http.patch("/charge-accounts/#{uuid}/", domain.token, etag, attribute => value)
+    end
+    
     # Finds a charge account by uuid. It requites an <tt>domain</tt> and a
     # <tt>uuid</tt>.
     #

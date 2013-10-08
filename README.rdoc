@@ -146,9 +146,9 @@ Pending
 
 Pending
 
-==== Update an attribute of a charge account (Not working yet)
+==== Update an attribute of a charge account (Work in progress)
 
-Pending
+  charge_account.update_attribute! name: 'Conta de Cobrança'
 
 ==== Delete a charge account
 
