@@ -8,8 +8,9 @@ module Charging
     READ_ONLY_ATTRIBUTES = [:national_identifier]
     
     ATTRIBUTES = [
-      :account, :agency, :name, :portfolio_code, :address, :sequence_numbers,
-      :currency, :agreement_code, :supplier_name, :advance_days, :bank
+      :account, :agency, :name, :portfolio_code, :address, :zipcode, 
+      :sequence_numbers, :currency, :agreement_code, :supplier_name, 
+      :advance_days, :bank, :our_number_range, :default_charging_features
     ]
 
     attr_accessor(*ATTRIBUTES)
