@@ -67,7 +67,7 @@ module Charging
     def self.validate_attributes!(attributes) # :nodoc:
       keys = attributes.keys.map(&:to_sym)
       diff = keys - (const_get(:ATTRIBUTES) + const_get(:READ_ONLY_ATTRIBUTES) + COMMON_ATTRIBUTES)
-      raise ArgumentError, "Invalid attributes for domain: #{attributes.inspect}" if diff.any?
+      raise ArgumentError, "Invalid attributes for #{self.name}: #{attributes.inspect}" if diff.any?
     end
     
     private
