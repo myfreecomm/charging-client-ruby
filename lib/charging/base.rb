@@ -18,19 +18,17 @@ module Charging
     end
     
     def create!(&block)
-      execute_and_capture_raises_at_errors do
+      execute_and_capture_raises_at_errors(201) do
         @last_response = block.call
-        
-        raise_last_response_unless 201
       end
     end
     
     def destroy!(&block)
-      execute_and_capture_raises_at_errors do
+      execute_and_capture_raises_at_errors(204) do
         @last_response = block.call
-
-        raise_last_response_unless 204
+      end
       
+      if errors.empty?
         @deleted = true
         @persisted = false
       end
@@ -80,10 +78,12 @@ module Charging
       self.class.raise_last_response_unless(status_code, last_response)
     end
     
-    def execute_and_capture_raises_at_errors(&block)
+    def execute_and_capture_raises_at_errors(success_code, &block)
       reset_errors!
       
       block.call
+
+      raise_last_response_unless success_code
     ensure
       if $ERROR_INFO
         @last_response = $ERROR_INFO.last_response if $ERROR_INFO.kind_of?(Http::LastResponseError)

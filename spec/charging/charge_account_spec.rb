@@ -123,7 +123,7 @@ describe Charging::ChargeAccount, :vcr do
   
   describe '#update_attribute!' do
     context 'try update a readonly attribute on charge account' do
-      xit 'should raise' do
+      it 'should raise' do
         VCR.use_cassette('try update bank attribute on charge account') do
           charge_account = described_class.find_by_uuid(domain, uuid)
           
@@ -134,15 +134,14 @@ describe Charging::ChargeAccount, :vcr do
       end
     end
 
-    xit 'should delete charge account at API' do
-      VCR.use_cassette('deleting a charge account') do
-        charge_account = described_class.new(attributes, domain)
-        expect { charge_account.create! }.to_not raise_error
-        expect(charge_account).to be_persisted
+    it 'should delete charge account at API' do
+      VCR.use_cassette('updating an attribute at charge account') do
+        charge_account = described_class.find_by_uuid(domain, uuid)
         
-        expect { charge_account.destroy! }.to_not raise_error
-        expect(charge_account).to be_deleted
-        expect(charge_account).to_not be_persisted
+        expect { charge_account.update_attribute! :address, '123 New Address St.' }.to_not raise_error
+        expect(charge_account).to be_persisted
+
+        expect(charge_account.address).to eq '123 New Address St.'
       end
     end
   end

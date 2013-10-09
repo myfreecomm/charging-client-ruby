@@ -33,7 +33,7 @@ module Charging
         ChargeAccount.post_charge_accounts(domain, attributes)
       end
 
-      reload_attributes_after_create!
+      reload_attributes!
     end
 
     # Deletes the charge account at API
@@ -53,7 +53,11 @@ module Charging
     # 
     # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#patch-charge-accounts-uuid
     def update_attribute!(attribute, value)
-      # Http.patch("/charge-accounts/#{uuid}/", domain.token, etag, attribute => value)
+      execute_and_capture_raises_at_errors(204) do
+        @last_response = Http.patch("/charge-accounts/#{uuid}/", domain.token, etag, attribute => value)
+      end
+      
+      reload_attributes!
     end
     
     # Finds a charge account by uuid. It requites an <tt>domain</tt> and a
@@ -117,10 +121,10 @@ module Charging
       domain.nil?
     end
     
-    def reload_attributes_after_create!
+    def reload_attributes!
       new_charge_account = ChargeAccount.find_by_uri(domain, last_response.headers[:location])
-
-      (COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
+      
+      (ATTRIBUTES + COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
         instance_variable_set "@#{attribute}", new_charge_account.send(attribute)
       end
 
