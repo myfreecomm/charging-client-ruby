@@ -25,7 +25,7 @@ http_interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 24 Sep 2013 22:02:13 GMT
+      - Wed, 09 Oct 2013 20:58:51 GMT
       Server:
       - nginx/1.1.19
       Content-Length:
@@ -41,5 +41,5 @@ http_interactions:
         hvOIJfMhEwKHEn3TgbQj44VhG6SX1J1UqkerSFpCXlH+HEgD25JStX5A+jtn
         esiHrHXIWSuCH7+KaarpAAAA
     http_version: 
-  recorded_at: Tue, 24 Sep 2013 22:02:13 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:51 GMT
 recorded_with: VCR 2.5.0

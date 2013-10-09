@@ -23,31 +23,25 @@ http_interactions:
   response:
     status:
       code: 409
-      message: Conflict
+      message: CONFLICT
     headers:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Fri, 20 Sep 2013 20:25:53 GMT
+      - Wed, 09 Oct 2013 20:58:55 GMT
       Server:
       - nginx/1.1.19
       Content-Length:
-      - '144'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
+      - '159'
       Connection:
-      - close
+      - keep-alive
     body:
       encoding: UTF-8
       string: |
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
         <title>409 Conflict</title>
         <h1>Conflict</h1>
-        <p>national_identifier already in use</p>
+        <p>national_identifier already in use, etag required</p>
     http_version: 
-  recorded_at: Fri, 20 Sep 2013 20:25:52 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:55 GMT
 recorded_with: VCR 2.5.0

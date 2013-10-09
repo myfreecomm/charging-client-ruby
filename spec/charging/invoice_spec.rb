@@ -167,7 +167,7 @@ describe Charging::Invoice, :vcr do
 
       its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/invoices/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq '"ce7b6d5a436b975345129e1838ba1f4600f7bb2d"' }
+      its(:etag) { should eq subject.last_response.headers[:etag] }
       its(:domain) { should eq domain }
     end
   end

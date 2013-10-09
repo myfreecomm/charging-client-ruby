@@ -18,24 +18,18 @@ http_interactions:
   response:
     status:
       code: 401
-      message: Unauthorized
+      message: UNAUTHORIZED
     headers:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Fri, 20 Sep 2013 20:25:54 GMT
+      - Wed, 09 Oct 2013 20:59:09 GMT
       Server:
       - nginx/1.1.19
       Content-Length:
       - '339'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
       Connection:
-      - close
+      - keep-alive
     body:
       encoding: UTF-8
       string: |
@@ -44,5 +38,5 @@ http_interactions:
         <h1>Unauthorized</h1>
         <p>The server could not verify that you are authorized to access the URL requested.  You either supplied the wrong credentials (e.g. a bad password), or your browser doesn't understand how to supply the credentials required.</p>
     http_version: 
-  recorded_at: Fri, 20 Sep 2013 20:25:53 GMT
+  recorded_at: Wed, 09 Oct 2013 20:59:09 GMT
 recorded_with: VCR 2.5.0

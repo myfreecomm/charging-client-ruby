@@ -25,11 +25,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 20 Sep 2013 20:25:51 GMT
+      - Wed, 09 Oct 2013 20:58:53 GMT
       Etag:
       - '"7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee"'
       Expires:
-      - Fri, 20 Sep 2013 20:25:50 GMT
+      - Wed, 09 Oct 2013 20:58:52 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts,
         <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains,
@@ -39,14 +39,8 @@ http_interactions:
       - nginx/1.1.19
       Content-Length:
       - '532'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
       Connection:
-      - close
+      - keep-alive
     body:
       encoding: UTF-8
       string: '{"uuid": "335ca81f-626f-44e2-9b72-da98333166b3", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/335ca81f-626f-44e2-9b72-da98333166b3/",
@@ -56,5 +50,5 @@ http_interactions:
         123 - Jacarepagu\u00e1", "description": "Descri\u00e7\u00e3o incr\u00edvel
         sobre a Acme El\u00e9trica"}'
     http_version: 
-  recorded_at: Fri, 20 Sep 2013 20:25:51 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:53 GMT
 recorded_with: VCR 2.5.0

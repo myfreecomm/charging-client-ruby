@@ -25,11 +25,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 09 Oct 2013 17:37:48 GMT
+      - Wed, 09 Oct 2013 20:58:50 GMT
       Etag:
-      - '"694ac9fd43b8a91aa645355275c75b72b9556f24"'
+      - '"1b6c80c793cb047f5a8be084138a5b77b51697a7"'
       Expires:
-      - Wed, 09 Oct 2013 17:37:47 GMT
+      - Wed, 09 Oct 2013 20:58:49 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/>;
         rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/return/>;
@@ -39,20 +39,20 @@ http_interactions:
       Server:
       - nginx/1.1.19
       Content-Length:
-      - '683'
+      - '691'
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
       string: '{"account": {"digit": "8", "number": 1234}, "agency": {"digit": "",
-        "number": 354}, "name": "Conta de Cobran\u00e7a no Bradesco", "etag": "694ac9fd43b8a91aa645355275c75b72b9556f24",
-        "portfolio_code": "25", "address": "new address", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
+        "number": 354}, "name": "Conta de Cobran\u00e7a no Bradesco", "etag": "1b6c80c793cb047f5a8be084138a5b77b51697a7",
+        "portfolio_code": "25", "address": "123 New Address St.", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
         "zipcode": "29646", "sequence_numbers": [1, 10], "currency": 9, "national_identifier":
         "03.448.307/9170-25", "our_number_range": [1, 10], "agreement_code": "1234",
         "default_charging_features": [1, 2, 1, 2, 2], "supplier_name": "Springfield
         Elemenary School", "advance_days": 10, "bank": "237", "uuid": "29e77bc5-0e70-444c-a922-3149e78d905b"}'
     http_version: 
-  recorded_at: Wed, 09 Oct 2013 17:37:49 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:50 GMT
 - request:
     method: patch
     uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/
@@ -69,7 +69,7 @@ http_interactions:
       User-Agent:
       - Charging Ruby Client v0.0.1
       If-Match:
-      - '"694ac9fd43b8a91aa645355275c75b72b9556f24"'
+      - '"1b6c80c793cb047f5a8be084138a5b77b51697a7"'
       Content-Length:
       - '14'
   response:
@@ -80,7 +80,7 @@ http_interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 09 Oct 2013 17:37:49 GMT
+      - Wed, 09 Oct 2013 20:58:50 GMT
       Server:
       - nginx/1.1.19
       Content-Length:
@@ -91,5 +91,5 @@ http_interactions:
       encoding: UTF-8
       string: 'invalid parameter bank_code: 341'
     http_version: 
-  recorded_at: Wed, 09 Oct 2013 17:37:49 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:50 GMT
 recorded_with: VCR 2.5.0

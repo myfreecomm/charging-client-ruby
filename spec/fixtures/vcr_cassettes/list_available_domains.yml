@@ -25,23 +25,17 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 20 Sep 2013 20:25:51 GMT
+      - Wed, 09 Oct 2013 20:58:52 GMT
       Expires:
-      - Fri, 20 Sep 2013 20:25:50 GMT
+      - Wed, 09 Oct 2013 20:58:51 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/account/>; rel=service_account
       Server:
       - nginx/1.1.19
       Content-Length:
-      - '2223'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
+      - '4467'
       Connection:
-      - close
+      - keep-alive
     body:
       encoding: UTF-8
       string: '[{"uuid": "335ca81f-626f-44e2-9b72-da98333166b3", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/335ca81f-626f-44e2-9b72-da98333166b3/",
@@ -49,7 +43,49 @@ http_interactions:
         "Rio de Janeiro / RJ", "token": "/VWsCyHHRrOF+pKv0Pbyfg==", "etag": "7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee",
         "national_identifier": "73.331.840/0001-00", "address": "Av. Nelson Cardoso,
         123 - Jacarepagu\u00e1", "description": "Descri\u00e7\u00e3o incr\u00edvel
-        sobre a Acme El\u00e9trica"}]'
-    http_version:
-  recorded_at: Fri, 20 Sep 2013 20:25:50 GMT
+        sobre a Acme El\u00e9trica"}, {"uuid": "c4dd626d-90ea-4efa-b5ef-ea5477c6574b",
+        "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/c4dd626d-90ea-4efa-b5ef-ea5477c6574b/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "QNTGvpnYRVC4HbHibDBUIQ==", "etag": "e905eeead695261d47a7fcc16a74589958ea0f10",
+        "national_identifier": "03.448.307/9170-25", "address": "new address", "description":
+        "The mission of Greenwood School District 50 is to educate all students to
+        become responsible and productive citizens."}, {"uuid": "704e8e80-0157-4124-9382-0076c6c4f393",
+        "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/704e8e80-0157-4124-9382-0076c6c4f393/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "VC2gcPJITjSY7e3s6MLANA==", "etag": "49214b019efdc140a6553be970a65317f770d421",
+        "national_identifier": "01.769.355/4647-96", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}, {"uuid": "43be2588-905b-4921-8d99-8f9e653b9379",
+        "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/43be2588-905b-4921-8d99-8f9e653b9379/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "f1MEP5QqRPiHcQ9l9FHSug==", "etag": "9d3b6c1982a4a46c511c121a0562b5f865f722dd",
+        "national_identifier": "27.310.679/9045-85", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}, {"uuid": "41cc75a2-b099-41e5-a49e-efdb56da52ca",
+        "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/41cc75a2-b099-41e5-a49e-efdb56da52ca/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "rR/iSSPuQ6e/oOjKtJpVSA==", "etag": "d53c4834a14a959b29b2897266c90d92abe1a770",
+        "national_identifier": "51.927.679/2126-28", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}, {"uuid": "0d8c891e-7260-4891-bd03-125d04680aa6",
+        "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/0d8c891e-7260-4891-bd03-125d04680aa6/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "1yD7h5jYT6OwgKrKq6LCAQ==", "etag": "be55598c23b74aef4a910dfa941c848e22ba6134",
+        "national_identifier": "36.321.063/0935-00", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}, {"uuid": "bcd2e782-42e6-4eb3-b539-a9e501c4a59d",
+        "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/bcd2e782-42e6-4eb3-b539-a9e501c4a59d/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "gocyPRl6Qp2rDPMAaeZMMg==", "etag": "0f9aff5c68568fd296d2907bc52147e2f3dbd1fb",
+        "national_identifier": "96.684.628/9625-79", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}, {"uuid": "7832e71c-5366-48af-bc86-e4d216925915",
+        "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/7832e71c-5366-48af-bc86-e4d216925915/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "PISNvctxSUaZksbyLin5Mw==", "etag": "eb14f0de0482074003ef72148ea33c5391494161",
+        "national_identifier": "34.550.117/5050-17", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}]'
+    http_version: 
+  recorded_at: Wed, 09 Oct 2013 20:58:53 GMT
 recorded_with: VCR 2.5.0

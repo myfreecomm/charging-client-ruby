@@ -6,7 +6,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"account":{"number":"12345","digit":"6"},"agency":{"number":"12345","digit":"6"},"name":"Conta
-        de cobrança","portfolio_code":"25","address":null,"sequence_numbers":null,"currency":9,"agreement_code":"12345","supplier_name":null,"advance_days":null,"bank":"237"}'
+        de cobrança","portfolio_code":"25","currency":9,"agreement_code":"12345","bank":"237"}'
     headers:
       Accept:
       - application/json
@@ -17,42 +17,36 @@ http_interactions:
       User-Agent:
       - Charging Ruby Client v0.0.1
       Content-Length:
-      - '263'
+      - '183'
   response:
     status:
       code: 201
-      message: Created
+      message: CREATED
     headers:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Thu, 26 Sep 2013 15:36:29 GMT
+      - Wed, 09 Oct 2013 20:58:44 GMT
       Link:
-      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/abc8f334-661f-4767-bf5f-e3890d920d87/>;
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/a6228adb-2d28-4160-8389-466ee5533289/>;
         rel=charge_account, <http://sandbox.charging.financeconnect.com.br/charge-accounts/>;
         rel=charge_accounts
       Location:
-      - http://sandbox.charging.financeconnect.com.br/charge-accounts/abc8f334-661f-4767-bf5f-e3890d920d87/
+      - http://sandbox.charging.financeconnect.com.br/charge-accounts/a6228adb-2d28-4160-8389-466ee5533289/
       Server:
       - nginx/1.1.19
       Content-Length:
       - '7'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
       Connection:
-      - close
+      - keep-alive
     body:
       encoding: UTF-8
       string: CREATED
     http_version: 
-  recorded_at: Thu, 26 Sep 2013 15:36:30 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:44 GMT
 - request:
     method: get
-    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/abc8f334-661f-4767-bf5f-e3890d920d87/
+    uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/a6228adb-2d28-4160-8389-466ee5533289/
     body:
       encoding: US-ASCII
       string: ''
@@ -75,37 +69,32 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 26 Sep 2013 15:36:30 GMT
+      - Wed, 09 Oct 2013 20:58:44 GMT
       Etag:
-      - '"763545afb14977f862710f09ba2d1f7d35b9594b"'
+      - '"f9e1fb66b673d4cb8c0e976b94c0c23f699566b7"'
       Expires:
-      - Thu, 26 Sep 2013 15:36:29 GMT
+      - Wed, 09 Oct 2013 20:58:43 GMT
       Link:
-      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/abc8f334-661f-4767-bf5f-e3890d920d87/batches/>;
-        rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/abc8f334-661f-4767-bf5f-e3890d920d87/batches/return/>;
-        rel=return_files, <http://sandbox.charging.financeconnect.com.br/charge-accounts/abc8f334-661f-4767-bf5f-e3890d920d87/batches/return/>;
-        rel=return_cnab, <http://sandbox.charging.financeconnect.com.br/charge-accounts/abc8f334-661f-4767-bf5f-e3890d920d87/invoices/>;
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/a6228adb-2d28-4160-8389-466ee5533289/batches/>;
+        rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/a6228adb-2d28-4160-8389-466ee5533289/batches/return/>;
+        rel=return_files, <http://sandbox.charging.financeconnect.com.br/charge-accounts/a6228adb-2d28-4160-8389-466ee5533289/batches/return/>;
+        rel=return_cnab, <http://sandbox.charging.financeconnect.com.br/charge-accounts/a6228adb-2d28-4160-8389-466ee5533289/invoices/>;
         rel=invoices
       Server:
       - nginx/1.1.19
       Content-Length:
-      - '586'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
+      - '699'
       Connection:
-      - close
+      - keep-alive
     body:
       encoding: UTF-8
       string: '{"account": {"digit": "6", "number": 12345}, "agency": {"digit": "6",
-        "number": 12345}, "name": "Conta de cobran\u00e7a", "etag": "763545afb14977f862710f09ba2d1f7d35b9594b",
-        "portfolio_code": "25", "address": "new address", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/abc8f334-661f-4767-bf5f-e3890d920d87/",
-        "sequence_numbers": [1, 9999999], "currency": 9, "national_identifier": "03.448.307/9170-25",
-        "agreement_code": "12345", "supplier_name": "Springfield Elemenary School",
-        "advance_days": 10, "bank": "237", "uuid": "abc8f334-661f-4767-bf5f-e3890d920d87"}'
+        "number": 12345}, "name": "Conta de cobran\u00e7a", "etag": "f9e1fb66b673d4cb8c0e976b94c0c23f699566b7",
+        "portfolio_code": "25", "address": "new address", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/a6228adb-2d28-4160-8389-466ee5533289/",
+        "zipcode": "29646", "sequence_numbers": [1, 9999999], "currency": 9, "national_identifier":
+        "03.448.307/9170-25", "our_number_range": [1, 99999999999999999999], "agreement_code":
+        "12345", "default_charging_features": [1, 2, 1, 2, 2], "supplier_name": "Springfield
+        Elemenary School", "advance_days": 10, "bank": "237", "uuid": "a6228adb-2d28-4160-8389-466ee5533289"}'
     http_version: 
-  recorded_at: Thu, 26 Sep 2013 15:36:30 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:44 GMT
 recorded_with: VCR 2.5.0

@@ -6,7 +6,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
-        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"51927679212628","description":"The
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"77404967414308","description":"The
         mission of Greenwood School District 50 is to educate all students to become
         responsible and productive citizens."}'
     headers:
@@ -23,38 +23,32 @@ http_interactions:
   response:
     status:
       code: 201
-      message: Created
+      message: CREATED
     headers:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Fri, 20 Sep 2013 20:27:30 GMT
+      - Wed, 09 Oct 2013 20:58:55 GMT
       Link:
-      - <http://sandbox.charging.financeconnect.com.br/account/domains/41cc75a2-b099-41e5-a49e-efdb56da52ca/>;
+      - <http://sandbox.charging.financeconnect.com.br/account/domains/49476094-afe7-4264-be27-b7d0c20aa551/>;
         rel=domain, <http://sandbox.charging.financeconnect.com.br/account/domains/>;
         rel=domains
       Location:
-      - http://sandbox.charging.financeconnect.com.br/account/domains/41cc75a2-b099-41e5-a49e-efdb56da52ca/
+      - http://sandbox.charging.financeconnect.com.br/account/domains/49476094-afe7-4264-be27-b7d0c20aa551/
       Server:
       - nginx/1.1.19
       Content-Length:
       - '7'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
       Connection:
-      - close
+      - keep-alive
     body:
       encoding: UTF-8
       string: CREATED
     http_version: 
-  recorded_at: Fri, 20 Sep 2013 20:27:30 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:55 GMT
 - request:
     method: get
-    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br/account/domains/41cc75a2-b099-41e5-a49e-efdb56da52ca/
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br/account/domains/49476094-afe7-4264-be27-b7d0c20aa551/
     body:
       encoding: US-ASCII
       string: ''
@@ -77,11 +71,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 20 Sep 2013 20:27:31 GMT
+      - Wed, 09 Oct 2013 20:58:56 GMT
       Etag:
-      - '"d53c4834a14a959b29b2897266c90d92abe1a770"'
+      - '"4d4bdadd54b5683459245d25f56fc5a91566b945"'
       Expires:
-      - Fri, 20 Sep 2013 20:27:30 GMT
+      - Wed, 09 Oct 2013 20:58:55 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts,
         <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains,
@@ -91,22 +85,16 @@ http_interactions:
       - nginx/1.1.19
       Content-Length:
       - '561'
-      X-Cache:
-      - MISS from firewall.corp.myfreecomm.com.br
-      X-Cache-Lookup:
-      - MISS from firewall.corp.myfreecomm.com.br:3128
-      Via:
-      - 1.1 firewall.corp.myfreecomm.com.br:3128 (squid/2.7.STABLE9)
       Connection:
-      - close
+      - keep-alive
     body:
       encoding: UTF-8
-      string: '{"uuid": "41cc75a2-b099-41e5-a49e-efdb56da52ca", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/41cc75a2-b099-41e5-a49e-efdb56da52ca/",
+      string: '{"uuid": "49476094-afe7-4264-be27-b7d0c20aa551", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/49476094-afe7-4264-be27-b7d0c20aa551/",
         "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
-        "Greenwood/SC", "token": "rR/iSSPuQ6e/oOjKtJpVSA==", "etag": "d53c4834a14a959b29b2897266c90d92abe1a770",
-        "national_identifier": "51.927.679/2126-28", "address": "1608 Florida Avenue",
+        "Greenwood/SC", "token": "TdCfzYsqQHeD3y0WkBKV4w==", "etag": "4d4bdadd54b5683459245d25f56fc5a91566b945",
+        "national_identifier": "77.404.967/4143-08", "address": "1608 Florida Avenue",
         "description": "The mission of Greenwood School District 50 is to educate
         all students to become responsible and productive citizens."}'
     http_version: 
-  recorded_at: Fri, 20 Sep 2013 20:27:30 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:56 GMT
 recorded_with: VCR 2.5.0

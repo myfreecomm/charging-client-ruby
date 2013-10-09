@@ -25,11 +25,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 09 Oct 2013 17:57:06 GMT
+      - Wed, 09 Oct 2013 20:58:48 GMT
       Etag:
-      - '"2579d0a8491393e8f125b780108d0ba4ae9d26a6"'
+      - '"1b6c80c793cb047f5a8be084138a5b77b51697a7"'
       Expires:
-      - Wed, 09 Oct 2013 17:57:05 GMT
+      - Wed, 09 Oct 2013 20:58:47 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/>;
         rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/return/>;
@@ -39,20 +39,20 @@ http_interactions:
       Server:
       - nginx/1.1.19
       Content-Length:
-      - '682'
+      - '691'
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
       string: '{"account": {"digit": "8", "number": 1234}, "agency": {"digit": "",
-        "number": 354}, "name": "Conta de Cobran\u00e7a no Bradesco", "etag": "2579d0a8491393e8f125b780108d0ba4ae9d26a6",
-        "portfolio_code": "25", "address": "New Adress", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
+        "number": 354}, "name": "Conta de Cobran\u00e7a no Bradesco", "etag": "1b6c80c793cb047f5a8be084138a5b77b51697a7",
+        "portfolio_code": "25", "address": "123 New Address St.", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
         "zipcode": "29646", "sequence_numbers": [1, 10], "currency": 9, "national_identifier":
         "03.448.307/9170-25", "our_number_range": [1, 10], "agreement_code": "1234",
         "default_charging_features": [1, 2, 1, 2, 2], "supplier_name": "Springfield
         Elemenary School", "advance_days": 10, "bank": "237", "uuid": "29e77bc5-0e70-444c-a922-3149e78d905b"}'
     http_version: 
-  recorded_at: Wed, 09 Oct 2013 17:57:06 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:49 GMT
 - request:
     method: patch
     uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/
@@ -69,7 +69,7 @@ http_interactions:
       User-Agent:
       - Charging Ruby Client v0.0.1
       If-Match:
-      - '"2579d0a8491393e8f125b780108d0ba4ae9d26a6"'
+      - '"1b6c80c793cb047f5a8be084138a5b77b51697a7"'
       Content-Length:
       - '33'
   response:
@@ -84,9 +84,9 @@ http_interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 09 Oct 2013 17:57:07 GMT
+      - Wed, 09 Oct 2013 20:58:49 GMT
       Expires:
-      - Wed, 09 Oct 2013 17:57:06 GMT
+      - Wed, 09 Oct 2013 20:58:48 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/>;
         rel=charge_account
@@ -100,7 +100,7 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Wed, 09 Oct 2013 17:57:07 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:49 GMT
 - request:
     method: get
     uri: http://:QNTGvpnYRVC4HbHibDBUIQ%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/
@@ -126,11 +126,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 09 Oct 2013 17:57:07 GMT
+      - Wed, 09 Oct 2013 20:58:49 GMT
       Etag:
       - '"1b6c80c793cb047f5a8be084138a5b77b51697a7"'
       Expires:
-      - Wed, 09 Oct 2013 17:57:06 GMT
+      - Wed, 09 Oct 2013 20:58:48 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/>;
         rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/batches/return/>;
@@ -153,5 +153,5 @@ http_interactions:
         "default_charging_features": [1, 2, 1, 2, 2], "supplier_name": "Springfield
         Elemenary School", "advance_days": 10, "bank": "237", "uuid": "29e77bc5-0e70-444c-a922-3149e78d905b"}'
     http_version: 
-  recorded_at: Wed, 09 Oct 2013 17:57:07 GMT
+  recorded_at: Wed, 09 Oct 2013 20:58:49 GMT
 recorded_with: VCR 2.5.0
