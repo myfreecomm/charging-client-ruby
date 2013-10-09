@@ -145,6 +145,17 @@ describe Charging::ChargeAccount, :vcr do
       end
     end
   end
+  
+  describe '#update_attributes!' do
+    it 'should delegate to update_attribute! for each attribute' do
+      charge_account = described_class.new(attributes, domain)
+
+      charge_account.should_receive(:update_attribute!).exactly(3)
+      charge_account.should_receive(:reload_attributes!).once
+      
+      charge_account.update_attributes!(address: 'New Address', zipcode: '12345', city: 'City')
+    end
+  end
 
   describe '.find_all' do
     it 'should require an account' do

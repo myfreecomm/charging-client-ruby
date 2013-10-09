@@ -47,16 +47,28 @@ module Charging
       end
     end
     
-    # Update an attribute on charge account at API
+    # Update an attribute on charge account at API.
     # 
     # API method: <tt>PATCH /charge-accounts/:uuid/</tt>
     # 
     # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#patch-charge-accounts-uuid
-    def update_attribute!(attribute, value)
+    def update_attribute!(attribute, value, should_reload_attributes = true)
       execute_and_capture_raises_at_errors(204) do
         @last_response = Http.patch("/charge-accounts/#{uuid}/", domain.token, etag, attribute => value)
       end
       
+      reload_attributes! if should_reload_attributes
+    end
+    
+    # Update all attributes at charge_account. This method uses
+    # <tt>update_attribute!</tt> recurring for each attrubute.
+    # <tt>attrubutes_valies</tt> should be a hash with attribute and value to
+    # be updated.
+    def update_attributes!(attributes_values)
+      attributes_values.each do |attribute, value|
+        update_attribute! attribute, value, false
+      end
+    ensure
       reload_attributes!
     end
     
