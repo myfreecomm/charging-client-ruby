@@ -34,12 +34,16 @@ describe Charging::Helpers do
 
   describe '.hashify' do
     it 'should results a hash for attributes from a object' do
-      attributes = [:name, :address, :phone, :email]
-      object = Struct.new(*attributes).new(*attributes)
+      attributes = [:name, :phones, :emails]
+      object = Struct.new(*attributes).new(
+        'John Doe',
+        {home: '+552123456789'},
+        ['john.doe@mailinator.com', 'john@doe.com']
+      )
 
       result = described_class.hashify(object, attributes)
 
-      expect(result).to eq(name: :name, address: :address, phone: :phone, email: :email)
+      expect(result).to eq(name: 'John Doe', phones: {home: '+552123456789'}, emails: ['john.doe@mailinator.com', 'john@doe.com'])
     end
   end
 end

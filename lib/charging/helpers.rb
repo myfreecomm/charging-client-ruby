@@ -22,8 +22,10 @@ module Charging
     end
 
     def hashify(object, attributes)
-      key_value = proc {|attribute| [attribute, object.send(attribute)] }
-      Hash[*attributes.map(&key_value).flatten].delete_if {|k,v| v.nil? }
+      attributes.inject({}) do |result, attribute|
+        result[attribute] = object.send(attribute)
+        result
+      end
     end
   end
 end
