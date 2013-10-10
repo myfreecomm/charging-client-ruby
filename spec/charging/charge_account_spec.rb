@@ -55,10 +55,13 @@ describe Charging::ChargeAccount, :vcr do
         agreement_code: "agreement_code value",
         bank: "bank value",
         currency: "currency value",
+        default_charging_features: nil,
         name: "name value",
+        our_number_range: nil,
         portfolio_code: "portfolio_code value",
         sequence_numbers: "sequence_numbers value",
-        supplier_name: "supplier_name value"
+        supplier_name: "supplier_name value",
+        zipcode: nil
       })
     end
   end
