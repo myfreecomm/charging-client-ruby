@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Charging::ChargeAccount, :vcr do
-  let(:domain) { double(:domain, token: 'QNTGvpnYRVC4HbHibDBUIQ==') }
+  # let(:domain) { double(:domain, token: 'QNTGvpnYRVC4HbHibDBUIQ==') }
   let(:uuid) { '29e77bc5-0e70-444c-a922-3149e78d905b' }
   let(:attributes) do
     {
@@ -15,6 +15,11 @@ describe Charging::ChargeAccount, :vcr do
       agency: {number: '12345', digit: '6'},
       currency: 9
     }
+  end
+  let(:domain) do
+    VCR.use_cassette('get domain for charge account tests') do
+      Factory.create_resource(Charging::Domain, account_mock, Factory.domain_attributes(Faker.cnpj_generator)) 
+    end
   end
 
   context 'for new instance' do
@@ -54,6 +59,7 @@ describe Charging::ChargeAccount, :vcr do
         agency: "agency value",
         agreement_code: "agreement_code value",
         bank: "bank value",
+        city_state: nil,
         currency: "currency value",
         default_charging_features: nil,
         name: "name value",
@@ -255,7 +261,7 @@ describe Charging::ChargeAccount, :vcr do
         expect(subject).to be_persisted
       end
 
-      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/charge-accounts/#{uuid}/" }
+      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br:8080/charge-accounts/#{uuid}/" }
       its(:uuid) { should eq uuid }
       its(:etag) { should eq subject.last_response.headers[:etag] }
       its(:national_identifier) { should eq '03.448.307/9170-25' }

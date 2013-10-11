@@ -165,7 +165,7 @@ describe Charging::Invoice, :vcr do
         expect(subject).to be_persisted
       end
 
-      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/invoices/#{uuid}/" }
+      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br:8080/invoices/#{uuid}/" }
       its(:uuid) { should eq uuid }
       its(:etag) { should eq subject.last_response.headers[:etag] }
       its(:domain) { should eq domain }
@@ -198,7 +198,7 @@ describe Charging::Invoice, :vcr do
       
       it 'should get current billet url' do
         VCR.use_cassette('finding current billet url for invoice') do
-          expect(invoice.billet_url).to eq 'http://sandbox.charging.financeconnect.com.br/billets/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/ff010b11609c4ac2b78062f2cd51f22f/'
+          expect(invoice.billet_url).to eq 'http://sandbox.charging.financeconnect.com.br:8080/billets/6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f/ff010b11609c4ac2b78062f2cd51f22f/'
         end
       end
     end

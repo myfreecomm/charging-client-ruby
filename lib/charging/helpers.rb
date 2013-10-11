@@ -27,5 +27,9 @@ module Charging
         result
       end
     end
+    
+    def extract_uuid(uri)
+      uri.split("/").last
+    end
   end
 end

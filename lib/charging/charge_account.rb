@@ -10,7 +10,8 @@ module Charging
     ATTRIBUTES = [
       :account, :agency, :name, :portfolio_code, :address, :zipcode, 
       :sequence_numbers, :currency, :agreement_code, :supplier_name, 
-      :advance_days, :bank, :our_number_range, :default_charging_features
+      :advance_days, :bank, :our_number_range, :default_charging_features,
+      :city_state
     ]
 
     attr_accessor(*ATTRIBUTES)
@@ -134,7 +135,7 @@ module Charging
     end
     
     def reload_attributes!
-      new_charge_account = ChargeAccount.find_by_uri(domain, last_response.headers[:location])
+      new_charge_account = self.class.find_by_uuid(domain, Helpers.extract_uuid(last_response.headers[:location]))
       
       (ATTRIBUTES + COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
         instance_variable_set "@#{attribute}", new_charge_account.send(attribute)

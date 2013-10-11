@@ -28,14 +28,26 @@ end
 RSpec.configure do |c|
   c.mock_with :rspec
 
+  c.filter_run :focus => true
+  c.run_all_when_everything_filtered = true
+  
   # so we can use :vcr rather than :vcr => true;
   # in RSpec 3 this will no longer be necessary.
   c.treat_symbols_as_metadata_keys_with_true_values = true
 
   c.before(:vcr => true) do
     Charging.configure do |config|
-      config.url = 'http://sandbox.charging.financeconnect.com.br'
+      config.url = 'http://sandbox.charging.financeconnect.com.br:8080'
       config.application_token = 'AwdhihciTgORGUjnkuk1vg=='
     end
+    
+    # uncomment below lines to turn off VCR
+    WebMock.allow_net_connect!
+    VCR.eject_cassette
+    VCR.turn_off!(ignore_cassettes: true)
+  end
+  
+  def current_account
+    @current_account ||= Charging::ServiceAccount.current
   end
 end

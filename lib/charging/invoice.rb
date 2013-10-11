@@ -33,7 +33,7 @@ module Charging
         Invoice.post_charge_accounts_invoices(domain, charge_account, attributes)
       end
       
-      reload_attributes!(last_response.headers[:location])
+      reload_attributes!(Helpers.extract_uuid(last_response.headers[:location]))
     end
     
     # Deletes the invoice at API
@@ -68,7 +68,7 @@ module Charging
       
       raise_last_response_unless 201
       
-      reload_attributes!(self.uri)
+      reload_attributes!(uuid)
     ensure
       if $ERROR_INFO
         @last_response = $ERROR_INFO.response if $ERROR_INFO.kind_of?(Http::LastResponseError)
@@ -144,10 +144,8 @@ module Charging
 
     private
     
-    def reload_attributes!(uri)
-      response = Http.get(uri, domain.token)
-
-      new_invoice = Invoice.load_persisted_invoice(MultiJson.decode(response.body), response, domain, charge_account)
+    def reload_attributes!(uuid)
+      new_invoice = self.class.find_by_uuid(domain, uuid)
 
       (COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
         instance_variable_set "@#{attribute}", new_invoice.send(attribute)

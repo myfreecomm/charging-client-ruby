@@ -58,7 +58,7 @@ describe Charging::Domain::Collection do
         description: 'description data',
         uuid: '154932d8-66b8-4e6b-82f5-ebb1d32fe85d',
         etag: 'e11877e49b4ac65b4b8d96c16012a20254312e74',
-        uri: 'http://sandbox.charging.financeconnect.com.br/account/domains/154932d8-66b8-4e6b-82f5-ebb1d32fe85d/'
+        uri: 'http://sandbox.charging.financeconnect.com.br:8080/account/domains/154932d8-66b8-4e6b-82f5-ebb1d32fe85d/'
       }])
     end
 

@@ -63,7 +63,7 @@ describe Charging::ChargeAccount::Collection do
         portfolio_code: "25",
         sequence_numbers: [ 1, 9999999 ],
         supplier_name: "Springfield Elemenary School",
-        uri: "http://sandbox.charging.financeconnect.com.br/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
+        uri: "http://sandbox.charging.financeconnect.com.br:8080/charge-accounts/29e77bc5-0e70-444c-a922-3149e78d905b/",
         uuid: "29e77bc5-0e70-444c-a922-3149e78d905b"
       }])
     end

@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 describe Charging::Domain, :vcr do
-  let(:account) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
-  let(:uuid) { '335ca81f-626f-44e2-9b72-da98333166b3' }
   let!(:national_identifier) { Faker.cnpj_generator }
   let(:attributes) do
     {
@@ -16,7 +14,11 @@ describe Charging::Domain, :vcr do
       description: 'The mission of Greenwood School District 50 is to educate all students to become responsible and productive citizens.',
     }
   end
-
+  let(:domain) do
+    VCR.use_cassette('create a domain for domain tests') do
+      described_class.new(attributes, current_account).create!
+    end
+  end
 
   context 'for new domain instance' do
     let(:response_mock) { double(:response, code: 500) }
@@ -29,7 +31,7 @@ describe Charging::Domain, :vcr do
         zipcode: 'zipcode data',
         national_identifier: 'national_identifier data',
         description: 'description data',
-      }, account, response_mock)
+      }, current_account, response_mock)
     end
 
     %w[supplier_name address city_state zipcode national_identifier description].each do |attr|
@@ -43,7 +45,7 @@ describe Charging::Domain, :vcr do
     its(:persisted?) { should be_false }
     its(:deleted?) { should be_false }
 
-    its(:account) { should eq account }
+    its(:account) { should eq current_account }
 
     its(:attributes) { should eq({
       address: 'address data',
@@ -53,6 +55,56 @@ describe Charging::Domain, :vcr do
       supplier_name: 'supplier_name data',
       zipcode: 'zipcode data'
     }) }
+  end
+
+  describe '#create!' do
+    it 'should require an account and load errors' do
+      invalid_domain = described_class.new(attributes, nil)
+
+      expect(invalid_domain.errors).to be_empty
+
+      expected_error = [StandardError, 'can not create without a service account']
+      expect { invalid_domain.create! }.to raise_error(*expected_error)
+
+      expect(invalid_domain.errors).to eq ['can not create without a service account']
+    end
+
+    context 'when API responds with 409 Conflict' do
+      it 'should raise Http::LastResponseError, and load errors and last response' do
+        attributes[:national_identifier] = '73.331.840/0001-00'
+        domain = described_class.new(attributes, current_account)
+
+        VCR.use_cassette('conflict to create a domain') do
+          expect(domain.errors).to be_empty
+          expect(domain.last_response).to be_nil
+
+          expect {
+            domain.create!
+          }.to raise_error Charging::Http::LastResponseError
+
+          expect(domain.errors).to_not be_empty
+          expect(domain.last_response.code).to eq 409
+        end
+      end
+    end
+    
+    context 'when everything is OK' do
+      subject { described_class.new(attributes, current_account) }
+
+      before do
+        VCR.use_cassette('creating a domain') do
+          subject.create!
+        end
+      end
+
+      [:uuid, :uri, :etag, :token].each do |attribute|
+        its(attribute) { should_not be_nil }
+      end
+
+      it 'should be persisted' do
+        expect(subject).to be_persisted
+      end
+    end
   end
 
   describe '.find_all' do
@@ -65,7 +117,7 @@ describe Charging::Domain, :vcr do
     context 'for an account' do
       let(:result) do
         VCR.use_cassette('list available domains') do
-          described_class.find_all(account)
+          described_class.find_all(current_account)
         end
       end
 
@@ -89,21 +141,23 @@ describe Charging::Domain, :vcr do
         end
 
         it 'should contain etag' do
-          expect(domain.etag).to eq '"7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee"'
+          expect(domain.etag).to_not be_nil
         end
 
         it 'should contain uuid' do
-          expect(domain.uuid).to eq uuid
+          expect(domain.uuid).to_not be_nil
         end
 
         it 'should contain uri' do
-          expect(domain.uri).to eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/"
+          expect(domain.uri).to eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{domain.uuid}/"
         end
       end
     end
   end
 
   describe '.find_by_uuid' do
+    let!(:uuid) { domain.uuid }
+    
     it 'should require an account' do
       expected_error = [ArgumentError, 'service account required']
 
@@ -113,12 +167,12 @@ describe Charging::Domain, :vcr do
     it 'should require an uuid' do
       expected_error = [ArgumentError, 'uuid required']
 
-      expect { described_class.find_by_uuid(account, nil) }.to raise_error(*expected_error)
+      expect { described_class.find_by_uuid(current_account, nil) }.to raise_error(*expected_error)
     end
 
     it 'should raise for invalid uuid' do
       VCR.use_cassette('domain by uuid not found via account') do
-        expect { described_class.find_by_uuid(account, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
+        expect { described_class.find_by_uuid(current_account, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
       end
     end
 
@@ -127,18 +181,18 @@ describe Charging::Domain, :vcr do
 
       described_class
         .should_receive(:get_account_domain)
-        .with(account, uuid)
+        .with(current_account, uuid)
         .and_return(response_mock)
 
       expect {
-        described_class.find_by_uuid(account, uuid)
+        described_class.find_by_uuid(current_account, uuid)
       }.to raise_error Charging::Http::LastResponseError, 'AcceptedResponse'
     end
 
     context 'for a valid uuid' do
       subject do
         VCR.use_cassette('finding a domain by uuid via account') do
-          described_class.find_by_uuid(account, uuid)
+          described_class.find_by_uuid(current_account, uuid)
         end
       end
 
@@ -152,14 +206,15 @@ describe Charging::Domain, :vcr do
 
       its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq '"7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee"' }
-      its(:token) { should eq '/VWsCyHHRrOF+pKv0Pbyfg==' }
-      its(:account) { should eq account }
+      its(:etag) { should eq domain.etag }
+      its(:token) { should eq domain.token }
+      its(:account) { should eq current_account }
     end
   end
 
   describe '.find_by_token' do
-    let(:domain_token) { '/VWsCyHHRrOF+pKv0Pbyfg==' }
+    let(:uuid) { domain.uuid }
+    let(:domain_token) { domain.token }
 
     it 'should require a token' do
       expected_error = [ArgumentError, 'token required']
@@ -190,59 +245,9 @@ describe Charging::Domain, :vcr do
 
       its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{uuid}/" }
       its(:uuid) { should eq uuid }
-      its(:etag) { should eq '"7145f1a617cb7a7a0089035d9f3a6db6aa56f8ee"' }
-      its(:token) { should eq '/VWsCyHHRrOF+pKv0Pbyfg==' }
+      its(:etag) { should eq domain.etag }
+      its(:token) { should eq domain.token }
       its(:account) { should be_nil }
-    end
-  end
-
-  describe '#create!' do
-    it 'should require an account and load errors' do
-      invalid_domain = described_class.new(attributes, nil)
-
-      expect(invalid_domain.errors).to be_empty
-
-      expected_error = [StandardError, 'can not create without a service account']
-      expect { invalid_domain.create! }.to raise_error(*expected_error)
-
-      expect(invalid_domain.errors).to eq ['can not create without a service account']
-    end
-
-    context 'when API responds with 409 Conflict' do
-      it 'should raise Http::LastResponseError, and load errors and last response' do
-        attributes[:national_identifier] = '73.331.840/0001-00'
-        domain = described_class.new(attributes, account)
-
-        VCR.use_cassette('conflict to create a domain') do
-          expect(domain.errors).to be_empty
-          expect(domain.last_response).to be_nil
-
-          expect {
-            domain.create!
-          }.to raise_error Charging::Http::LastResponseError
-
-          expect(domain.errors).to_not be_empty
-          expect(domain.last_response.code).to eq 409
-        end
-      end
-    end
-
-    context 'when everything is OK' do
-      subject { described_class.new(attributes, account) }
-
-      before do
-        VCR.use_cassette('creating a domain') do
-          subject.create!
-        end
-      end
-
-      [:uuid, :uri, :etag, :token].each do |attribute|
-        its(attribute) { should_not be_nil }
-      end
-
-      it 'should be persisted' do
-        expect(subject).to be_persisted
-      end
     end
   end
 
@@ -259,7 +264,7 @@ describe Charging::Domain, :vcr do
     end
 
     it 'should require a persisted domain' do
-      not_persisted_domain = described_class.new(attributes, account)
+      not_persisted_domain = described_class.new(attributes, current_account)
 
       expect(not_persisted_domain).to_not be_persisted
 
@@ -273,7 +278,7 @@ describe Charging::Domain, :vcr do
     end
 
     it 'should raise Http::LastResponseError for invalid request' do
-      domain = described_class.new(attributes, account).tap do |current_domain|
+      domain = described_class.new(attributes, current_account).tap do |current_domain|
         [:uuid, :uri, :etag, :token].each do |attribute|
           current_domain.instance_variable_set "@#{attribute}", "invalid-#{attribute}"
         end
@@ -292,8 +297,6 @@ describe Charging::Domain, :vcr do
 
     it 'should delete an exist domain' do
       VCR.use_cassette('deleting a domain') do
-        domain = described_class.new(attributes, account).create!
-
         expect(domain).to be_persisted
         expect(domain).to_not be_deleted
 

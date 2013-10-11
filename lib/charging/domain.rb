@@ -31,7 +31,7 @@ module Charging
         Domain.post_account_domains(account.application_token, attributes)
       end
 
-      reload_attributes_after_create!
+      reload_attributes!
     end
 
     # Destroys current domain at API.
@@ -109,10 +109,8 @@ module Charging
 
     private
 
-    def reload_attributes_after_create!
-      response = Http.get(last_response.headers[:location], account.application_token)
-
-      new_domain = Domain.load_persisted_domain(MultiJson.decode(response.body), response, account)
+    def reload_attributes!
+      new_domain = self.class.find_by_uuid(account, Helpers.extract_uuid(last_response.headers[:location]))
 
       (COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
         instance_variable_set "@#{attribute}", new_domain.send(attribute)
