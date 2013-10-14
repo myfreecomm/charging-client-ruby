@@ -21,6 +21,8 @@ module Charging
       execute_and_capture_raises_at_errors(201) do
         @last_response = block.call
       end
+      
+      self
     end
     
     def destroy!(&block)
@@ -32,6 +34,8 @@ module Charging
         @deleted = true
         @persisted = false
       end
+      
+      self
     end
     
     def normalize_etag!
