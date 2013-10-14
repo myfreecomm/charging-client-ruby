@@ -22,8 +22,8 @@ module Charging
     def load_data_with_response! # :nodoc:
       return [] if last_response.code != 200
 
-      raw_domains = MultiJson.decode(last_response.body)
-      raw_domains.map { |raw_domain| load_object_with(raw_domain) }
+      raw_lines = MultiJson.decode(last_response.body)
+      raw_lines.map { |raw_line| load_object_with(raw_line) }
     end
   end
 end
