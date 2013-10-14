@@ -4,7 +4,7 @@ require 'spec_helper'
 describe Charging::ServiceAccount, :vcr do
   describe '.current' do
     it 'should return current service account' do
-      VCR.use_cassette('valid request for get current account') do
+      VCR.use_cassette('ServiceAccount/valid request for get current service account') do
         expect { described_class.current }.to_not raise_error
       end
     end
@@ -13,7 +13,7 @@ describe Charging::ServiceAccount, :vcr do
   describe '.find_by_token' do
     context 'with an invalid application token' do
       it 'should raise a last response error' do
-        VCR.use_cassette('invalid request for get current account') do
+        VCR.use_cassette('ServiceAccount/invalid token for a service account') do
           error = [Charging::Http::LastResponseError, /401 Unauthorized/]
 
           expect { described_class.find_by_token('invalid-token') }.to raise_error(*error)
@@ -23,7 +23,7 @@ describe Charging::ServiceAccount, :vcr do
 
     context 'with a valid application token' do
       before do
-        VCR.use_cassette('valid request for get current account') do
+        VCR.use_cassette('ServiceAccount/valid token for a service account') do
           @result = described_class.find_by_token('AwdhihciTgORGUjnkuk1vg==')
         end
       end

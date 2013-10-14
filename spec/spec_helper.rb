@@ -28,7 +28,7 @@ end
 RSpec.configure do |c|
   c.mock_with :rspec
 
-  c.filter_run :focus => true
+  c.filter_run focus: true
   c.run_all_when_everything_filtered = true
   
   # so we can use :vcr rather than :vcr => true;
@@ -42,9 +42,9 @@ RSpec.configure do |c|
     end
     
     # uncomment below lines to turn off VCR
-    WebMock.allow_net_connect!
-    VCR.eject_cassette
-    VCR.turn_off!(ignore_cassettes: true)
+    # WebMock.allow_net_connect!
+    # VCR.eject_cassette
+    # VCR.turn_off!(ignore_cassettes: true)
   end
   
   def current_account
