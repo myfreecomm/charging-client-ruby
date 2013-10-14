@@ -2,9 +2,7 @@
 
 require 'spec_helper'
 
-describe Charging::Domain::Collection do
-  let(:account_mock) { double('ServiceAccount', application_token: 'AwdhihciTgORGUjnkuk1vg==') }
-
+describe Charging::Domain::Collection, :vcr do
   it 'should raise for invalid account' do
     expected_error = [ArgumentError, 'account required']
 
@@ -12,15 +10,21 @@ describe Charging::Domain::Collection do
   end
 
   it 'should raise for invalid response' do
-    expected_error = [ArgumentError, 'response required']
+    VCR.use_cassette('DomainCollection/invalid response for domain collection') do
+      expected_error = [ArgumentError, 'response required']
 
-    expect { described_class.new(account_mock, nil) }.to raise_error(*expected_error)
+      expect { described_class.new(current_account, nil) }.to raise_error(*expected_error)
+    end
   end
 
   context 'with not success response' do
     let(:response_not_found) { double(:response_not_found, code: 404) }
 
-    let!(:result) { described_class.new(account_mock, response_not_found) }
+    let!(:result) do 
+      VCR.use_cassette('DomainCollection/not found response for domain collection') do
+        described_class.new(current_account, response_not_found)
+      end
+    end
 
     it 'should have empty content' do
       expect(result).to be_empty
@@ -36,7 +40,11 @@ describe Charging::Domain::Collection do
       double(code: 200, body: '[]')
     end
 
-    let!(:result) { described_class.new(account_mock, response_success) }
+    let!(:result) do
+      VCR.use_cassette('DomainCollection/success response without data for domain collection') do
+        described_class.new(current_account, response_success)
+      end
+    end
 
     it 'should have empty content' do
       expect(result).to be_empty
@@ -66,7 +74,11 @@ describe Charging::Domain::Collection do
       double(code: 200, body: body)
     end
 
-    let(:result) { described_class.new(account_mock, response_success) }
+    let!(:result) do
+      VCR.use_cassette('DomainCollection/success response with data for domain collection') do
+        described_class.new(current_account, response_success)
+      end
+    end
 
     it 'should convert into an array of domain' do
       expect(result.size).to eq 1
@@ -83,7 +95,7 @@ describe Charging::Domain::Collection do
     end
 
     it 'should load current account for domain instance' do
-      expect(result.first.account).to eq account_mock
+      expect(result.first.account).to eq current_account
     end
   end
 end
