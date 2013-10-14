@@ -4,7 +4,8 @@ require 'spec_helper'
 
 describe Charging::Invoice, :vcr do
   let(:charge_account) { double(:charge_account, uuid: '29e77bc5-0e70-444c-a922-3149e78d905b') }
-  let(:domain) { double(:domain, token: 'QNTGvpnYRVC4HbHibDBUIQ==') }
+  let(:national_identifier) {  }
+  let(:domain) { Factory.create_resource(Charging::Domain, Factory.domain_attributes()) }
   let(:attributes) do
     {
       kind: 2,
@@ -22,7 +23,7 @@ describe Charging::Invoice, :vcr do
   end
   let(:uuid) { '6a6084a3-a0c0-42ab-94f8-d5e8c4b94d7f' }
 
-  context 'for new instance' do
+  context 'for new instance', :focus do
     INVOICE_ATTRIBUTES = [ 
       :kind, :amount, :document_number, :drawee, :due_date, 
       :charging_features, :supplier_name, :discount, :interest, :rebate,
@@ -32,11 +33,17 @@ describe Charging::Invoice, :vcr do
 
     let(:response) { double(:response, code: 500) }
 
-    subject do
-      attributes = Hash[*INVOICE_ATTRIBUTES.map {|attr| [attr, "#{attr} value"] }.flatten]
+    before do
+      VCR.use_cassette('Invoice/for new instance') do
+        attributes = Hash[*INVOICE_ATTRIBUTES.map {|attr| [attr, "#{attr} value"] }.flatten]
+        @domain = domain
+        @charge_account = charge_account
 
-      described_class.new(attributes, domain, charge_account, response)
+        @new_invoice = described_class.new(attributes, @domain, @charge_account, response)
+      end
     end
+    
+    subject { @new_invoice }
 
     INVOICE_ATTRIBUTES.each do |attribute|
       its(attribute) { should eq "#{attribute} value"}
@@ -46,8 +53,8 @@ describe Charging::Invoice, :vcr do
       its(attribute) { should be_nil }
     end
 
-    its(:domain) { should eq domain }
-    its(:charge_account) { should eq charge_account }
+    its(:domain) { should eq @domain }
+    its(:charge_account) { should eq @charge_account }
     its(:last_response) { should eq response }
     its(:errors) { should eq [] }
 
