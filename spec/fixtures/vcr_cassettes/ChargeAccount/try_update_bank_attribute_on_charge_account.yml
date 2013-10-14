@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: patch
+    uri: http://:9hblZnc5SyCatX8Cp3vtSg%3D%3D@sandbox.charging.financeconnect.com.br:8080/charge-accounts/744cd199-0bd9-4369-9c9f-5763c3123f1a/
+    body:
+      encoding: UTF-8
+      string: '{"bank":"341"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      If-Match:
+      - '"5c484ff7db388a75a88cf7baedbf3b0d344e8676"'
+      Content-Length:
+      - '14'
+  response:
+    status:
+      code: 412
+      message: PRECONDITION FAILED
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Mon, 14 Oct 2013 22:07:04 GMT
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '151'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+        <title>412 Precondition Failed</title>
+        <h1>Precondition Failed</h1>
+        <p>ETag does not match</p>
+    http_version: 
+  recorded_at: Mon, 14 Oct 2013 22:07:04 GMT
+recorded_with: VCR 2.5.0
