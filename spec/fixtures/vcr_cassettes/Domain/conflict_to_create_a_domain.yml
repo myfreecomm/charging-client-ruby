@@ -1,0 +1,144 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/
+    body:
+      encoding: UTF-8
+      string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"28827636249498","description":"The
+        mission of Greenwood School District 50 is to educate all students to become
+        responsible and productive citizens."}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      Content-Length:
+      - '299'
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Mon, 14 Oct 2013 21:40:54 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/account/domains/45c526b3-96f8-4166-8867-9f69a7d72864/>;
+        rel=domain, <http://sandbox.charging.financeconnect.com.br/account/domains/>;
+        rel=domains
+      Location:
+      - http://sandbox.charging.financeconnect.com.br/account/domains/45c526b3-96f8-4166-8867-9f69a7d72864/
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '7'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: CREATED
+    http_version: 
+  recorded_at: Mon, 14 Oct 2013 21:40:55 GMT
+- request:
+    method: get
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/45c526b3-96f8-4166-8867-9f69a7d72864/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 14 Oct 2013 21:40:55 GMT
+      Etag:
+      - '"c20b7a6dcded32a7cf71eee3c389060c4c6e3a8f"'
+      Expires:
+      - Mon, 14 Oct 2013 21:40:54 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts,
+        <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains,
+        <http://sandbox.charging.financeconnect.com.br/domain/>; rel=domain, <http://sandbox.charging.financeconnect.com.br/account/>;
+        rel=service_account
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '561'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"uuid": "45c526b3-96f8-4166-8867-9f69a7d72864", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/45c526b3-96f8-4166-8867-9f69a7d72864/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "sYArFG2KQLWTVXxA9eqXrw==", "etag": "c20b7a6dcded32a7cf71eee3c389060c4c6e3a8f",
+        "national_identifier": "28.827.636/2494-98", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}'
+    http_version: 
+  recorded_at: Mon, 14 Oct 2013 21:40:55 GMT
+- request:
+    method: post
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/
+    body:
+      encoding: UTF-8
+      string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"28827636249498","description":"The
+        mission of Greenwood School District 50 is to educate all students to become
+        responsible and productive citizens."}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      Content-Length:
+      - '299'
+  response:
+    status:
+      code: 409
+      message: CONFLICT
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Mon, 14 Oct 2013 21:40:55 GMT
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '159'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+        <title>409 Conflict</title>
+        <h1>Conflict</h1>
+        <p>national_identifier already in use, etag required</p>
+    http_version: 
+  recorded_at: Mon, 14 Oct 2013 21:40:55 GMT
+recorded_with: VCR 2.5.0
