@@ -112,7 +112,7 @@ module Charging
     
     # Returns a String with the temporary URL for print current invoice.
     # 
-    # API method: <tt>GET /invoices/:uuid/billet/
+    # API method: <tt>GET /invoices/:uuid/billet/</tt>
     # 
     # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-uuid-billet
     def billet_url
