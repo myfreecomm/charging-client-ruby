@@ -25,7 +25,7 @@ describe Charging::Invoice, :vcr do
 
   context 'for new instance' do
     INVOICE_ATTRIBUTES = [ 
-      :kind, :amount, :document_number, :drawee, :due_date, 
+      :kind, :amount, :document_number, :drawee, :due_date, :portfolio_code,
       :charging_features, :supplier_name, :discount, :interest, :rebate,
       :ticket, :protest_code, :protest_days, :instructions, :demonstrative,
       :our_number
@@ -78,7 +78,8 @@ describe Charging::Invoice, :vcr do
         protest_days: 'protest_days value', 
         instructions: 'instructions value', 
         demonstrative: 'demonstrative value', 
-        our_number: 'our_number value'
+        our_number: 'our_number value',
+        portfolio_code: 'portfolio_code value'
       })
     end
   end
@@ -293,32 +294,30 @@ describe Charging::Invoice, :vcr do
       end
     end
     
-    xit 'should pass a note' do
-      body = MultiJson.encode({
-        amount: invoice.amount,
-        date: Time.now.strftime('%Y-%m-%d'),
-        note: 'some note for payment'
-      })
+    it 'should pass a note' do
+      VCR.use_cassette('Invoice/paying an invoice and adding a note') do
+        @invoice = invoice
+        
+        body = MultiJson.encode({
+          amount: @invoice.amount,
+          date: Time.now.strftime('%Y-%m-%d'),
+          note: 'some note for payment'
+        })
       
-      Charging::Http
-        .should_receive(:post).with("/invoices/#{uuid}/pay/", domain.token, body, etag: invoice.etag)
-        .and_return(double(:response, code: 201))
+        Charging::Http
+          .should_receive(:post).with("/invoices/#{@invoice.uuid}/pay/", domain.token, body, etag: @invoice.etag)
+          .and_return(double(:response, code: 201))
       
-      invoice.should_receive(:reload_attributes!)
+        invoice.should_receive(:reload_attributes!)
       
-      invoice.pay!(note: "some note for payment")
+        invoice.pay!(note: "some note for payment")
+      end
     end
   end
   
   describe '#payments' do
-    let!(:invoice) {
-      VCR.use_cassette('Invoice/finding an invoice by uuid') do
-        described_class.find_by_uuid(domain, uuid)
-      end
-    }
-    
     context 'invoice without payments' do
-      xit 'should return an empty array' do
+      it 'should return an empty array' do
         VCR.use_cassette('Invoice/invoice without payments') do
           expect(invoice.payments).to eq []
         end
@@ -326,8 +325,10 @@ describe Charging::Invoice, :vcr do
     end
     
     context 'invoice with payments' do
-      xit 'should return an empty array' do
+      it 'should return an empty array' do
         VCR.use_cassette('Invoice/invoice with payments') do
+          invoice.pay!
+          
           expect(invoice.payments).to_not be_empty
         end
       end
@@ -335,9 +336,11 @@ describe Charging::Invoice, :vcr do
   end
   
   describe '#destroy!' do
-    xit 'should raise delete an invoice at API' do
+    it 'should raise delete an invoice at API' do
       VCR.use_cassette('Invoice/try delete an invoice with payments') do
-        invoice = described_class.find_by_uuid(domain, uuid)
+        invoice.pay!
+        
+        expect(invoice.payments).to_not be_empty
         
         expect { invoice.destroy! }.to raise_error Charging::Http::LastResponseError
         
@@ -346,10 +349,8 @@ describe Charging::Invoice, :vcr do
       end
     end
 
-    xit 'should delete an invoice at API' do
-      VCR.use_cassette('Invoice/deleting an invoice') do
-        invoice = described_class.new(attributes, domain, charge_account)
-        expect { invoice.create! }.to_not raise_error
+    it 'should delete an invoice without payments' do
+      VCR.use_cassette('Invoice/deleting an invoice without payments') do
         expect(invoice).to be_persisted
         
         expect { invoice.destroy! }.to_not raise_error

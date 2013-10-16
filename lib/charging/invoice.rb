@@ -3,7 +3,7 @@
 module Charging
   class Invoice < Base
     ATTRIBUTES = [
-      :kind, :amount, :document_number, :drawee, :due_date, 
+      :kind, :amount, :document_number, :drawee, :due_date, :portfolio_code,
       :charging_features, :supplier_name, :discount, :interest, :rebate,
       :ticket, :protest_code, :protest_days, :instructions, :demonstrative,
       :our_number

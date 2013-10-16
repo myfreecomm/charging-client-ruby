@@ -6,7 +6,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
-        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"58835515157686","description":"The
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"65259402401732","description":"The
         mission of Greenwood School District 50 is to educate all students to become
         responsible and productive citizens."}'
     headers:
@@ -28,13 +28,13 @@ http_interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 15 Oct 2013 22:25:08 GMT
+      - Wed, 16 Oct 2013 16:26:26 GMT
       Link:
-      - <http://sandbox.charging.financeconnect.com.br/account/domains/9bfb0d34-8e1f-4942-82f1-923315c2c695/>;
+      - <http://sandbox.charging.financeconnect.com.br/account/domains/60e0d820-5458-435b-b5ce-e0e9b3e97e3b/>;
         rel=domain, <http://sandbox.charging.financeconnect.com.br/account/domains/>;
         rel=domains
       Location:
-      - http://sandbox.charging.financeconnect.com.br/account/domains/9bfb0d34-8e1f-4942-82f1-923315c2c695/
+      - http://sandbox.charging.financeconnect.com.br/account/domains/60e0d820-5458-435b-b5ce-e0e9b3e97e3b/
       Server:
       - nginx/1.1.19
       Content-Length:
@@ -45,10 +45,10 @@ http_interactions:
       encoding: UTF-8
       string: CREATED
     http_version: 
-  recorded_at: Tue, 15 Oct 2013 22:25:08 GMT
+  recorded_at: Wed, 16 Oct 2013 16:26:26 GMT
 - request:
     method: get
-    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/9bfb0d34-8e1f-4942-82f1-923315c2c695/
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/60e0d820-5458-435b-b5ce-e0e9b3e97e3b/
     body:
       encoding: US-ASCII
       string: ''
@@ -71,11 +71,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 15 Oct 2013 22:25:08 GMT
+      - Wed, 16 Oct 2013 16:26:26 GMT
       Etag:
-      - '"0d60a1c4ea334919db8618acd23c829f9248dd36"'
+      - '"75817da4c772b9acf97fa08a5d520cb6c8bc81b2"'
       Expires:
-      - Tue, 15 Oct 2013 22:25:07 GMT
+      - Wed, 16 Oct 2013 16:26:25 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts,
         <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains,
@@ -89,12 +89,12 @@ http_interactions:
       - keep-alive
     body:
       encoding: UTF-8
-      string: '{"uuid": "9bfb0d34-8e1f-4942-82f1-923315c2c695", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/9bfb0d34-8e1f-4942-82f1-923315c2c695/",
+      string: '{"uuid": "60e0d820-5458-435b-b5ce-e0e9b3e97e3b", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/60e0d820-5458-435b-b5ce-e0e9b3e97e3b/",
         "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
-        "Greenwood/SC", "token": "ODi4L20KTnOwEfPIY4GB0A==", "etag": "0d60a1c4ea334919db8618acd23c829f9248dd36",
-        "national_identifier": "58.835.515/1576-86", "address": "1608 Florida Avenue",
+        "Greenwood/SC", "token": "mrQegLkhRduPyHOEBX6mCA==", "etag": "75817da4c772b9acf97fa08a5d520cb6c8bc81b2",
+        "national_identifier": "65.259.402/4017-32", "address": "1608 Florida Avenue",
         "description": "The mission of Greenwood School District 50 is to educate
         all students to become responsible and productive citizens."}'
     http_version: 
-  recorded_at: Tue, 15 Oct 2013 22:25:09 GMT
+  recorded_at: Wed, 16 Oct 2013 16:26:26 GMT
 recorded_with: VCR 2.5.0

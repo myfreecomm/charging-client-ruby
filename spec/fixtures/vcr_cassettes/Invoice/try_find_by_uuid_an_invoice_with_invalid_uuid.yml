@@ -6,7 +6,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
-        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"30924327515382","description":"The
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"66141256971998","description":"The
         mission of Greenwood School District 50 is to educate all students to become
         responsible and productive citizens."}'
     headers:
@@ -28,13 +28,13 @@ http_interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 15 Oct 2013 22:33:27 GMT
+      - Wed, 16 Oct 2013 16:26:32 GMT
       Link:
-      - <http://sandbox.charging.financeconnect.com.br/account/domains/57005e73-db66-456a-8ab8-652a1b97fa94/>;
+      - <http://sandbox.charging.financeconnect.com.br/account/domains/4a050c44-7a5f-4e40-954c-d67f0fd4e315/>;
         rel=domain, <http://sandbox.charging.financeconnect.com.br/account/domains/>;
         rel=domains
       Location:
-      - http://sandbox.charging.financeconnect.com.br/account/domains/57005e73-db66-456a-8ab8-652a1b97fa94/
+      - http://sandbox.charging.financeconnect.com.br/account/domains/4a050c44-7a5f-4e40-954c-d67f0fd4e315/
       Server:
       - nginx/1.1.19
       Content-Length:
@@ -45,10 +45,10 @@ http_interactions:
       encoding: UTF-8
       string: CREATED
     http_version: 
-  recorded_at: Tue, 15 Oct 2013 22:33:27 GMT
+  recorded_at: Wed, 16 Oct 2013 16:26:32 GMT
 - request:
     method: get
-    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/57005e73-db66-456a-8ab8-652a1b97fa94/
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/4a050c44-7a5f-4e40-954c-d67f0fd4e315/
     body:
       encoding: US-ASCII
       string: ''
@@ -71,11 +71,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 15 Oct 2013 22:33:28 GMT
+      - Wed, 16 Oct 2013 16:26:32 GMT
       Etag:
-      - '"1d0cabdfa46123508a606096e7eb9f615e199277"'
+      - '"d2d105278cb3d915a8cf6592eb2dc043c3f18516"'
       Expires:
-      - Tue, 15 Oct 2013 22:33:27 GMT
+      - Wed, 16 Oct 2013 16:26:31 GMT
       Link:
       - <http://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts,
         <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains,
@@ -89,17 +89,17 @@ http_interactions:
       - keep-alive
     body:
       encoding: UTF-8
-      string: '{"uuid": "57005e73-db66-456a-8ab8-652a1b97fa94", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/57005e73-db66-456a-8ab8-652a1b97fa94/",
+      string: '{"uuid": "4a050c44-7a5f-4e40-954c-d67f0fd4e315", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/4a050c44-7a5f-4e40-954c-d67f0fd4e315/",
         "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
-        "Greenwood/SC", "token": "qQdb5jdMRBe37ks5IWP8yw==", "etag": "1d0cabdfa46123508a606096e7eb9f615e199277",
-        "national_identifier": "30.924.327/5153-82", "address": "1608 Florida Avenue",
+        "Greenwood/SC", "token": "LmBeGK9/TMC4/I6NwkR35g==", "etag": "d2d105278cb3d915a8cf6592eb2dc043c3f18516",
+        "national_identifier": "66.141.256/9719-98", "address": "1608 Florida Avenue",
         "description": "The mission of Greenwood School District 50 is to educate
         all students to become responsible and productive citizens."}'
     http_version: 
-  recorded_at: Tue, 15 Oct 2013 22:33:28 GMT
+  recorded_at: Wed, 16 Oct 2013 16:26:33 GMT
 - request:
     method: get
-    uri: http://:qQdb5jdMRBe37ks5IWP8yw%3D%3D@sandbox.charging.financeconnect.com.br:8080/invoices/invalid-uuid/
+    uri: http://:LmBeGK9%2FTMC4%2FI6NwkR35g%3D%3D@sandbox.charging.financeconnect.com.br:8080/invoices/invalid-uuid/
     body:
       encoding: US-ASCII
       string: ''
@@ -122,7 +122,7 @@ http_interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 15 Oct 2013 22:33:28 GMT
+      - Wed, 16 Oct 2013 16:26:33 GMT
       Server:
       - nginx/1.1.19
       Content-Length:
@@ -138,5 +138,5 @@ http_interactions:
         hvOIJfMhEwKHEn3TgbQj44VhG6SX1J1UqkerSFpCXlH+HEgD25JStX5A+jtn
         esiHrHXIWSuCH7+KaarpAAAA
     http_version: 
-  recorded_at: Tue, 15 Oct 2013 22:33:28 GMT
+  recorded_at: Wed, 16 Oct 2013 16:26:33 GMT
 recorded_with: VCR 2.5.0
