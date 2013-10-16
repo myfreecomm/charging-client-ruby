@@ -196,11 +196,17 @@ Note: This will execute <tt>charge_account#update_attribute!</tt> for each attri
   invoice.deleted? # => true
   invoice.persisted? # => false
 
-==== Mark an invoice as paid
+==== Register a payment for an invoice
 
   invoice.pay!
+  invoice.paid # => invoice.amount
+  invoice.pay!({
+    :amount => invoice.amount, # default
+    :date => Time.now.strftime('%Y-%m-%d'), #default
+    :note => 'some important note about this payment'
+  })
 
-==== List of paid invoices (Not working yet)
+==== List of paid invoices
 
   invoice.payments
 
