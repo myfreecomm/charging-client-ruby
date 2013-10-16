@@ -50,4 +50,20 @@ RSpec.configure do |c|
   def current_account
     @current_account ||= Charging::ServiceAccount.current
   end
+  
+  def create_domain(account, national_identifier, attributes = {})
+    Factory.create_resource(
+      Charging::Domain,
+      account,
+      Factory.domain_attributes(national_identifier).merge(attributes)
+    )
+  end
+  
+  def create_charge_account(domain, attributes = {})
+    Factory.create_resource(
+      Charging::ChargeAccount,
+      domain,
+      Factory.charge_account_attributes.merge(attributes)
+    )
+  end
 end

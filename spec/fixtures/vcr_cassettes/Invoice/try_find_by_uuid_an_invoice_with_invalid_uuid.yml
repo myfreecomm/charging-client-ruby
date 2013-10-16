@@ -1,0 +1,142 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/
+    body:
+      encoding: UTF-8
+      string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"30924327515382","description":"The
+        mission of Greenwood School District 50 is to educate all students to become
+        responsible and productive citizens."}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      Content-Length:
+      - '299'
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Tue, 15 Oct 2013 22:33:27 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/account/domains/57005e73-db66-456a-8ab8-652a1b97fa94/>;
+        rel=domain, <http://sandbox.charging.financeconnect.com.br/account/domains/>;
+        rel=domains
+      Location:
+      - http://sandbox.charging.financeconnect.com.br/account/domains/57005e73-db66-456a-8ab8-652a1b97fa94/
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '7'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: CREATED
+    http_version: 
+  recorded_at: Tue, 15 Oct 2013 22:33:27 GMT
+- request:
+    method: get
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/57005e73-db66-456a-8ab8-652a1b97fa94/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 15 Oct 2013 22:33:28 GMT
+      Etag:
+      - '"1d0cabdfa46123508a606096e7eb9f615e199277"'
+      Expires:
+      - Tue, 15 Oct 2013 22:33:27 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts,
+        <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains,
+        <http://sandbox.charging.financeconnect.com.br/domain/>; rel=domain, <http://sandbox.charging.financeconnect.com.br/account/>;
+        rel=service_account
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '561'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"uuid": "57005e73-db66-456a-8ab8-652a1b97fa94", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/57005e73-db66-456a-8ab8-652a1b97fa94/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "qQdb5jdMRBe37ks5IWP8yw==", "etag": "1d0cabdfa46123508a606096e7eb9f615e199277",
+        "national_identifier": "30.924.327/5153-82", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}'
+    http_version: 
+  recorded_at: Tue, 15 Oct 2013 22:33:28 GMT
+- request:
+    method: get
+    uri: http://:qQdb5jdMRBe37ks5IWP8yw%3D%3D@sandbox.charging.financeconnect.com.br:8080/invoices/invalid-uuid/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 404
+      message: NOT FOUND
+    headers:
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Tue, 15 Oct 2013 22:33:28 GMT
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '198'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA02MPQ+CMBiEd37F6S71a2w6CBpNUInBGMcGXoRYC7ZFw7+3
+        hMXx7p7n+CQ+R9k93WKfHROk101yiDCdMXZbRYzFWTwOq3CJXa2lYmx7moqA
+        u9opEuv5GqfGYdd0uuBsLANeLcRf61PAW5FVBEPvjqyjAtdLgq+00N4uBxuN
+        hvOIJfMhEwKHEn3TgbQj44VhG6SX1J1UqkerSFpCXlH+HEgD25JStX5A+jtn
+        esiHrHXIWSuCH7+KaarpAAAA
+    http_version: 
+  recorded_at: Tue, 15 Oct 2013 22:33:28 GMT
+recorded_with: VCR 2.5.0

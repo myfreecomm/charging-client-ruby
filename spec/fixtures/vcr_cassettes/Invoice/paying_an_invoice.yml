@@ -1,0 +1,498 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/
+    body:
+      encoding: UTF-8
+      string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"98740900933508","description":"The
+        mission of Greenwood School District 50 is to educate all students to become
+        responsible and productive citizens."}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      Content-Length:
+      - '299'
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 16 Oct 2013 01:17:35 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/account/domains/70bce777-b785-4def-a307-f5eb7eb18b9d/>;
+        rel=domain, <http://sandbox.charging.financeconnect.com.br/account/domains/>;
+        rel=domains
+      Location:
+      - http://sandbox.charging.financeconnect.com.br/account/domains/70bce777-b785-4def-a307-f5eb7eb18b9d/
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '7'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: CREATED
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:35 GMT
+- request:
+    method: get
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/70bce777-b785-4def-a307-f5eb7eb18b9d/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 16 Oct 2013 01:17:35 GMT
+      Etag:
+      - '"90ba34032568db93569ed0676b583105bb97af9f"'
+      Expires:
+      - Wed, 16 Oct 2013 01:17:34 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts,
+        <http://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains,
+        <http://sandbox.charging.financeconnect.com.br/domain/>; rel=domain, <http://sandbox.charging.financeconnect.com.br/account/>;
+        rel=service_account
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '561'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"uuid": "70bce777-b785-4def-a307-f5eb7eb18b9d", "uri": "http://sandbox.charging.financeconnect.com.br/account/domains/70bce777-b785-4def-a307-f5eb7eb18b9d/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "2i1p8dgcRmyehAUlxlL3mA==", "etag": "90ba34032568db93569ed0676b583105bb97af9f",
+        "national_identifier": "98.740.900/9335-08", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}'
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:35 GMT
+- request:
+    method: post
+    uri: http://:2i1p8dgcRmyehAUlxlL3mA%3D%3D@sandbox.charging.financeconnect.com.br:8080/charge-accounts/
+    body:
+      encoding: UTF-8
+      string: '{"account":{"number":"12345","digit":"6"},"agency":{"number":"12345","digit":"6"},"name":"Conta
+        de cobrança","portfolio_code":"25","address":null,"zipcode":null,"sequence_numbers":null,"currency":9,"agreement_code":"12345","supplier_name":null,"advance_days":null,"bank":"237","our_number_range":null,"default_charging_features":null,"city_state":null}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      Content-Length:
+      - '353'
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 16 Oct 2013 01:17:36 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/>;
+        rel=charge_account, <http://sandbox.charging.financeconnect.com.br/charge-accounts/>;
+        rel=charge_accounts
+      Location:
+      - http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '7'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: CREATED
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:36 GMT
+- request:
+    method: get
+    uri: http://:2i1p8dgcRmyehAUlxlL3mA%3D%3D@sandbox.charging.financeconnect.com.br:8080/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 16 Oct 2013 01:17:36 GMT
+      Etag:
+      - '"a35e029d7b60f7605ecc839b66da264ad3561f9a"'
+      Expires:
+      - Wed, 16 Oct 2013 01:17:35 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/>;
+        rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/return/>;
+        rel=return_files, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/return/>;
+        rel=return_cnab, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/invoices/>;
+        rel=invoices
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '737'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"account": {"digit": "6", "number": 12345}, "agency": {"digit": "6",
+        "number": 12345}, "name": "Conta de cobran\u00e7a", "etag": "a35e029d7b60f7605ecc839b66da264ad3561f9a",
+        "zipcode": "29646", "portfolio_code": "25", "address": "1608 Florida Avenue",
+        "city_state": "Greenwood/SC", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/",
+        "sequence_numbers": [1, 9999999], "currency": 9, "national_identifier": "98.740.900/9335-08",
+        "our_number_range": [1, 99999999999999999999], "agreement_code": "12345",
+        "default_charging_features": [1, 2, 1, 2, 2], "supplier_name": "Springfield
+        Elemenary School", "advance_days": 10, "bank": "237", "uuid": "af36a1ce-385e-4376-a20f-3c3836bc59a8"}'
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:37 GMT
+- request:
+    method: post
+    uri: http://:2i1p8dgcRmyehAUlxlL3mA%3D%3D@sandbox.charging.financeconnect.com.br:8080/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/invoices/
+    body:
+      encoding: UTF-8
+      string: '{"kind":2,"amount":123.45,"document_number":"000000000000001","drawee":{"name":"Nome
+        do Sacado","address":"Rua do Carmo, 43","city_state":"Rio de Janeiro/RJ","zipcode":"21345-999","national_identifier":"37.818.380/0001-86"},"due_date":"2020-12-31","charging_features":null,"supplier_name":null,"discount":null,"interest":null,"rebate":null,"ticket":null,"protest_code":null,"protest_days":null,"instructions":null,"demonstrative":null,"our_number":null}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      Content-Length:
+      - '453'
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 16 Oct 2013 01:17:37 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/>;
+        rel=invoice, <http://sandbox.charging.financeconnect.com.br/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/billet/>;
+        rel=billet, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/>;
+        rel=charge_account, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/invoices/>;
+        rel=invoices
+      Location:
+      - http://sandbox.charging.financeconnect.com.br/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '7'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: CREATED
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:37 GMT
+- request:
+    method: get
+    uri: http://:2i1p8dgcRmyehAUlxlL3mA%3D%3D@sandbox.charging.financeconnect.com.br:8080/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 16 Oct 2013 01:17:38 GMT
+      Etag:
+      - '"9bd33bbc61f5fc6a864337c3f7224df3d3159524"'
+      Expires:
+      - Wed, 16 Oct 2013 01:17:37 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/billet/>;
+        rel=billet
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '798'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"due_date": "2020-12-31", "kind": 2, "uuid": "3b5e410e-59e2-4d88-8646-81b06d8f15fe",
+        "drawee": {"name": "Nome do Sacado", "city_state": "Rio de Janeiro / RJ",
+        "zipcode": "21345999", "national_identifier": "37.818.380/0001-86", "address":
+        "Rua do Carmo, 43", "quarter": ""}, "document_number": "000000000000001",
+        "demonstrative": [], "uri": "http://sandbox.charging.financeconnect.com.br/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/",
+        "paid": 0, "charge_account": "http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/",
+        "discount": null, "amount": "123.45", "interest": {"date": 0, "amount": "0.00",
+        "type": 0}, "supplier_name": "Springfield Elemenary School", "document_date":
+        "2013-10-15", "charging_features": [1, 2, 1, 2, 2], "instructions": []}'
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:38 GMT
+- request:
+    method: get
+    uri: http://:2i1p8dgcRmyehAUlxlL3mA%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 16 Oct 2013 01:17:38 GMT
+      Etag:
+      - '"a35e029d7b60f7605ecc839b66da264ad3561f9a"'
+      Expires:
+      - Wed, 16 Oct 2013 01:17:37 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/>;
+        rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/return/>;
+        rel=return_files, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/return/>;
+        rel=return_cnab, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/invoices/>;
+        rel=invoices
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '737'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"account": {"digit": "6", "number": 12345}, "agency": {"digit": "6",
+        "number": 12345}, "name": "Conta de cobran\u00e7a", "etag": "a35e029d7b60f7605ecc839b66da264ad3561f9a",
+        "zipcode": "29646", "portfolio_code": "25", "address": "1608 Florida Avenue",
+        "city_state": "Greenwood/SC", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/",
+        "sequence_numbers": [1, 9999999], "currency": 9, "national_identifier": "98.740.900/9335-08",
+        "our_number_range": [1, 99999999999999999999], "agreement_code": "12345",
+        "default_charging_features": [1, 2, 1, 2, 2], "supplier_name": "Springfield
+        Elemenary School", "advance_days": 10, "bank": "237", "uuid": "af36a1ce-385e-4376-a20f-3c3836bc59a8"}'
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:38 GMT
+- request:
+    method: post
+    uri: http://:2i1p8dgcRmyehAUlxlL3mA%3D%3D@sandbox.charging.financeconnect.com.br:8080/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/pay/
+    body:
+      encoding: UTF-8
+      string: '{"amount":123.45,"date":"2013-10-15"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      If-Match:
+      - '"9bd33bbc61f5fc6a864337c3f7224df3d3159524"'
+      Content-Length:
+      - '37'
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 16 Oct 2013 01:17:39 GMT
+      Etag:
+      - '"5ceb04570e8ba17c0dfb7e38d4ff146e39d9d8ce"'
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '7'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: CREATED
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:39 GMT
+- request:
+    method: get
+    uri: http://:2i1p8dgcRmyehAUlxlL3mA%3D%3D@sandbox.charging.financeconnect.com.br:8080/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 16 Oct 2013 01:17:39 GMT
+      Etag:
+      - '"5ceb04570e8ba17c0dfb7e38d4ff146e39d9d8ce"'
+      Expires:
+      - Wed, 16 Oct 2013 01:17:38 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/billet/>;
+        rel=billet, <http://sandbox.charging.financeconnect.com.br/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/payments/>;
+        rel=payments
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '805'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"due_date": "2020-12-31", "kind": 2, "uuid": "3b5e410e-59e2-4d88-8646-81b06d8f15fe",
+        "drawee": {"name": "Nome do Sacado", "city_state": "Rio de Janeiro / RJ",
+        "zipcode": "21345999", "national_identifier": "37.818.380/0001-86", "address":
+        "Rua do Carmo, 43", "quarter": ""}, "document_number": "000000000000001",
+        "demonstrative": [], "uri": "http://sandbox.charging.financeconnect.com.br/invoices/3b5e410e-59e2-4d88-8646-81b06d8f15fe/",
+        "paid": "123.45", "charge_account": "http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/",
+        "discount": null, "amount": "123.45", "interest": {"date": 0, "amount": "0.00",
+        "type": 0}, "supplier_name": "Springfield Elemenary School", "document_date":
+        "2013-10-15", "charging_features": [1, 2, 1, 2, 2], "instructions": []}'
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:40 GMT
+- request:
+    method: get
+    uri: http://:2i1p8dgcRmyehAUlxlL3mA%3D%3D@sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 16 Oct 2013 01:17:40 GMT
+      Etag:
+      - '"a35e029d7b60f7605ecc839b66da264ad3561f9a"'
+      Expires:
+      - Wed, 16 Oct 2013 01:17:39 GMT
+      Link:
+      - <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/>;
+        rel=batches, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/return/>;
+        rel=return_files, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/batches/return/>;
+        rel=return_cnab, <http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/invoices/>;
+        rel=invoices
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '737'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"account": {"digit": "6", "number": 12345}, "agency": {"digit": "6",
+        "number": 12345}, "name": "Conta de cobran\u00e7a", "etag": "a35e029d7b60f7605ecc839b66da264ad3561f9a",
+        "zipcode": "29646", "portfolio_code": "25", "address": "1608 Florida Avenue",
+        "city_state": "Greenwood/SC", "uri": "http://sandbox.charging.financeconnect.com.br/charge-accounts/af36a1ce-385e-4376-a20f-3c3836bc59a8/",
+        "sequence_numbers": [1, 9999999], "currency": 9, "national_identifier": "98.740.900/9335-08",
+        "our_number_range": [1, 99999999999999999999], "agreement_code": "12345",
+        "default_charging_features": [1, 2, 1, 2, 2], "supplier_name": "Springfield
+        Elemenary School", "advance_days": 10, "bank": "237", "uuid": "af36a1ce-385e-4376-a20f-3c3836bc59a8"}'
+    http_version: 
+  recorded_at: Wed, 16 Oct 2013 01:17:40 GMT
+recorded_with: VCR 2.5.0

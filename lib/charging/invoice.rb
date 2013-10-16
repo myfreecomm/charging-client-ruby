@@ -63,7 +63,7 @@ module Charging
         amount: self.amount,
         date: Time.now.strftime('%Y-%m-%d')
       }.merge(payment_data)
-      
+
       @last_response = Http.post("/invoices/#{uuid}/pay/", domain.token, MultiJson.encode(attributes), etag: self.etag)
       
       raise_last_response_unless 201
@@ -71,7 +71,7 @@ module Charging
       reload_attributes!(uuid)
     ensure
       if $ERROR_INFO
-        @last_response = $ERROR_INFO.response if $ERROR_INFO.kind_of?(Http::LastResponseError)
+        @last_response = $ERROR_INFO.last_response if $ERROR_INFO.kind_of?(Http::LastResponseError)
         @errors = [$ERROR_INFO.message]
       end
     end
