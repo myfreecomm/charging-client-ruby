@@ -29,7 +29,7 @@ module Charging
   
   def self.use_sandbox!(application_token = 'AwdhihciTgORGUjnkuk1vg==')
     Charging.configure do |config|
-      config.url = 'http://sandbox.charging.financeconnect.com.br:8080'
+      config.url = 'https://sandbox.charging.financeconnect.com.br'
       config.application_token = application_token
     end    
   end
