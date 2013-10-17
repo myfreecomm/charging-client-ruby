@@ -2,6 +2,9 @@
 
 module Charging
   class Base
+    DEFAULT_PAGE = 1
+    DEFAULT_LIMIT = 10
+
     COMMON_ATTRIBUTES = [:uuid, :uri, :etag]
     
     attr_reader :last_response, :errors

@@ -91,6 +91,23 @@ module Charging
       MultiJson.decode(response.body)
     end
     
+    # Returns a String with the temporary URL for print current invoice.
+    # 
+    # API method: <tt>GET /invoices/:uuid/billet/</tt>
+    # 
+    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-uuid-billet
+    def billet_url
+      return if unpersisted?
+      
+      response = Http.get("/invoices/#{uuid}/billet/", domain.token)
+      
+      return if response.code != 200
+      
+      MultiJson.decode(response.body)["billet"]
+    rescue
+      nil
+    end
+
     # Finds an invoice by uuid. It requites an <tt>domain</tt> and a
     # <tt>uuid</tt>.
     #
@@ -110,23 +127,24 @@ module Charging
       load_persisted_invoice(MultiJson.decode(response.body), response, domain)
     end
     
-    # Returns a String with the temporary URL for print current invoice.
+    # Returns a list of kind of invoices available for current domain. You
+    # SHOULD pass a <tt>domain</tt> instance. You MAY pass a <tt>page</tt>
+    # and <tt>limit</tt> for pagination.
     # 
-    # API method: <tt>GET /invoices/:uuid/billet/</tt>
+    # API method: <tt>GET /invoices/kinds?page=:page&limit=:limit
     # 
-    # API documentation: https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-uuid-billet
-    def billet_url
-      return if unpersisted?
-      
-      response = Http.get("/invoices/#{uuid}/billet/", domain.token)
-      
-      return if response.code != 200
-      
-      MultiJson.decode(response.body)["billet"]
-    rescue
-      nil
-    end
+    # API documentation:
+    # https://charging.financeconnect.com.br/static/docs/charges.html#get-invoices-kinds-limit-limit-page-page
+    def self.kinds(domain, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT)
+      Helpers.required_arguments!(domain: domain)
 
+      response = Http.get("/invoices/kinds/?page=#{Integer(page)}&limit=#{Integer(limit)}", domain.token)
+      
+      raise_last_response_unless 200, response
+      
+      MultiJson.decode(response)
+    end
+    
     def self.load_persisted_invoice(attributes, response, domain, charge_account = nil)
       charge_account_uri = attributes.delete("charge_account").to_s
       

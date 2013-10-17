@@ -133,60 +133,6 @@ describe Charging::Invoice, :vcr do
     end
   end
 
-  describe '.find_by_uuid' do
-    it 'should require an account' do
-      expected_error = [ArgumentError, 'domain required']
-
-      expect { described_class.find_by_uuid(nil, '') }.to raise_error(*expected_error)
-    end
-
-    it 'should require an uuid' do
-      VCR.use_cassette('Invoice/try find by uuid an invoice with nil value') do
-        expected_error = [ArgumentError, 'uuid required']
-
-        expect { described_class.find_by_uuid(domain, nil) }.to raise_error(*expected_error)
-      end
-    end
-
-    it 'should raise for invalid uuid' do
-      VCR.use_cassette('Invoice/try find by uuid an invoice with invalid uuid') do
-        expect { described_class.find_by_uuid(domain, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
-      end
-    end
-
-    it 'should raise if not response to success (200)' do
-      VCR.use_cassette('Invoice/try find by uuid an invoice when response not success') do
-        response_mock = double('AcceptedResponse', code: 202, to_s: 'AcceptedResponse')
-
-        described_class
-          .should_receive(:get_invoice)
-          .with(domain, 'uuid')
-          .and_return(response_mock)
-
-        expect {
-          described_class.find_by_uuid(domain, 'uuid')
-        }.to raise_error Charging::Http::LastResponseError, 'AcceptedResponse'
-      end
-    end
-
-    context 'for a valid uuid' do
-      before do
-        VCR.use_cassette('Invoice/find by uuid an invoice') do
-          @invoice = invoice
-          @find_result = described_class.find_by_uuid(domain, @invoice.uuid)
-        end
-      end
-      
-      subject { @find_result }
-
-      it 'should instantiate a charge account' do
-        expect(subject).to be_an_instance_of(Charging::Invoice)
-      end
-
-      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/invoices/#{@invoice.uuid}/" }
-    end
-  end
-  
   describe '#billet_url' do
     context 'for not persisted invoice' do
       subject {
@@ -357,6 +303,106 @@ describe Charging::Invoice, :vcr do
         
         expect(invoice).to be_deleted
         expect(invoice).to_not be_persisted
+      end
+    end
+  end
+
+  describe '.find_by_uuid' do
+    it 'should require an account' do
+      expected_error = [ArgumentError, 'domain required']
+
+      expect { described_class.find_by_uuid(nil, '') }.to raise_error(*expected_error)
+    end
+
+    it 'should require an uuid' do
+      VCR.use_cassette('Invoice/try find by uuid an invoice with nil value') do
+        expected_error = [ArgumentError, 'uuid required']
+
+        expect { described_class.find_by_uuid(domain, nil) }.to raise_error(*expected_error)
+      end
+    end
+
+    it 'should raise for invalid uuid' do
+      VCR.use_cassette('Invoice/try find by uuid an invoice with invalid uuid') do
+        expect { described_class.find_by_uuid(domain, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
+      end
+    end
+
+    it 'should raise if not response to success (200)' do
+      VCR.use_cassette('Invoice/try find by uuid an invoice when response not success') do
+        response_mock = double('AcceptedResponse', code: 202, to_s: 'AcceptedResponse')
+
+        described_class
+          .should_receive(:get_invoice)
+          .with(domain, 'uuid')
+          .and_return(response_mock)
+
+        expect {
+          described_class.find_by_uuid(domain, 'uuid')
+        }.to raise_error Charging::Http::LastResponseError, 'AcceptedResponse'
+      end
+    end
+
+    context 'for a valid uuid' do
+      before do
+        VCR.use_cassette('Invoice/find by uuid an invoice') do
+          @invoice = invoice
+          @find_result = described_class.find_by_uuid(domain, @invoice.uuid)
+        end
+      end
+      
+      subject { @find_result }
+
+      it 'should instantiate a charge account' do
+        expect(subject).to be_an_instance_of(Charging::Invoice)
+      end
+
+      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/invoices/#{@invoice.uuid}/" }
+    end
+  end
+
+  describe '.kinds' do
+    it 'should require a domain' do
+      expected_error = [ArgumentError, 'domain required']
+      
+      expect { described_class.kinds(nil) }.to raise_error(*expected_error)
+    end
+    
+    it 'should raise for invalid domain' do
+      VCR.use_cassette('Invoice/try get invoice kinds with invalid domain token') do
+        expected_error = [Charging::Http::LastResponseError]
+        
+        expect { described_class.kinds(double(token: 'invalid')) }.to raise_error(*expected_error)
+      end
+    end
+    
+    it 'should return an array with first page' do
+      VCR.use_cassette('Invoice/get first page of invoice kinds') do
+        default_result = described_class.kinds(domain)
+        first_page_result = described_class.kinds(domain, 1)
+        
+        expect(default_result).to eq first_page_result
+        
+        expect(default_result).to include({"acronym"=>"DM", "itau_code"=>1, "code"=>2, "name"=>"Duplicata Mercantil"})
+        expect(default_result.size).to eq 10
+      end
+    end
+    
+    it 'should return an array with second page' do
+      VCR.use_cassette('Invoice/get second page of invoice kinds') do
+        result = described_class.kinds(domain, 2)
+                
+        expect(result).to_not include({"acronym"=>"DM", "itau_code"=>1, "code"=>2, "name"=>"Duplicata Mercantil"})
+        expect(result.size).to eq 10
+      end
+    end
+    
+    it 'should return an array of kinds passing new limit per page' do
+      VCR.use_cassette('Invoice/get first page of invoice kinds with 12 items per page') do
+        result = described_class.kinds(domain, 1, 12)
+        
+        expect(result).to include({"acronym"=>"DM", "itau_code"=>1, "code"=>2, "name"=>"Duplicata Mercantil"})
+        expect(result.size).to eq 12
       end
     end
   end

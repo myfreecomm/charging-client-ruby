@@ -3,9 +3,6 @@
 module Charging
   # Represents a Charging domain.
   class Domain < Base
-    DEFAULT_PAGE = 1
-    DEFAULT_LIMIT = 10
-
     READ_ONLY_ATTRIBUTES = [:token]
 
     ATTRIBUTES = [ :supplier_name, :address, :city_state, :zipcode, :national_identifier, :description ]

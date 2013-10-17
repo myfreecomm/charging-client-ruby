@@ -1,0 +1,155 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/
+    body:
+      encoding: UTF-8
+      string: '{"supplier_name":"Springfield Elemenary School","address":"1608 Florida
+        Avenue","city_state":"Greenwood/SC","zipcode":"29646","national_identifier":"09503602248189","description":"The
+        mission of Greenwood School District 50 is to educate all students to become
+        responsible and productive citizens."}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+      Content-Length:
+      - '299'
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Thu, 17 Oct 2013 19:00:30 GMT
+      Link:
+      - <https://sandbox.charging.financeconnect.com.br/account/domains/8917809e-cc6e-4e01-b1a1-87803cebac57/>;
+        rel=domain, <https://sandbox.charging.financeconnect.com.br/account/domains/>;
+        rel=domains
+      Location:
+      - https://sandbox.charging.financeconnect.com.br/account/domains/8917809e-cc6e-4e01-b1a1-87803cebac57/
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '7'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: CREATED
+    http_version: 
+  recorded_at: Thu, 17 Oct 2013 19:00:30 GMT
+- request:
+    method: get
+    uri: http://:AwdhihciTgORGUjnkuk1vg%3D%3D@sandbox.charging.financeconnect.com.br:8080/account/domains/8917809e-cc6e-4e01-b1a1-87803cebac57/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 17 Oct 2013 19:00:31 GMT
+      Etag:
+      - '"909cec1b8e4d987de569c4f405d84cc3dcef7439"'
+      Expires:
+      - Thu, 17 Oct 2013 19:00:30 GMT
+      Link:
+      - <https://sandbox.charging.financeconnect.com.br/charge-accounts/>; rel=charge_accounts,
+        <https://sandbox.charging.financeconnect.com.br/account/domains/>; rel=domains,
+        <https://sandbox.charging.financeconnect.com.br/domain/>; rel=domain, <https://sandbox.charging.financeconnect.com.br/account/>;
+        rel=service_account
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '562'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"uuid": "8917809e-cc6e-4e01-b1a1-87803cebac57", "uri": "https://sandbox.charging.financeconnect.com.br/account/domains/8917809e-cc6e-4e01-b1a1-87803cebac57/",
+        "supplier_name": "Springfield Elemenary School", "zipcode": "29646", "city_state":
+        "Greenwood/SC", "token": "5G/Jlt9tR06Ay9oy2Mo1/w==", "etag": "909cec1b8e4d987de569c4f405d84cc3dcef7439",
+        "national_identifier": "09.503.602/2481-89", "address": "1608 Florida Avenue",
+        "description": "The mission of Greenwood School District 50 is to educate
+        all students to become responsible and productive citizens."}'
+    http_version: 
+  recorded_at: Thu, 17 Oct 2013 19:00:31 GMT
+- request:
+    method: get
+    uri: http://:5G%2FJlt9tR06Ay9oy2Mo1%2Fw%3D%3D@sandbox.charging.financeconnect.com.br:8080/invoices/kinds/?limit=10&page=2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Charging Ruby Client v0.0.1
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 17 Oct 2013 19:00:31 GMT
+      Etag:
+      - '"ef19498467c247b237adbdf5990f5e81a1d761e4"'
+      Expires:
+      - Thu, 17 Oct 2013 19:00:30 GMT
+      Link:
+      - <https://sandbox.charging.financeconnect.com.br/invoices/kinds/?limit=10&page=1>;
+        rel=prev, <https://sandbox.charging.financeconnect.com.br/invoices/kinds/?limit=10&page=3>;
+        rel=next
+      Server:
+      - nginx/1.1.19
+      Content-Length:
+      - '799'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '[{"acronym": "NCR", "itau_code": null, "code": 11, "name": "Nota de
+        Cr\u00e9dito Rural"}, {"acronym": "NP", "itau_code": 2, "code": 12, "name":
+        "Nota Promiss\u00f3ria"}, {"acronym": "NPR", "itau_code": null, "code": 13,
+        "name": "Nota Promiss\u00f3ria Rural"}, {"acronym": "TM", "itau_code": null,
+        "code": 14, "name": "Triplicata Mercantil"}, {"acronym": "TS", "itau_code":
+        null, "code": 15, "name": "Triplicata de Servi\u00e7o"}, {"acronym": "NS",
+        "itau_code": 3, "code": 16, "name": "Nota de Seguro"}, {"acronym": "RC", "itau_code":
+        5, "code": 17, "name": "Recibo"}, {"acronym": "FAT", "itau_code": null, "code":
+        18, "name": "Fatura"}, {"acronym": "ND", "itau_code": 13, "code": 19, "name":
+        "Nota de D\u00e9bito"}, {"acronym": "AP", "itau_code": null, "code": 20, "name":
+        "Ap\u00f3lice de Seguro"}]'
+    http_version: 
+  recorded_at: Thu, 17 Oct 2013 19:00:31 GMT
+recorded_with: VCR 2.5.0

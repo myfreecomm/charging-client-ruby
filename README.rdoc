@@ -160,6 +160,11 @@ Note: This will execute <tt>charge_account#update_attribute!</tt> for each attri
 
   charge_account.destroy!
 
+==== Get invoice kinds
+
+  Invoice.kinds(domain) # => [{"acronym"=>"DM", "itau_code"=>1, "code"=>2, "name"=>"Duplicata Mercantil"}, ...]
+  Invoice.kinds(domain)
+
 ==== Create an invoice
 
   attributes = {

@@ -26,4 +26,11 @@ module Charging
   def self.configure
     yield(configuration) if block_given?
   end
+  
+  def self.use_sandbox!(application_token = 'AwdhihciTgORGUjnkuk1vg==')
+    Charging.configure do |config|
+      config.url = 'http://sandbox.charging.financeconnect.com.br:8080'
+      config.application_token = application_token
+    end    
+  end
 end
