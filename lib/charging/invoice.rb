@@ -33,7 +33,7 @@ module Charging
         Invoice.post_charge_accounts_invoices(domain, charge_account, attributes)
       end
       
-      reload_attributes!(Helpers.extract_uuid(last_response.headers[:location]))
+      reload_attributes!(Helpers.extract_uuid(last_response.headers[:location]) || uuid)
     end
     
     # Deletes the invoice at API

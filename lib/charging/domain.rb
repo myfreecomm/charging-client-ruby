@@ -107,7 +107,7 @@ module Charging
     private
 
     def reload_attributes!
-      new_domain = self.class.find_by_uuid(account, Helpers.extract_uuid(last_response.headers[:location]))
+      new_domain = self.class.find_by_uuid(account, Helpers.extract_uuid(last_response.headers[:location]) || uuid)
 
       (COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
         instance_variable_set "@#{attribute}", new_domain.send(attribute)

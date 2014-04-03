@@ -135,7 +135,7 @@ module Charging
     end
     
     def reload_attributes!
-      new_charge_account = self.class.find_by_uuid(domain, Helpers.extract_uuid(last_response.headers[:location]))
+      new_charge_account = self.class.find_by_uuid(domain, Helpers.extract_uuid(last_response.headers[:location]) || uuid)
       
       (ATTRIBUTES + COMMON_ATTRIBUTES + READ_ONLY_ATTRIBUTES).each do |attribute|
         instance_variable_set "@#{attribute}", new_charge_account.send(attribute)
