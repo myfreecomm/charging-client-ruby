@@ -46,4 +46,14 @@ describe Charging::Helpers do
       expect(result).to eq(name: 'John Doe', phones: {home: '+552123456789'}, emails: ['john.doe@mailinator.com', 'john@doe.com'])
     end
   end
+  
+  describe '.extract_uuid' do
+    it 'should return an empty string if invalid data' do
+      expect(described_class.extract_uuid(nil)).to eq ''
+    end
+    
+    it 'should extract uuid from charing url' do
+      expect(described_class.extract_uuid('/charging-accounts/any-uuid')).to eq 'any-uuid'
+    end
+  end
 end

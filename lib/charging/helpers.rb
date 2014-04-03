@@ -30,6 +30,8 @@ module Charging
     
     def extract_uuid(uri)
       uri.split("/").last
+    rescue
+      ""
     end
   end
 end
