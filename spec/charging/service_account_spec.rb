@@ -35,11 +35,30 @@ describe Charging::ServiceAccount, :vcr do
       context 'with current service account' do
         subject { @result }
 
-        its(:plan) { should eq 'full' }
-        its(:name) { should eq 'Teste cliente Ruby' }
-        its(:uri)  { should eq 'http://sandbox.app.passaporteweb.com.br/organizations/api/accounts/3a0676fb-6639-466a-ac35-9ea7c5f67386/' }
-        its(:uuid) { should eq '3a0676fb-6639-466a-ac35-9ea7c5f67386' }
-        its(:application_token) { should eq 'AwdhihciTgORGUjnkuk1vg==' }
+        describe '#plan' do
+          subject { super().plan }
+          it { is_expected.to eq 'full' }
+        end
+
+        describe '#name' do
+          subject { super().name }
+          it { is_expected.to eq 'Teste cliente Ruby' }
+        end
+
+        describe '#uri' do
+          subject { super().uri }
+          it { is_expected.to eq 'http://sandbox.app.passaporteweb.com.br/organizations/api/accounts/3a0676fb-6639-466a-ac35-9ea7c5f67386/' }
+        end
+
+        describe '#uuid' do
+          subject { super().uuid }
+          it { is_expected.to eq '3a0676fb-6639-466a-ac35-9ea7c5f67386' }
+        end
+
+        describe '#application_token' do
+          subject { super().application_token }
+          it { is_expected.to eq 'AwdhihciTgORGUjnkuk1vg==' }
+        end
       end
 
       it 'should return ok (200) response at last response' do

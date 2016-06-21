@@ -6,9 +6,20 @@ describe Charging::Configuration do
   let(:config) { Charging::Configuration.new }
 
   context 'for default settings' do
-    its(:application_token) { should be_nil }
-    its(:url) { should eq 'https://charging.financeconnect.com.br' }
-    its(:user_agent) { should match(/Charging Ruby Client v\d+\.\d+\.\d+/) }
+    describe '#application_token' do
+      subject { super().application_token }
+      it { is_expected.to be_nil }
+    end
+
+    describe '#url' do
+      subject { super().url }
+      it { is_expected.to eq 'https://charging.financeconnect.com.br' }
+    end
+
+    describe '#user_agent' do
+      subject { super().user_agent }
+      it { is_expected.to match(/Charging Ruby Client v\d+\.\d+\.\d+/) }
+    end
   end
 
   context "with configuration parameters" do
@@ -20,9 +31,20 @@ describe Charging::Configuration do
       end
     end
 
-    its(:application_token) { should eq application_token }
-    its(:url) { should eq 'https://sandbox.app.charging.com.br'}
-    its(:user_agent) { should eq "My amazing app" }
+    describe '#application_token' do
+      subject { super().application_token }
+      it { is_expected.to eq application_token }
+    end
+
+    describe '#url' do
+      subject { super().url }
+      it { is_expected.to eq 'https://sandbox.app.charging.com.br'}
+    end
+
+    describe '#user_agent' do
+      subject { super().user_agent }
+      it { is_expected.to eq "My amazing app" }
+    end
   end
 
   describe "#credentials_for" do

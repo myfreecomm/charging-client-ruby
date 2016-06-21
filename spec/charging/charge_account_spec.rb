@@ -15,7 +15,7 @@ describe Charging::ChargeAccount, :vcr do
     }
   end
   let(:domain) do
-    Factory.create_resource(Charging::Domain, current_account, Factory.domain_attributes(Faker.cnpj_generator)) 
+    Factory.create_resource(Charging::Domain, current_account, Factory.domain_attributes(Faker.cnpj_generator))
   end
 
   context 'for new instance' do
@@ -23,37 +23,56 @@ describe Charging::ChargeAccount, :vcr do
       :bank, :name, :agreement_code, :portfolio_code, :account, :agency,
       :currency, :supplier_name, :address, :sequence_numbers, :advance_days
     ]
-    
+
     let(:response) { double(:response, code: 500) }
-    
+
     before do
       VCR.use_cassette('ChargeAccount/for new instance') do
         attributes = Hash[*CA_ATTRIBUTES.map {|attr| [attr, "#{attr} value"] }.flatten]
-      
+
         @domain = domain
         @new_charge_account = described_class.new(attributes, domain, response)
       end
     end
-    
+
     subject { @new_charge_account }
-    
+
     CA_ATTRIBUTES.each do |attribute|
-      its(attribute) { should eq "#{attribute} value"}
+      describe attribute do
+        subject { super().send(attribute) }
+        it { is_expected.to eq "#{attribute} value"}
+      end
     end
-    
+
     [:uuid, :uri, :etag, :national_identifier].each do |attribute|
-      its(attribute) { should be_nil }
+      describe attribute do
+        subject { super().send(attribute) }
+        it { is_expected.to be_nil }
+      end
     end
-    
-    its(:domain) { should eq @domain }
-    its(:last_response) { should eq response }
-    its(:errors) { should eq [] }
-    
+
+    describe '#domain' do
+      subject { super().domain }
+      it { is_expected.to eq @domain }
+    end
+
+    describe '#last_response' do
+      subject { super().last_response }
+      it { is_expected.to eq response }
+    end
+
+    describe '#errors' do
+      subject { super().errors }
+      it { is_expected.to eq [] }
+    end
+
     specify('#persisted?') { expect(subject).to_not be_persisted }
     specify('#deleted?') { expect(subject).to_not be_deleted }
-    
-    its(:attributes) do
-      should eq({
+
+    describe '#attributes' do
+      subject { super().attributes }
+      it do
+      is_expected.to eq({
         account: 'account value',
         address: 'address value',
         advance_days: "advance_days value",
@@ -71,8 +90,9 @@ describe Charging::ChargeAccount, :vcr do
         zipcode: nil
       })
     end
+    end
   end
-  
+
   describe '#create!' do
     it 'should require a domain and load errors' do
       charge_account = described_class.new(attributes, nil)
@@ -92,11 +112,14 @@ describe Charging::ChargeAccount, :vcr do
           @created_charge_account = described_class.new(attributes, @domain).create!
         end
       end
-      
+
       subject { @created_charge_account }
 
       [:uuid, :uri, :etag].each do |attribute|
-        its(attribute) { should_not be_nil }
+        describe attribute do
+          subject { super().send(attribute) }
+          it { is_expected.not_to be_nil }
+        end
       end
 
       it 'should be persisted' do
@@ -104,12 +127,12 @@ describe Charging::ChargeAccount, :vcr do
       end
     end
   end
-  
+
   describe '#destroy!' do
     it 'should delete charge account at API' do
       VCR.use_cassette('ChargeAccount/deleting a charge account') do
         charge_account = Factory.create_resource(described_class, domain, attributes).create!
-        
+
         expect { charge_account.destroy! }.to_not raise_error
 
         expect(charge_account).to be_deleted
@@ -117,7 +140,7 @@ describe Charging::ChargeAccount, :vcr do
       end
     end
   end
-  
+
   describe '#update_attribute!' do
     let!(:charge_account) do
       VCR.use_cassette('ChargeAccount/get a charge account for update attribute tests') do
@@ -146,15 +169,15 @@ describe Charging::ChargeAccount, :vcr do
       end
     end
   end
-  
+
   describe '#update_attributes!' do
     it 'should delegate to update_attribute! for each attribute' do
       VCR.use_cassette('ChargeAccount/for update attributes') do
         charge_account = described_class.new(attributes, domain)
 
-        charge_account.should_receive(:update_attribute!).exactly(3)
-        charge_account.should_receive(:reload_attributes!).once
-      
+        expect(charge_account).to receive(:update_attribute!).exactly(3)
+        expect(charge_account).to receive(:reload_attributes!).once
+
         charge_account.update_attributes!(address: 'New Address', zipcode: '12345', city: 'City')
       end
     end
@@ -175,59 +198,63 @@ describe Charging::ChargeAccount, :vcr do
           @find_all_result = described_class.find_all(@domain)
         end
       end
-      
+
       subject { @find_all_result }
-      
-      it { should be_an_instance_of(Charging::ChargeAccount::Collection) }
-      its(:size) { should_not eq 0}
+
+      it { is_expected.to be_an_instance_of(Charging::ChargeAccount::Collection) }
+
+      describe '#size' do
+        subject { super().size }
+        it { is_expected.not_to eq 0}
+      end
 
       it 'should contain last response information' do
         expect(@find_all_result.last_response.code).to eq 200
       end
     end
   end
-  
+
   describe '.find_by_uuid' do
     let(:charge_account) do
       Factory.create_resource(described_class, domain, attributes).create!
     end
-  
+
     let(:uuid) { charge_account.uuid }
-    
+
     it 'should require an account' do
       expected_error = [ArgumentError, 'domain required']
-  
+
       expect { described_class.find_by_uuid(nil, '') }.to raise_error(*expected_error)
     end
-  
+
     it 'should require an uuid' do
       VCR.use_cassette('ChargeAccount/can not find without uuid') do
         expected_error = [ArgumentError, 'uuid required']
-  
+
         expect { described_class.find_by_uuid(domain, nil) }.to raise_error(*expected_error)
       end
     end
-  
+
     it 'should raise for invalid uuid' do
       VCR.use_cassette('ChargeAccount/finding invalid charge account') do
         expect { described_class.find_by_uuid(domain, 'invalid-uuid') }.to raise_error Charging::Http::LastResponseError
       end
     end
-  
+
     it 'should raise if not response to success (200)' do
       VCR.use_cassette('ChargeAccount/response not success') do
         response_mock = double('AcceptedResponse', code: 202, to_s: 'AcceptedResponse')
-  
-        described_class
-          .should_receive(:get_charge_account)
+
+        expect(described_class)
+          .to receive(:get_charge_account)
           .and_return(response_mock)
-  
+
         expect {
           described_class.find_by_uuid(domain, uuid)
         }.to raise_error Charging::Http::LastResponseError, 'AcceptedResponse'
       end
     end
-  
+
     context 'for a valid uuid' do
       before do
         VCR.use_cassette('ChargeAccount/finding a charging account by uuid via domain') do
@@ -237,19 +264,26 @@ describe Charging::ChargeAccount, :vcr do
           @find_result = described_class.find_by_uuid(@domain, @uuid)
         end
       end
-      
+
       subject { @find_result }
-  
+
       it 'should instantiate a charge account' do
         expect(subject).to be_an_instance_of(Charging::ChargeAccount)
       end
-  
+
       it 'should be a persisted instance' do
         expect(subject).to be_persisted
       end
-  
-      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/charge-accounts/#{@uuid}/" }
-      its(:domain) { should eq @domain }
+
+      describe '#uri' do
+        subject { super().uri }
+        it { is_expected.to eq "http://sandbox.charging.financeconnect.com.br/charge-accounts/#{@uuid}/" }
+      end
+
+      describe '#domain' do
+        subject { super().domain }
+        it { is_expected.to eq @domain }
+      end
     end
   end
 end
