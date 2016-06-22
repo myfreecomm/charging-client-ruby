@@ -35,19 +35,42 @@ describe Charging::Domain, :vcr do
     end
 
     %w[supplier_name address city_state zipcode national_identifier description].each do |attr|
-      its(attr) { should eq "#{attr} data"}
+      describe attr do
+        subject { super().send(attr) }
+        it { is_expected.to eq "#{attr} data"}
+      end
     end
 
-    %w[uri uuid etag token].each { |attr| its(attr) { should be_nil } }
+    %w[uri uuid etag token].each do |attr|
+      describe attr do
+        subject { super().send(attr) }
+        it { is_expected.to be_nil }
+      end
+    end
 
-    its(:last_response) { should eq response_mock }
+    describe '#last_response' do
+      subject { super().last_response }
+      it { is_expected.to eq response_mock }
+    end
 
-    its(:persisted?) { should be_false }
-    its(:deleted?) { should be_false }
+    describe '#persisted?' do
+      subject { super().persisted? }
+      it { is_expected.to be_falsey }
+    end
 
-    its(:account) { should eq current_account }
+    describe '#deleted?' do
+      subject { super().deleted? }
+      it { is_expected.to be_falsey }
+    end
 
-    its(:attributes) { should eq({
+    describe '#account' do
+      subject { super().account }
+      it { is_expected.to eq current_account }
+    end
+
+    describe '#attributes' do
+      subject { super().attributes }
+      it { is_expected.to eq({
       address: 'address data',
       city_state: 'city_state data',
       description: 'description data',
@@ -55,6 +78,7 @@ describe Charging::Domain, :vcr do
       supplier_name: 'supplier_name data',
       zipcode: 'zipcode data'
     }) }
+    end
   end
 
   describe '#create!' do
@@ -84,7 +108,7 @@ describe Charging::Domain, :vcr do
         end
       end
     end
-    
+
     context 'when everything is OK' do
       before do
         VCR.use_cassette('Domain/creating a domain') do
@@ -92,11 +116,14 @@ describe Charging::Domain, :vcr do
           @domain.create!
         end
       end
-      
+
       subject { @domain }
 
       [:uuid, :uri, :etag, :token].each do |attribute|
-        its(attribute) { should_not be_nil }
+        describe attribute do
+          subject { super().send(attribute) }
+          it { is_expected.not_to be_nil }
+        end
       end
 
       it 'should be persisted' do
@@ -175,7 +202,7 @@ describe Charging::Domain, :vcr do
           @first_result = @result.first
         end
       end
-      
+
       it 'should result be a domain collection instance' do
         expect(@result).to be_an_instance_of(Charging::Domain::Collection)
       end
@@ -233,11 +260,11 @@ describe Charging::Domain, :vcr do
     it 'should raise if not response to success (200)' do
       VCR.use_cassette('Domain/find by uuid with response not success') do
         uuid = domain.uuid
-        
+
         response_mock = double('AcceptedResponse', code: 202, to_s: 'AcceptedResponse')
 
-        described_class
-          .should_receive(:get_account_domain)
+        expect(described_class)
+          .to receive(:get_account_domain)
           .with(current_account, uuid)
           .and_return(response_mock)
 
@@ -257,7 +284,7 @@ describe Charging::Domain, :vcr do
           @finded_domain = described_class.find_by_uuid(@current_account, @uuid)
         end
       end
-      
+
       subject { @finded_domain }
 
       it 'should instanciate a domain' do
@@ -268,11 +295,30 @@ describe Charging::Domain, :vcr do
         expect(subject).to be_persisted
       end
 
-      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{@uuid}/" }
-      its(:uuid) { should eq @uuid }
-      its(:etag) { should eq @domain.etag }
-      its(:token) { should eq @domain.token }
-      its(:account) { should eq @current_account }
+      describe '#uri' do
+        subject { super().uri }
+        it { is_expected.to eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{@uuid}/" }
+      end
+
+      describe '#uuid' do
+        subject { super().uuid }
+        it { is_expected.to eq @uuid }
+      end
+
+      describe '#etag' do
+        subject { super().etag }
+        it { is_expected.to eq @domain.etag }
+      end
+
+      describe '#token' do
+        subject { super().token }
+        it { is_expected.to eq @domain.token }
+      end
+
+      describe '#account' do
+        subject { super().account }
+        it { is_expected.to eq @current_account }
+      end
     end
   end
 
@@ -300,7 +346,7 @@ describe Charging::Domain, :vcr do
           @finded_domain = described_class.find_by_token(@token)
         end
       end
-    
+
       subject { @finded_domain }
 
       it 'should instanciate a domain' do
@@ -311,11 +357,30 @@ describe Charging::Domain, :vcr do
         expect(subject).to be_persisted
       end
 
-      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{@uuid}/" }
-      its(:uuid) { should eq @uuid }
-      its(:etag) { should eq @domain.etag }
-      its(:token) { should eq @token }
-      its(:account) { should be_nil }
+      describe '#uri' do
+        subject { super().uri }
+        it { is_expected.to eq "http://sandbox.charging.financeconnect.com.br/account/domains/#{@uuid}/" }
+      end
+
+      describe '#uuid' do
+        subject { super().uuid }
+        it { is_expected.to eq @uuid }
+      end
+
+      describe '#etag' do
+        subject { super().etag }
+        it { is_expected.to eq @domain.etag }
+      end
+
+      describe '#token' do
+        subject { super().token }
+        it { is_expected.to eq @token }
+      end
+
+      describe '#account' do
+        subject { super().account }
+        it { is_expected.to be_nil }
+      end
     end
   end
 end

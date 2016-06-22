@@ -46,23 +46,46 @@ describe Charging::Invoice, :vcr do
     subject { @new_invoice }
 
     INVOICE_ATTRIBUTES.each do |attribute|
-      its(attribute) { should eq "#{attribute} value"}
+      describe attribute do
+        subject { super().send(attribute) }
+        it { is_expected.to eq "#{attribute} value"}
+      end
     end
 
     [:uuid, :uri, :etag, :document_date, :paid].each do |attribute|
-      its(attribute) { should be_nil }
+      describe attribute do
+        subject { super().send(attribute) }
+        it { is_expected.to be_nil }
+      end
     end
 
-    its(:domain) { should eq @domain }
-    its(:charge_account) { should eq @charge_account }
-    its(:last_response) { should eq response }
-    its(:errors) { should eq [] }
+    describe '#domain' do
+      subject { super().domain }
+      it { is_expected.to eq @domain }
+    end
+
+    describe '#charge_account' do
+      subject { super().charge_account }
+      it { is_expected.to eq @charge_account }
+    end
+
+    describe '#last_response' do
+      subject { super().last_response }
+      it { is_expected.to eq response }
+    end
+
+    describe '#errors' do
+      subject { super().errors }
+      it { is_expected.to eq [] }
+    end
 
     specify('#persisted?') { expect(subject).to_not be_persisted }
     specify('#deleted?') { expect(subject).to_not be_deleted }
 
-    its(:attributes) do
-      should eq({
+    describe '#attributes' do
+      subject { super().attributes }
+      it do
+      is_expected.to eq({
         amount: 'amount value',
         kind: 'kind value',
         document_number: 'document_number value',
@@ -81,6 +104,7 @@ describe Charging::Invoice, :vcr do
         our_number: 'our_number value',
         portfolio_code: 'portfolio_code value'
       })
+    end
     end
   end
 
@@ -124,7 +148,10 @@ describe Charging::Invoice, :vcr do
       subject { @invoice }
 
       [:uuid, :uri, :etag].each do |attribute|
-        its(attribute) { should_not be_nil }
+        describe attribute do
+          subject { super().send(attribute) }
+          it { is_expected.not_to be_nil }
+        end
       end
 
       it 'should be persisted' do
@@ -141,7 +168,10 @@ describe Charging::Invoice, :vcr do
         end
       }
       
-      its(:billet_url) { should be_nil }
+      describe '#billet_url' do
+        subject { super().billet_url }
+        it { is_expected.to be_nil }
+      end
     end
     
     context 'for a persisted invoice' do
@@ -149,8 +179,8 @@ describe Charging::Invoice, :vcr do
         VCR.use_cassette('Invoice/try get billet url when something is wrong') do
           @invoice = invoice
           
-          Charging::Http
-            .should_receive(:get).with("/invoices/#{@invoice.uuid}/billet/", domain.token)
+          expect(Charging::Http)
+            .to receive(:get).with("/invoices/#{@invoice.uuid}/billet/", domain.token)
             .and_return(double(:server_error, code: 500, body: 'generic error message'))
 
           expect(@invoice.billet_url).to be_nil
@@ -176,8 +206,8 @@ describe Charging::Invoice, :vcr do
             date: Time.now.strftime('%Y-%m-%d')
           })
         
-          Charging::Http
-            .should_receive(:post).with("/invoices/#{invoice.uuid}/pay/", domain.token, body, etag: invoice.etag)
+          expect(Charging::Http)
+            .to receive(:post).with("/invoices/#{invoice.uuid}/pay/", domain.token, body, etag: invoice.etag)
             .and_return(double(:response, code: 500))
 
           expected_error = [Charging::Http::LastResponseError]
@@ -207,12 +237,12 @@ describe Charging::Invoice, :vcr do
         @invoice = invoice
         @domain = domain
       
-        Charging::Http
-          .should_receive(:post)
+        expect(Charging::Http)
+          .to receive(:post)
           .with("/invoices/#{@invoice.uuid}/pay/", @domain.token, body, etag: @invoice.etag)
           .and_return(double(:response, code: 201))
       
-        invoice.should_receive(:reload_attributes!)
+        expect(invoice).to receive(:reload_attributes!)
       
         invoice.pay!(amount: 100)
       end
@@ -230,11 +260,11 @@ describe Charging::Invoice, :vcr do
           date: today
         })
       
-        Charging::Http
-          .should_receive(:post).with("/invoices/#{@invoice.uuid}/pay/", @domain.token, body, etag: @invoice.etag)
+        expect(Charging::Http)
+          .to receive(:post).with("/invoices/#{@invoice.uuid}/pay/", @domain.token, body, etag: @invoice.etag)
           .and_return(double(:response, code: 201))
       
-        invoice.should_receive(:reload_attributes!)
+        expect(invoice).to receive(:reload_attributes!)
       
         invoice.pay!(date: today)
       end
@@ -250,11 +280,11 @@ describe Charging::Invoice, :vcr do
           note: 'some note for payment'
         })
       
-        Charging::Http
-          .should_receive(:post).with("/invoices/#{@invoice.uuid}/pay/", domain.token, body, etag: @invoice.etag)
+        expect(Charging::Http)
+          .to receive(:post).with("/invoices/#{@invoice.uuid}/pay/", domain.token, body, etag: @invoice.etag)
           .and_return(double(:response, code: 201))
       
-        invoice.should_receive(:reload_attributes!)
+        expect(invoice).to receive(:reload_attributes!)
       
         invoice.pay!(note: "some note for payment")
       end
@@ -332,8 +362,8 @@ describe Charging::Invoice, :vcr do
       VCR.use_cassette('Invoice/try find by uuid an invoice when response not success') do
         response_mock = double('AcceptedResponse', code: 202, to_s: 'AcceptedResponse')
 
-        described_class
-          .should_receive(:get_invoice)
+        expect(described_class)
+          .to receive(:get_invoice)
           .with(domain, 'uuid')
           .and_return(response_mock)
 
@@ -357,7 +387,10 @@ describe Charging::Invoice, :vcr do
         expect(subject).to be_an_instance_of(Charging::Invoice)
       end
 
-      its(:uri) { should eq "http://sandbox.charging.financeconnect.com.br/invoices/#{@invoice.uuid}/" }
+      describe '#uri' do
+        subject { super().uri }
+        it { is_expected.to eq "http://sandbox.charging.financeconnect.com.br/invoices/#{@invoice.uuid}/" }
+      end
     end
   end
 

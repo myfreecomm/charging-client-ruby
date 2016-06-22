@@ -4,7 +4,7 @@ require 'spec_helper'
 describe Charging do
 
   it 'should have a version number' do
-    Charging::VERSION.should_not be_nil
+    expect(Charging::VERSION).not_to be_nil
   end
 
   describe '.configuration' do
@@ -24,8 +24,19 @@ describe Charging do
       end
     end
 
-    its(:application_token) { should eq 'AppToken==' }
-    its(:url) { should eq 'https://some.host' }
-    its(:user_agent) { should eq 'Testing with RSpec'}
+    describe '#application_token' do
+      subject { super().application_token }
+      it { is_expected.to eq 'AppToken==' }
+    end
+
+    describe '#url' do
+      subject { super().url }
+      it { is_expected.to eq 'https://some.host' }
+    end
+
+    describe '#user_agent' do
+      subject { super().user_agent }
+      it { is_expected.to eq 'Testing with RSpec'}
+    end
   end
 end

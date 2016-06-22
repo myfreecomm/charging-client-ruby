@@ -6,6 +6,13 @@ describe Charging::Http::LastResponseError do
 
   subject { described_class.new(mock_response) }
 
-  its(:last_response) { should eq mock_response }
-  its(:message) { should eq 'called to_s from mock response'}
+  describe '#last_response' do
+    subject { super().last_response }
+    it { is_expected.to eq mock_response }
+  end
+
+  describe '#message' do
+    subject { super().message }
+    it { is_expected.to eq 'called to_s from mock response'}
+  end
 end

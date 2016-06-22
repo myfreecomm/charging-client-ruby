@@ -19,7 +19,7 @@ describe Charging::Http do
     %w[post put patch].each do |method|
       context 'with body as json' do
         it "should use RestClient.#{method} with the supplied params and common options" do
-          RestClient.should_receive(method).with(
+          expect(RestClient).to receive(method).with(
             "#{configuration.url}/foo",
             '{"hello":"world"}',
             params: {},
@@ -35,7 +35,7 @@ describe Charging::Http do
 
       context 'with body as string' do
         it 'should use RestClient.post with the supplied params and common options' do
-          RestClient.should_receive(method).with(
+          expect(RestClient).to receive(method).with(
             "#{configuration.url}/foo",
             '{"hello":"world"}',
             params: {},
@@ -53,7 +53,7 @@ describe Charging::Http do
 
   describe ".delete"  do
     it 'should delegate to request_to_api' do
-      Charging::Http.should_receive(:request_to_api).with(
+      expect(Charging::Http).to receive(:request_to_api).with(
         :delete,
         '/foo',
         {etag: 'etag'},
@@ -66,7 +66,7 @@ describe Charging::Http do
 
   describe ".get"  do
     it 'should delegate to request_to_api' do
-      Charging::Http.should_receive(:request_to_api).with(
+      expect(Charging::Http).to receive(:request_to_api).with(
         :get,
         '/foo',
         {},
@@ -80,7 +80,7 @@ describe Charging::Http do
   %w[post].each do |method|
     describe ".#{method}"  do
       it 'should delegate to request_to_api' do
-        Charging::Http.should_receive(:request_to_api).with(
+        expect(Charging::Http).to receive(:request_to_api).with(
           method.to_sym,
           '/foo',
           {spam: 'eggs'},
@@ -96,7 +96,7 @@ describe Charging::Http do
   %w[put patch].each do |method|
     describe ".#{method}"  do
       it 'should delegate to request_to_api' do
-        Charging::Http.should_receive(:request_to_api).with(
+        expect(Charging::Http).to receive(:request_to_api).with(
           method.to_sym,
           '/foo',
           {etag: 'etag'},
@@ -156,8 +156,8 @@ describe Charging::Http do
     context 'on success response code (200)' do
       it 'should call return on response' do
         response = double(code: 200).tap do |mock|
-          mock.should_not_receive(:follow_redirection)
-          mock.should_receive(:return!)
+          expect(mock).not_to receive(:follow_redirection)
+          expect(mock).to receive(:return!)
         end
 
         described_class.should_follow_redirect.call(response, nil, nil)
@@ -172,8 +172,8 @@ describe Charging::Http do
       context "on #{status_message} response code (#{status_code})" do
         it 'should call follow redirection on response' do
           response = double(code: status_code).tap do |mock|
-            mock.should_receive(:follow_redirection)
-            mock.should_not_receive(:return!)
+            expect(mock).to receive(:follow_redirection)
+            expect(mock).not_to receive(:return!)
           end
 
           described_class.should_follow_redirect.call(response, nil, nil)
