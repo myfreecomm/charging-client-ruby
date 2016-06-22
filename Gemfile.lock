@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    charging-client (0.0.1)
+    charging-client (0.0.2)
       multi_json (~> 1.11)
       rest-client (~> 1.6.7)
 
@@ -78,4 +78,4 @@ DEPENDENCIES
   webmock (~> 1.9.3)
 
 BUNDLED WITH
-   1.12.3
+   1.12.5
